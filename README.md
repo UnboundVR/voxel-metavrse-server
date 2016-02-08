@@ -1,6 +1,6 @@
 # Programmable voxel-based sandbox
 
-Learn more at http://metavrse.io
+Learn more at http://metavrse.io.
 
 Initially based on https://github.com/maxogden/voxel-hello-world (which has BSD license).
 
@@ -9,7 +9,6 @@ Initially based on https://github.com/maxogden/voxel-hello-world (which has BSD 
 The first time you set up, you should install the required npm packages:
 
 ```
-cd sandbox
 npm install
 ```
 
