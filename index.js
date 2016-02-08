@@ -2,7 +2,6 @@ var createGame = require('voxel-engine');
 var highlight = require('voxel-highlight');
 var player = require('voxel-player');
 var voxel = require('voxel');
-var extend = require('extend');
 var fly = require('voxel-fly');
 var walk = require('voxel-walk');
 
