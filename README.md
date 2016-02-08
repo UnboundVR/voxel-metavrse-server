@@ -24,7 +24,7 @@ Then point your browser to [http://localhost:1337](http://localhost:1337) and ha
 - When you start, click on the page to lock cursor. Press `<ESC>` to unlock cursor.
 - `<W,A,S,D>` => move.
 - `<R>` => toggle third person view.
-- Click => destroy block; `<CONTROL>` + click => place block.
+- `Click` => destroy block; `<CONTROL> + click` => place block.
 
 ## license
 
