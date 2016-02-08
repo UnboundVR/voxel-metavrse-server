@@ -4,15 +4,15 @@ var player = require('voxel-player');
 var voxel = require('voxel');
 var fly = require('voxel-fly');
 var walk = require('voxel-walk');
+var texturePath = require('painterly-textures');
 
 module.exports = function() {
+  count = 0;
   var opts = {
     generate: voxel.generator['Valley'],
-    chunkDistance: 2,
-    materials: ['#fff', '#000'],
-    materialFlatColor: true,
     worldOrigin: [0, 0, 0],
-    controls: { discreteFire: true }
+    controls: { discreteFire: true },
+    texturePath: texturePath()
   };
 
   var game = createGame(opts);
@@ -54,7 +54,7 @@ var setup = function(game, avatar) {
   hl.on('highlight-adjacent', function (voxelPos) {
     blockPosPlace = voxelPos;
   });
-  
+
   hl.on('remove-adjacent', function (voxelPos) {
      blockPosPlace = null;
   });
@@ -65,7 +65,7 @@ var setup = function(game, avatar) {
   });
 
   // block interaction stuff, uses highlight data
-  var currentMaterial = 1;
+  var currentMaterial = 2;
 
   game.on('fire', function (target, state) {
     var position = blockPosPlace;
