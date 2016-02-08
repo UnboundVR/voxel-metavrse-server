@@ -18,7 +18,7 @@ Then run the start script:
 npm start
 ```
 
-Then point your browser to [http://localhost:8080](http://localhost:8080) and have fun!
+Then point your browser to [http://localhost:1337](http://localhost:1337) and have fun!
 
 ## license
 

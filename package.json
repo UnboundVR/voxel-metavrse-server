@@ -1,9 +1,9 @@
 {
-  "name": "voxel-hello-world",
-  "version": "0.6.0",
+  "name": "metavrse.io",
+  "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "git@github.com:maxogden/voxel-hello-world.git"
+    "url": "git@github.com:UnboundVR/sandbox.git"
   },
   "dependencies": {
     "voxel": "0.3.1",
@@ -19,6 +19,6 @@
     "beefy": "0.0.11"
   },
   "scripts": {
-    "start": "beefy test.js:bundle.js 8080"
+    "start": "beefy init.js:bundle.js 1337"
   }
 }
