@@ -6,9 +6,8 @@ var extend = require('extend');
 var fly = require('voxel-fly');
 var walk = require('voxel-walk');
 
-module.exports = function(opts, setup) {
-  setup = setup || defaultSetup;
-  var defaults = {
+module.exports = function() {
+  var opts = {
     generate: voxel.generator['Valley'],
     chunkDistance: 2,
     materials: ['#fff', '#000'],
@@ -16,31 +15,27 @@ module.exports = function(opts, setup) {
     worldOrigin: [0, 0, 0],
     controls: { discreteFire: true }
   };
-  opts = extend({}, defaults, opts || {});
 
-  // setup the game and add some trees
   var game = createGame(opts);
-  var container = opts.container || document.body;
+  var container = document.getElementById('container');
   window.game = game; // for debugging
   game.appendTo(container);
   if (game.notCapable()) {
-    return game;
+    return;
   }
 
   var createPlayer = player(game);
 
   // create the player from a minecraft skin file and tell the
   // game to use it as the main player
-  var avatar = createPlayer(opts.playerSkin || 'assets/avatars/player.png');
+  var avatar = createPlayer('assets/avatars/player.png');
   avatar.possess();
   avatar.yaw.position.set(2, 14, 4);
 
   setup(game, avatar);
-
-  return game;
 };
 
-function defaultSetup(game, avatar) {
+var setup = function(game, avatar) {
   var makeFly = fly(game);
   var target = game.controls.target();
   game.flyer = makeFly(target);
@@ -79,4 +74,5 @@ function defaultSetup(game, avatar) {
     if (vx > 0.001 || vz > 0.001) walk.stopWalking();
     else walk.startWalking();
   });
-}
+
+};
