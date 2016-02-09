@@ -5,11 +5,13 @@ body {
   margin: 0px;
   overflow: hidden;
 }
+
 #container {
   -moz-user-select: none;
   -webkit-user-select: none;
   user-select: none;
 }
+
 #crosshair {
   position: fixed;
   top: 50%;
@@ -19,6 +21,43 @@ body {
   height: 32px;
 }
 
-#stats { bottom: 0px; right: 0px; }
-.bar-tab { right: 33% !important; left: 33% !important; }
-.errorMessage { text-align: center; width: 200px; margin: 20px auto; }
+#stats {
+  bottom: 0px;
+  right: 0px;
+}
+
+.bar-tab {
+  right: 33% !important;
+  left: 33% !important;
+}
+
+.errorMessage {
+  text-align: center;
+  width: 200px;
+  margin: 20px auto;
+}
+
+#scripting {
+  display: none;
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  opacity: 0.9;
+}
+
+  #scripting-header {
+    padding: 7px;
+    width: 100%;
+    background: #000;
+    color: #fff;
+  }
+
+  #scripting-content {
+    width: 100%;
+    height: 100%;
+  }
+
+  .CodeMirror {
+    height: 100% !important;
+  }

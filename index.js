@@ -5,11 +5,14 @@ var voxel = require('voxel');
 var fly = require('voxel-fly');
 var walk = require('voxel-walk');
 var texturePath = require('painterly-textures');
+var scripter = require('./scripter');
 
 module.exports = function() {
   count = 0;
   var opts = {
-    generate: voxel.generator['Valley'],
+    generate: function(x, y, z) {
+      return y === 1 ? 1 : 0
+    },
     worldOrigin: [0, 0, 0],
     controls: { discreteFire: true },
     texturePath: texturePath()
@@ -74,7 +77,11 @@ var setup = function(game, avatar) {
     } else {
       position = blockPosErase;
       if (position) {
-        game.setBlock(position, 0);
+        if(state.fire === 1) {
+          game.setBlock(position, 0);
+        } else {
+          scripter(position);
+        }
       }
     }
   });

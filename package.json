@@ -6,6 +6,7 @@
     "url": "git@github.com:UnboundVR/sandbox.git"
   },
   "dependencies": {
+    "codemirror": "^5.11.0",
     "painterly-textures": "0.0.3",
     "voxel": "0.3.1",
     "voxel-engine": "~0.18.0",

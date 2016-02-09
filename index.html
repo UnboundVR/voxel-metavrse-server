@@ -5,9 +5,19 @@
     <title>metavrse.io</title>
     <link rel="icon" type="image/x-icon" href="assets/img/favicon.png">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="node_modules/codemirror/theme/tomorrow-night-bright.css">
+    <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
+    <script type="text/javascript" src="node_modules/codemirror/lib/codemirror.js"></script>
+    <script type="text/javascript" src="node_modules/codemirror/mode/javascript/javascript.js"></script>
   </head>
   <body>
     <div id="container"></div>
+    <div id="scripting">
+      <div id="scripting-header">
+        <span id="scripting-title"></span>
+      </div>
+      <div id="scripting-content"></div>
+    </div>
     <div id="crosshair"><img src="assets/img/crosshair.png"/></div>
     <script type="text/javascript" src="bundle.js"></script>
   </body>
