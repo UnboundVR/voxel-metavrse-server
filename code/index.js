@@ -15,7 +15,8 @@ module.exports = function() {
     },
     worldOrigin: [0, 0, 0],
     controls: { discreteFire: true },
-    texturePath: texturePath()
+    texturePath: texturePath(),
+    materials: [['grass', 'dirt', 'grass_dirt'], 'obsidian']
   };
 
   var game = createGame(opts);
@@ -68,7 +69,7 @@ var setup = function(game, avatar) {
   });
 
   // block interaction stuff, uses highlight data
-  var currentMaterial = 2;
+  var currentMaterial = 1;
 
   game.on('fire', function (target, state) {
     var position = blockPosPlace;
@@ -80,7 +81,9 @@ var setup = function(game, avatar) {
         if(state.fire === 1) {
           game.setBlock(position, 0);
         } else {
-          scripter(position);
+          scripter(position, function() {
+            game.setBlock(position, 2);
+          });
         }
       }
     }
