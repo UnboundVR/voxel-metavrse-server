@@ -20,5 +20,35 @@ module.exports = {
     return fetch(request).then(function(response) {
       return response.json();
     });
+  },
+  getGist(id) {
+    var request = new Request(API_URL + '/gists/' + id, {
+    	method: 'GET'
+    });
+
+    return fetch(request).then(function(response) {
+      return response.json();
+    }).then(function(response) {
+      return {
+        desc: response.description,
+        code: response.files[SINGLE_FILENAME].content
+      }
+    });
+  },
+  updateGist(id, code) { // only works when authenticated
+    var body = {
+      files: {}
+    };
+
+    body.files[SINGLE_FILENAME] = {
+      content: code
+    };
+
+    var request = new Request(API_URL + '/gists/' + id, {
+    	method: 'PATCH',
+      body: JSON.stringify(body)
+    });
+
+    return fetch(request);
   }
 };

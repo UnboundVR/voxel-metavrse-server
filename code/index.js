@@ -6,6 +6,7 @@ var fly = require('voxel-fly');
 var walk = require('voxel-walk');
 var texturePath = require('painterly-textures');
 var scripter = require('./scripter');
+var blocks = require('./blocks');
 
 module.exports = function() {
   count = 0;
@@ -36,6 +37,13 @@ module.exports = function() {
   avatar.yaw.position.set(2, 14, 4);
 
   setup(game, avatar);
+  loadBlocksWithGists();
+};
+
+var loadBlocksWithGists = function() {
+  blocks.getBlocksWithGists().forEach(function(position) {
+    game.setBlock(position, 2);
+  });
 };
 
 var setup = function(game, avatar) {
