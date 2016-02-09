@@ -1,23 +1,24 @@
+var SINGLE_FILENAME = 'single_file';
+var API_URL = 'https://api.github.com';
+
 module.exports = {
-  createGist: function(name, content) {
+  createGist: function(desc, content) {
     var body = {
-      description: 'metavrse.io code for a block',
+      description: desc,
       files: {}
     };
 
-    body.files[name] = {
+    body.files[SINGLE_FILENAME] = {
       content: content
     };
 
-    var request = new Request('https://api.github.com/gists', {
+    var request = new Request(API_URL + '/gists', {
     	method: 'POST',
       body: JSON.stringify(body)
     });
 
     return fetch(request).then(function(response) {
       return response.json();
-    }).then(function(response) {
-      return response.html_url;
     });
   }
 };

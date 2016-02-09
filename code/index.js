@@ -81,7 +81,7 @@ var setup = function(game, avatar) {
         if(state.fire === 1) {
           game.setBlock(position, 0);
         } else {
-          scripter(position, function() {
+          scripter(position).then(function() {
             game.setBlock(position, 2);
           });
         }
