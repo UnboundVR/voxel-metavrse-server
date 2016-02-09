@@ -31,26 +31,26 @@ module.exports = function(position) {
 		event.stopPropagation();
 	});
 
-  var buttonSVG = ( function () {
-		var svg = document.createElementNS( 'http://www.w3.org/2000/svg', 'svg' );
-		svg.setAttribute( 'width', 32 );
-		svg.setAttribute( 'height', 32 );
-		var path = document.createElementNS( 'http://www.w3.org/2000/svg', 'path' );
-		path.setAttribute( 'd', 'M 12,12 L 22,22 M 22,12 12,22' );
-		path.setAttribute( 'stroke', '#fff' );
+  var closeButton = (function () {
+		var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		svg.setAttribute('width', 32);
+		svg.setAttribute('height', 32);
+		var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+		path.setAttribute('d', 'M 12,12 L 22,22 M 22,12 12,22');
+		path.setAttribute('stroke', '#fff');
 		svg.appendChild( path );
-		return svg;
-	} )();
 
-  header.appendChild(buttonSVG);
-  buttonSVG.onclick = function() {
+    var closeButton = document.createElement('div');
+    closeButton.appendChild(svg);
+    closeButton.className = 'closeButton';
+
+    return closeButton;
+	})();
+
+  header.appendChild(closeButton);
+  closeButton.onclick = function() {
     container.style.display = 'none';
     crosshair.style.display = 'block';
-    // request pointer lock
+    content.innerHTML = '';
   };
-
-	//close.setPosition( 'absolute' );
-	//close.setTop( '3px' );
-	//close.setRight( '1px' );
-	//close.setCursor( 'pointer' );
 };
