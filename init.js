@@ -1,3 +1,3 @@
-require('./localStorageObjects');
+require('./localStorageForObjects');
 
 require('./code/')();
