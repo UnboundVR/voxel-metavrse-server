@@ -31,6 +31,11 @@ var openCodeWindow = function(codeWindowTitle, initialCode) {
     }
   });
 
+  var dirty = false;
+  codemirror.on('change', function() {
+    dirty = true;
+  });
+
   codemirror.setOption('theme', 'tomorrow-night-bright');
   codemirror.focus();
   document.exitPointerLock();
@@ -62,7 +67,7 @@ var openCodeWindow = function(codeWindowTitle, initialCode) {
   header.appendChild(closeButton);
 
   closeButton.onclick = function() {
-    if(confirm('Exit without saving?')) {
+    if(!dirty || confirm('Exit without saving?')) {
       closeCodeWindow();
     }
   };
