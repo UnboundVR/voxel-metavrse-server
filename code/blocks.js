@@ -1,9 +1,7 @@
-var gistIds = localStorage.getItem('gistIds');
+var gistIds = localStorage.getObject('gistIds');
 if(!gistIds) {
   gistIds = {};
-  localStorage.setItem('gistIds', JSON.stringify(gistIds));
-} else {
-  gistIds = JSON.parse(gistIds);
+  localStorage.setObject('gistIds', gistIds);
 }
 
 module.exports = {
@@ -17,6 +15,6 @@ module.exports = {
   },
   storeGistId: function(position, gistId) {
     gistIds[position] = gistId;
-    localStorage.setItem('gistIds', JSON.stringify(gistIds));
+    localStorage.setObject('gistIds', gistIds);
   }
 };
