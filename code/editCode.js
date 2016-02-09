@@ -2,6 +2,7 @@ var codemirror = require('./codemirror');
 var github = require('./github');
 var blocks = require('./blocks');
 var auth = require('./auth');
+var executor = require('./scriptExecutor');
 
 var openNew = function(position) {
   var title = 'Editing the code of the voxel at ' + position;
@@ -16,8 +17,9 @@ var openNew = function(position) {
     }
 
     return github.createGist(desc, value).then(function(response) {
-      blocks.storeGistId(position, response.id);
       alert('The gist URL is ' + response.html_url + ' and this is now an obsidian block');
+      blocks.storeGistId(position, response.id);
+      executor.create(position, value);
     });
   });
 };
@@ -31,11 +33,13 @@ var openExisting = function(position, desc, initialCode) {
     if(githubId) {
       return github.updateGist(blocks.getGistId(position), value).then(function(response) {
         alert('Existing Gist was updated correctly');
+        executor.update(position, value);
       });
     } else {
       return github.createGist(desc, value).then(function(response) {
-        blocks.storeGistId(position, response.id);
         alert('The new gist URL is ' + response.html_url + ' and this is now an obsidian block');
+        blocks.storeGistId(position, response.id);
+        executor.update(position, value);
       });
     }
   });

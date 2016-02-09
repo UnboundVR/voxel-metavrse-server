@@ -1,3 +1,5 @@
+var github = require('./github');
+
 var gistIds = localStorage.getObject('gistIds');
 if(!gistIds) {
   gistIds = {};
@@ -7,7 +9,10 @@ if(!gistIds) {
 module.exports = {
   getBlocksWithGists: function() {
     return Object.keys(gistIds).map(function(key) {
-      return key.split(',');
+      return {
+        position: key.split(','),
+        script: github.getGist(gistIds[key])
+      };
     });
   },
   getGistId: function(position) {

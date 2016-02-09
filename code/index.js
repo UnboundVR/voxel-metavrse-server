@@ -5,8 +5,9 @@ var voxel = require('voxel');
 var fly = require('voxel-fly');
 var walk = require('voxel-walk');
 var texturePath = require('painterly-textures');
-var scripter = require('./scripter');
+var editCode = require('./editCode');
 var blocks = require('./blocks');
+var executor = require('./scriptExecutor');
 
 module.exports = function() {
   count = 0;
@@ -37,12 +38,15 @@ module.exports = function() {
   avatar.yaw.position.set(2, 14, 4);
 
   setup(game, avatar);
-  loadBlocksWithGists();
+  loadBlocksWithScripts();
 };
 
-var loadBlocksWithGists = function() {
-  blocks.getBlocksWithGists().forEach(function(position) {
-    game.setBlock(position, 2);
+var loadBlocksWithScripts = function() {
+  blocks.getBlocksWithGists().forEach(function(block) {
+    block.script.then(function(response) {
+      executor.create(block.position, response.code);
+      game.setBlock(block.position, 2);
+    });
   });
 };
 
@@ -89,7 +93,7 @@ var setup = function(game, avatar) {
         if(state.fire === 1) {
           game.setBlock(position, 0);
         } else {
-          scripter(position).then(function() {
+          editCode(position).then(function() {
             game.setBlock(position, 2);
           });
         }
