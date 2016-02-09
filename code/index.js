@@ -91,6 +91,7 @@ var setup = function(game, avatar) {
       position = blockPosErase;
       if (position) {
         if(state.fire === 1) {
+          executor.remove(position);
           game.setBlock(position, 0);
         } else {
           editCode(position).then(function() {
