@@ -1,40 +1,36 @@
-var createGame = require('voxel-engine');
 var player = require('voxel-player');
 var voxel = require('voxel');
-var texturePath = require('painterly-textures');
 var blocks = require('./blocks');
 var executor = require('./scriptExecutor');
 var setupBlockPlacement = require('./blockPlacement');
 var setupControls = require('./controls');
+var createClient = require('./client');
+
+var game;
 
 module.exports = function() {
-  count = 0;
-  var opts = {
-    generate: function(x, y, z) {
-      return y === 1 ? 1 : 0
-    },
-    worldOrigin: [0, 0, 0],
-    controls: { discreteFire: true },
-    texturePath: texturePath(),
-    materials: [['grass', 'dirt', 'grass_dirt'], 'obsidian']
-  };
+  var client = createClient('http://localhost:8080');
 
-  var game = createGame(opts);
-  var container = document.getElementById('container');
-  window.game = game; // for debugging
-  game.appendTo(container);
-  if (game.notCapable()) {
-    return;
-  }
+  client.socket.on('noMoreChunks', function() {
+    console.log('noMoreChunks')
+    game = client.game;
+    var container = document.getElementById('container');
 
-  var createPlayer = player(game);
-  var avatar = createPlayer('assets/avatars/player.png');
-  avatar.possess();
-  avatar.yaw.position.set(2, 14, 4);
+    game.appendTo(container);
+    if (game.notCapable()) {
+      return;
+    }
 
-  setupControls(game, avatar);
-  setupBlockPlacement(game);
-  loadBlocksWithScripts();
+    var createPlayer = player(game);
+    var avatar = createPlayer('assets/avatars/player.png');
+    avatar.possess();
+    var settings = game.settings.avatarInitialPosition
+    avatar.position.set(settings[0],settings[1],settings[2])
+
+    setupControls(game, avatar);
+    setupBlockPlacement(game, client);
+    //loadBlocksWithScripts();
+  });
 };
 
 var loadBlocksWithScripts = function() {

@@ -2,7 +2,7 @@ var highlight = require('voxel-highlight');
 var executor = require('./scriptExecutor');
 var editCode = require('./editCode');
 
-module.exports = function(game) {
+module.exports = function(game, client) {
   // highlight blocks when you look at them, hold <Ctrl> for block placement
   var blockPosPlace, blockPosErase;
   var hl = game.highlighter = highlight(game, { color: 0xff0000 });
@@ -30,15 +30,18 @@ module.exports = function(game) {
     var position = blockPosPlace;
     if (position) {
       game.createBlock(position, currentMaterial);
+      client.socket.emit('set', position, currentMaterial);
     } else {
       position = blockPosErase;
       if (position) {
         if(state.fire === 1) {
           executor.remove(position);
           game.setBlock(position, 0);
+          client.socket.emit('set', position, 0);
         } else {
           editCode(position).then(function() {
             game.setBlock(position, 2);
+            client.socket.emit('set', position, 0);
           });
         }
       }

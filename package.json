@@ -7,8 +7,13 @@
   },
   "dependencies": {
     "codemirror": "^5.11.0",
+    "express": "^4.13.4",
+    "minecraft-skin": "^0.1.2",
     "painterly-textures": "0.0.3",
+    "socket.io": "^1.4.5",
+    "socket.io-client": "^1.4.5",
     "voxel": "0.3.1",
+    "voxel-crunch": "^0.2.1",
     "voxel-engine": "~0.18.0",
     "voxel-fly": "~0.1.0",
     "voxel-highlight": "0.0.9",
@@ -16,8 +21,8 @@
     "voxel-walk": "git://github.com/flyswatter/voxel-walk.git"
   },
   "devDependencies": {
-    "browserify": "1.17.3",
-    "beefy": "0.0.11"
+    "beefy": "^2.1.5",
+    "browserify": "^13.0.0"
   },
   "scripts": {
     "start": "beefy init.js:bundle.js 1337"
