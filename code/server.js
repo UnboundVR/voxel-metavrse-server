@@ -125,7 +125,7 @@ module.exports = function(io) {
     Object.keys(game.voxels.chunks).forEach(function(chunkID) {
       // TODO use crunch again!
       var chunk = game.voxels.chunks[chunkID];
-      socket.emit('chunk', 'asd');
+      socket.emit('chunk', chunk);
     });
     socket.emit('noMoreChunks');
   }
