@@ -123,9 +123,18 @@ module.exports = function(io) {
   function sendInitialChunks(socket) {
     console.log(Object.keys(game.voxels.chunks).length + ' chunks')
     Object.keys(game.voxels.chunks).forEach(function(chunkID) {
-      // TODO use crunch again!
       var chunk = game.voxels.chunks[chunkID];
-      socket.emit('chunk', chunk);
+      var encoded = chunkCache[chunkID];
+      if (!encoded) {
+        encoded = crunch.encode(chunk.voxels);
+        chunkCache[chunkID] = encoded;
+      }
+
+      socket.emit('chunk', encoded, {
+        position: chunk.position,
+        dims: chunk.dims,
+        length: chunk.voxels.length
+      });
     });
     socket.emit('noMoreChunks');
   }

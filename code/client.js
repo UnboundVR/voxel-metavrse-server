@@ -55,9 +55,9 @@ Client.prototype.bindEvents = function(socket) {
     }
     self.game = self.createGame(settings);
     socket.emit('created');
-    socket.on('chunk', function(chunk) {
-      // TODO use crunch again
-      console.log('received chunk')
+    socket.on('chunk', function(encoded, chunk) {
+      var voxels = crunch.decode(encoded, new Uint32Array(chunk.length));
+      chunk.voxels = voxels;
       self.game.showChunk(chunk);
     });
   });
