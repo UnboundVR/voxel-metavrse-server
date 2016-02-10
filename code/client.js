@@ -56,7 +56,7 @@ Client.prototype.bindEvents = function(socket) {
     self.game = self.createGame(settings);
     socket.emit('created');
     socket.on('chunk', function(encoded, chunk) {
-      var voxels = crunch.decode(encoded, new Uint32Array(chunk.length));
+      var voxels = crunch.decode(encoded, new Uint32Array(chunk.length)); // doesn't work in browserify, returns all 0s
       chunk.voxels = voxels;
       self.game.showChunk(chunk);
     });

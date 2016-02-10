@@ -29,7 +29,7 @@ module.exports = function() {
 
     setupControls(game, avatar);
     setupBlockPlacement(game, client);
-    //loadBlocksWithScripts();
+    loadBlocksWithScripts();
   });
 };
 
