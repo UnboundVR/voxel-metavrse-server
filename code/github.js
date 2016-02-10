@@ -21,7 +21,7 @@ module.exports = {
       return response.json();
     });
   },
-  getGist(id) {
+  getGist: function(id) {
     var request = new Request(API_URL + '/gists/' + id, {
     	method: 'GET'
     });
@@ -35,7 +35,7 @@ module.exports = {
       }
     });
   },
-  updateGist(id, code) { // only works when authenticated
+  updateGist: function(id, code) { // only works when authenticated
     var body = {
       files: {}
     };
