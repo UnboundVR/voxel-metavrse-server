@@ -38,6 +38,9 @@ var loadBlocksWithScripts = function() {
     block.script.then(function(response) {
       executor.create(block.position, response.code);
       game.setBlock(block.position, 2);
+    }, function(error) {
+      console.log('cannot load script in' + block.position + ' from github');
+      game.setBlock(block.position, 2);
     });
   });
 };
