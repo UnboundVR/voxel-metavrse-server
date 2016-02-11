@@ -45,8 +45,12 @@ module.exports = function(game, client) {
       client.socket.emit('set', position, currentMaterial);
     } else {
       position = blockPosErase;
-      if (position && game.getBlock(position) != 1) {
-        if(game.getBlock(position) == 4) {
+      if (position) {
+        if(game.getBlock(position) == 1) { //bedrock
+          return;
+        }
+
+        if(game.getBlock(position) == 4) { //doge
           alert('such indestructible');
           alert('wow');
           return;
