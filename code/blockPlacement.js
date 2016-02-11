@@ -33,7 +33,6 @@ module.exports = function(game, client) {
       var tabItem = tabItems[i];
       if(tabItem.innerText === item) {
         currentMaterial = parseInt(tabItem.attributes['data-id'].value);
-        console.log(currentMaterial)
         break;
       }
     }
