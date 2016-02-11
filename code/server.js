@@ -9,7 +9,7 @@ module.exports = function(io) {
       return y === 1 ? 1 : 0
     },
     chunkDistance: 2,
-    materials: ['bedrock', 'code', ['grass', 'dirt', 'grass_dirt'], 'obsidian', 'plank', 'cobblestone', 'redwool'],
+    materials: ['bedrock', 'code', 'troll', ['grass', 'dirt', 'grass_dirt'], 'obsidian', 'plank', 'cobblestone', 'redwool'],
     texturePath: texturePath,
     worldOrigin: [0, 0, 0],
     controls: { discreteFire: true },
