@@ -17,7 +17,7 @@ var openNew = function(position) {
     }
 
     return github.createGist(desc, value).then(function(response) {
-      alert('The gist URL is ' + response.html_url + ' and this is now an obsidian block');
+      alert('The gist URL is ' + response.html_url);
       blocks.storeGistId(position, response.id);
       executor.create(position, value);
     });
@@ -37,7 +37,7 @@ var openExisting = function(position, desc, initialCode) {
       });
     } else {
       return github.createGist(desc, value).then(function(response) {
-        alert('The new gist URL is ' + response.html_url + ' and this is now an obsidian block');
+        alert('The new gist URL is ' + response.html_url);
         blocks.storeGistId(position, response.id);
         executor.update(position, value);
       });
