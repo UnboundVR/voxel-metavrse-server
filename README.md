@@ -12,7 +12,12 @@ The first time you set up, you should install the required npm packages:
 npm install
 ```
 
-Then run the start script:
+Then run the server:
+```
+node server-init
+```
+
+Then run the client:
 
 ```
 npm start
