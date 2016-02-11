@@ -9,7 +9,6 @@
     "codemirror": "^5.11.0",
     "express": "^4.13.4",
     "minecraft-skin": "^0.1.2",
-    "painterly-textures": "0.0.3",
     "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5",
     "voxel": "0.3.1",

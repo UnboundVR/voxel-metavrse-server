@@ -1,5 +1,5 @@
 var engine = require('voxel-engine');
-var texturePath = require('painterly-textures')(__dirname);
+var texturePath = 'assets/textures/';
 var voxel = require('voxel');
 var rle = require('../rle');
 
@@ -9,7 +9,7 @@ module.exports = function(io) {
       return y === 1 ? 1 : 0
     },
     chunkDistance: 2,
-    materials: [['grass', 'dirt', 'grass_dirt'], 'obsidian'],
+    materials: ['bedrock', 'code', ['grass', 'dirt', 'grass_dirt'], 'obsidian', 'plank', 'cobblestone'],
     texturePath: texturePath,
     worldOrigin: [0, 0, 0],
     controls: { discreteFire: true },
