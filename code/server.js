@@ -1,7 +1,7 @@
-var crunch = require('voxel-crunch');
 var engine = require('voxel-engine');
 var texturePath = require('painterly-textures')(__dirname);
 var voxel = require('voxel');
+var rle = require('../rle');
 
 module.exports = function(io) {
   /*var settings = {
@@ -126,14 +126,14 @@ module.exports = function(io) {
       var chunk = game.voxels.chunks[chunkID];
       var encoded = chunkCache[chunkID];
       if (!encoded) {
-        encoded = crunch.encode(chunk.voxels);
+        encoded = rle.encode(chunk.voxels);
         chunkCache[chunkID] = encoded;
       }
 
-      socket.emit('chunk', encoded, {
+      socket.emit('chunk', {
         position: chunk.position,
         dims: chunk.dims,
-        length: chunk.voxels.length
+        voxels: encoded
       });
     });
     socket.emit('noMoreChunks');

@@ -13,7 +13,6 @@
     "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5",
     "voxel": "0.3.1",
-    "voxel-crunch": "^0.2.1",
     "voxel-engine": "~0.18.0",
     "voxel-fly": "~0.1.0",
     "voxel-highlight": "0.0.9",

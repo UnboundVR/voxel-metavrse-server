@@ -1,5 +1,5 @@
 // var toolbar = require('toolbar')
-var crunch = require('voxel-crunch');
+var rle = require('../rle');
 var highlight = require('voxel-highlight');
 var skin = require('minecraft-skin');
 var player = require('voxel-player');
@@ -47,6 +47,12 @@ Client.prototype.bindEvents = function(socket) {
     self.playerID = id;
   });
 
+  var processChunk = function(chunk) {
+    var voxels = rle.decode(chunk.voxels);
+    chunk.voxels = voxels;
+    self.game.showChunk(chunk);
+  };
+
   socket.on('settings', function(settings) {
     settings.generateChunks = false;
     //deserialise the voxel.generator function.
@@ -55,10 +61,10 @@ Client.prototype.bindEvents = function(socket) {
     }
     self.game = self.createGame(settings);
     socket.emit('created');
-    socket.on('chunk', function(encoded, chunk) {
-      var voxels = crunch.decode(encoded, new Uint32Array(chunk.length)); // doesn't work in browserify, returns all 0s
-      chunk.voxels = voxels;
-      self.game.showChunk(chunk);
+    socket.on('chunk', processChunk);
+
+    self.game.on('missingChunk', function(chunkPosition) {
+      socket.emit('gimmeChunk', processChunk);
     });
   });
 
