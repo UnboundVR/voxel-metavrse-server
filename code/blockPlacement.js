@@ -38,15 +38,44 @@ module.exports = function(game, client) {
     }
   });
 
+  function getAdjacent(pos) {
+    var adj = [];
+    adj.push([pos[0] + 1, pos[1], pos[2]]);
+    adj.push([pos[0], pos[1] + 1, pos[2]]);
+    adj.push([pos[0], pos[1], pos[2] + 1]);
+    adj.push([pos[0] - 1, pos[1], pos[2]]);
+    adj.push([pos[0], pos[1] - 1, pos[2]]);
+    adj.push([pos[0], pos[1], pos[2] - 1]);
+
+    return adj;
+  }
+
+  function adjacentToTrollBlock(position) {
+    var adj = getAdjacent(position);
+
+    for(var i = 0; i < adj.length; i++) {
+      var pos = adj[i];
+      if(game.getBlock(pos) == 3) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   game.on('fire', function (target, state) {
     var position = blockPosPlace;
     if (position) {
+      if(adjacentToTrollBlock(position)) {
+        alert('problem?');
+        return;
+      }
       game.createBlock(position, currentMaterial);
       client.socket.emit('set', position, currentMaterial);
     } else {
       position = blockPosErase;
       if (position) {
-        if(game.getBlock(position) == 1) { //bedrock
+        if(game.getBlock(position) == 1 || game.getBlock(position) == 3) { //bedrock & troll block
           return;
         }
 
