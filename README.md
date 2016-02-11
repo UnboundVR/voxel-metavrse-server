@@ -1,8 +1,8 @@
 # Programmable voxel-based sandbox
 
-Learn more at http://metavrse.io.
+Learn more at http://metavrse.io. Using https://github.com/maxogden/voxel-engine (awesome stuff!).
 
-Initially based on https://github.com/maxogden/voxel-hello-world (which has BSD license).
+Guaranteed that >80% of this code was written listening to metal \m/
 
 ## Get it running on your machine
 
