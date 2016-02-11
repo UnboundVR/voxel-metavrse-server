@@ -28,7 +28,15 @@ module.exports = function(game, client) {
 
   var selector = toolbar();
   selector.on('select', function(item) {
-    currentMaterial = item;
+    var tabItems = document.getElementsByClassName('tab-label');
+    for(var i = 0; i < tabItems.length; i++) {
+      var tabItem = tabItems[i];
+      if(tabItem.innerText === item) {
+        currentMaterial = parseInt(tabItem.attributes['data-id'].value);
+        console.log(currentMaterial)
+        break;
+      }
+    }
   });
 
   game.on('fire', function (target, state) {
