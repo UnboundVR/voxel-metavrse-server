@@ -14,6 +14,7 @@ module.exports = function() {
   client.socket.on('noMoreChunks', function() {
     console.log('noMoreChunks')
     game = client.game;
+    window.game = game;
     var container = document.getElementById('container');
 
     game.appendTo(container);
