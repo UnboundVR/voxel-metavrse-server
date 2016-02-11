@@ -4,28 +4,12 @@ var voxel = require('voxel');
 var rle = require('../rle');
 
 module.exports = function(io) {
-  /*var settings = {
-    generate: function(x, y, z) {
-      return y === 1 ? 1 : 0
-    },
-    worldOrigin: [0, 0, 0],
-    controls: { discreteFire: true },
-    texturePath: texturePath, //this is already in the client, do we need it?
-    materials: [['grass', 'dirt', 'grass_dirt'], 'obsidian'],
-    avatarInitialPosition: [2, 2, 2]
-  };*/
-
   var settings = {
     generate: function(x, y, z) {
       return y === 1 ? 1 : 0
     },
     chunkDistance: 2,
-    materials: [
-    ['grass', 'dirt', 'grass_dirt'],
-    'obsidian',
-    'brick',
-    'grass'
-    ],
+    materials: [['grass', 'dirt', 'grass_dirt'], 'obsidian'],
     texturePath: texturePath,
     worldOrigin: [0, 0, 0],
     controls: { discreteFire: true },
@@ -83,10 +67,6 @@ module.exports = function(io) {
       socket.broadcast.emit('leave', id);
     });
 
-    // give the user the initial game settings
-    if (settings.generate != null) {
-      settings.generatorToString = settings.generate.toString()
-    }
     socket.emit('settings', settings);
 
     // fires when the user tells us they are
@@ -121,7 +101,6 @@ module.exports = function(io) {
   });
 
   function sendInitialChunks(socket) {
-    console.log(Object.keys(game.voxels.chunks).length + ' chunks')
     Object.keys(game.voxels.chunks).forEach(function(chunkID) {
       var chunk = game.voxels.chunks[chunkID];
       var encoded = chunkCache[chunkID];

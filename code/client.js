@@ -55,10 +55,6 @@ Client.prototype.bindEvents = function(socket) {
 
   socket.on('settings', function(settings) {
     settings.generateChunks = false;
-    //deserialise the voxel.generator function.
-    if (settings.generatorToString != null) {
-      settings.generate = eval("(" + settings.generatorToString + ")");
-    }
     self.game = self.createGame(settings);
     socket.emit('created');
     socket.on('chunk', processChunk);
