@@ -1,6 +1,7 @@
 var highlight = require('voxel-highlight');
 var executor = require('./scriptExecutor');
 var editCode = require('./editCode');
+var toolbar = require('toolbar');
 
 module.exports = function(game, client) {
   // highlight blocks when you look at them, hold <Ctrl> for block placement
@@ -23,8 +24,12 @@ module.exports = function(game, client) {
      blockPosPlace = null;
   });
 
-  // block interaction stuff, uses highlight data
   var currentMaterial = 1;
+
+  var selector = toolbar();
+  selector.on('select', function(item) {
+    currentMaterial = item;
+  });
 
   game.on('fire', function (target, state) {
     var position = blockPosPlace;

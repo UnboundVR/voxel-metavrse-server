@@ -1,4 +1,3 @@
-// var toolbar = require('toolbar')
 var rle = require('../rle');
 var highlight = require('voxel-highlight');
 var skin = require('minecraft-skin');
@@ -6,15 +5,12 @@ var player = require('voxel-player');
 var io = require('socket.io-client');
 var engine = require('voxel-engine');
 
-//var game
-
 module.exports = Client;
 
 function Client(server) {
   if(!(this instanceof Client)) {
     return new Client(server);
   }
-  // this.blockSelector = toolbar({el: '#tools'})
   this.playerID;
   this.lastProcessedSeq = 0;
   this.localInputs = [];
