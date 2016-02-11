@@ -46,6 +46,11 @@ module.exports = function(game, client) {
     } else {
       position = blockPosErase;
       if (position && game.getBlock(position) != 1) {
+        if(game.getBlock(position) == 4) {
+          alert('such indestructible');
+          alert('wow');
+          return;
+        }
         if(state.fire === 1) {
           executor.remove(position);
           game.setBlock(position, 0);
