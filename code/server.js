@@ -47,7 +47,6 @@ module.exports = function(io) {
   setInterval(sendUpdate, 1000/22); // 45ms
 
   io.on('connection', function(socket) {
-    console.log('user connected')
     var id = socket.id;
 
     var player = {
@@ -68,6 +67,15 @@ module.exports = function(io) {
     });
 
     socket.emit('settings', settings);
+
+    socket.on('gimmeChunk', function(chunkPosition, callback) {
+      var chunkId = chunkPosition.join('|');
+      if(!chunkExists(chunkId)) {
+        game.pendingChunks.push(chunkId);
+        game.loadPendingChunks(game.pendingChunks.length);
+      }
+      callback(getChunk(chunkId));
+    });
 
     // fires when the user tells us they are
     // ready for chunks to be sent
@@ -100,20 +108,28 @@ module.exports = function(io) {
 
   });
 
-  function sendInitialChunks(socket) {
-    Object.keys(game.voxels.chunks).forEach(function(chunkID) {
-      var chunk = game.voxels.chunks[chunkID];
-      var encoded = chunkCache[chunkID];
-      if (!encoded) {
-        encoded = rle.encode(chunk.voxels);
-        chunkCache[chunkID] = encoded;
-      }
+  function chunkExists(chunkId) {
+    return !!game.voxels.chunks[chunkId];
+  }
 
-      socket.emit('chunk', {
-        position: chunk.position,
-        dims: chunk.dims,
-        voxels: encoded
-      });
+  function getChunk(chunkId) {
+    var chunk = game.voxels.chunks[chunkId];
+    var encoded = chunkCache[chunkId];
+    if (!encoded) {
+      encoded = rle.encode(chunk.voxels);
+      chunkCache[chunkId] = encoded;
+    }
+
+    return {
+      position: chunk.position,
+      dims: chunk.dims,
+      voxels: encoded
+    };
+  }
+
+  function sendInitialChunks(socket) {
+    Object.keys(game.voxels.chunks).forEach(function(chunkId) {
+      socket.emit('chunk', getChunk(chunkId));
     });
     socket.emit('noMoreChunks');
   }

@@ -58,9 +58,10 @@ Client.prototype.bindEvents = function(socket) {
     self.game = self.createGame(settings);
     socket.emit('created');
     socket.on('chunk', processChunk);
-
-    self.game.on('missingChunk', function(chunkPosition) {
-      socket.emit('gimmeChunk', processChunk);
+    socket.on('noMoreChunks', function() {
+      self.game.voxels.on('missingChunk', function(chunkPosition) {
+        socket.emit('gimmeChunk', chunkPosition, processChunk);
+      });
     });
   });
 
