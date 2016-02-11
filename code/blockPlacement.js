@@ -24,7 +24,7 @@ module.exports = function(game, client) {
      blockPosPlace = null;
   });
 
-  var currentMaterial = 1;
+  var currentMaterial = 3;
 
   var selector = toolbar();
   selector.on('select', function(item) {
@@ -45,7 +45,7 @@ module.exports = function(game, client) {
       client.socket.emit('set', position, currentMaterial);
     } else {
       position = blockPosErase;
-      if (position) {
+      if (position && game.getBlock(position) != 1) {
         if(state.fire === 1) {
           executor.remove(position);
           game.setBlock(position, 0);
