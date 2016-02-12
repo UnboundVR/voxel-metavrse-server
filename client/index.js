@@ -4,7 +4,7 @@ var gists = require('./gists');
 var executor = require('./scriptExecutor');
 var setupBlockPlacement = require('./blockPlacement');
 var setupControls = require('./controls');
-var createClient = require('./client');
+var createClient = require('./voxelClient');
 
 var game;
 
