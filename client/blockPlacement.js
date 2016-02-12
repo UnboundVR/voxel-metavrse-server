@@ -2,6 +2,8 @@ var highlight = require('voxel-highlight');
 var executor = require('./scriptExecutor');
 var editCode = require('./editCode');
 var toolbar = require('toolbar');
+var blocks = require('../shared/blocks');
+var blockTypes = require('../shared/blockTypes');
 
 module.exports = function(game, client) {
   // highlight blocks when you look at them, hold <Ctrl> for block placement
@@ -24,7 +26,7 @@ module.exports = function(game, client) {
      blockPosPlace = null;
   });
 
-  var currentMaterial = 3;
+  var currentMaterial = blocks.getNumber(blockTypes.GRASS);
 
   var selector = toolbar();
   selector.on('select', function(item) {
@@ -75,23 +77,30 @@ module.exports = function(game, client) {
     } else {
       position = blockPosErase;
       if (position) {
-        if(game.getBlock(position) == 1 || game.getBlock(position) == 3) { //bedrock & troll block
+        if(game.getBlock(position) == blocks.getNumber(blockTypes.TILE)) {
           return;
         }
 
-        if(game.getBlock(position) == 4) { //doge
+        if(game.getBlock(position) == blocks.getNumber(blockTypes.TROLL)) {
+          alert('beware of the troll');
+          return;
+        }
+
+        if(game.getBlock(position) == blocks.getNumber(blockTypes.DOGE)) {
           alert('such indestructible');
           alert('wow');
           return;
         }
+
         if(state.fire === 1) {
           executor.remove(position);
           game.setBlock(position, 0);
           client.socket.emit('set', position, 0);
         } else {
           editCode(position).then(function() {
-            game.setBlock(position, 2);
-            client.socket.emit('set', position, 0);
+            var codeBlockNumber = blocks.getNumber(blockTypes.CODE);
+            game.setBlock(position, codeBlockNumber);
+            client.socket.emit('set', position, codeBlockNumber);
           });
         }
       }
