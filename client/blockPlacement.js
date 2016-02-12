@@ -51,6 +51,7 @@ module.exports = function(game, client) {
 
   function getAdjacent(pos) {
     var adj = [];
+    
     adj.push([pos[0] + 1, pos[1], pos[2]]);
     adj.push([pos[0], pos[1] + 1, pos[2]]);
     adj.push([pos[0], pos[1], pos[2] + 1]);
