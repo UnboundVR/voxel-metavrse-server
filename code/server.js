@@ -9,7 +9,7 @@ module.exports = function(io) {
       return y === 1 ? 1 : 0
     },
     chunkDistance: 2,
-    materials: ['bedrock', 'code', 'troll', 'doge', ['grass', 'dirt', 'grass_dirt'], 'obsidian', 'plank', 'cobblestone', 'redwool'],
+    materials: ['tile', 'code', 'troll', 'doge', ['grass', 'dirt', 'grass_dirt'], 'obsidian', 'plank', 'cobblestone', 'redwool'],
     texturePath: texturePath,
     worldOrigin: [0, 0, 0],
     controls: { discreteFire: true },
@@ -56,13 +56,11 @@ module.exports = function(io) {
 
     clients[id] = player;
 
-    console.log(id, 'joined')
     socket.emit('id', id);
     socket.broadcast.emit('join', id);
 
     socket.on('disconnect', function() {
       delete clients[id];
-      console.log(id, 'left');
       socket.broadcast.emit('leave', id);
     });
 
