@@ -65,7 +65,7 @@ module.exports = function(game, client) {
 
     for(var i = 0; i < adj.length; i++) {
       var pos = adj[i];
-      if(game.getBlock(pos) == 3) {
+      if(game.getBlock(pos) == blocks.types.TROLL.number) {
         return true;
       }
     }

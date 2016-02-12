@@ -10,18 +10,6 @@
     "visibleInToolbar": false
   },
   {
-    "name": "Troll",
-    "material": "troll",
-    "icon": "troll",
-    "visibleInToolbar": true
-  },
-  {
-    "name": "Doge",
-    "material": "doge",
-    "icon": "doge",
-    "visibleInToolbar": true
-  },
-  {
     "name": "Grass",
     "material": ["grass", "dirt", "grass_dirt"],
     "icon": "grass",
@@ -49,6 +37,18 @@
     "name": "Red Wool",
     "material": "redwool",
     "icon": "redwool",
+    "visibleInToolbar": true
+  },
+  {
+    "name": "Troll",
+    "material": "troll",
+    "icon": "troll",
+    "visibleInToolbar": true
+  },
+  {
+    "name": "Doge",
+    "material": "doge",
+    "icon": "doge",
     "visibleInToolbar": true
   }
 ]
