@@ -1,0 +1,47 @@
+{
+  "TILE": {
+    "name": "Tile",
+    "material": "tile",
+    "visibleInToolbar": false
+  },
+  "CODE": {
+    "name": "Code",
+    "material": "code",
+    "visibleInToolbar": false
+  },
+  "TROLL": {
+    "name": "Trollblock",
+    "material": "troll",
+    "visibleInToolbar": true
+  },
+  "DOGE": {
+    "name": "Dogeblock",
+    "material": "doge",
+    "visibleInToolbar": true
+  },
+  "GRASS": {
+    "name": "Grass",
+    "material": ["grass", "dirt", "grass_dirt"],
+    "visibleInToolbar": true
+  },
+  "OBSIDIAN": {
+    "name": "Obsidian",
+    "material": "obsidian",
+    "visibleInToolbar": true
+  },
+  "WOOD": {
+    "name": "Wood",
+    "material": "plank",
+    "visibleInToolbar": true
+  },
+  "COBBLESTONE": {
+    "name": "Cobblestone",
+    "material": "cobblestone",
+    "visibleInToolbar": true
+  },
+  "RED_WOOL": {
+    "name": "Red Wool",
+    "material": "redwool",
+    "visibleInToolbar": true
+  }
+}

@@ -2,6 +2,7 @@ var engine = require('voxel-engine');
 var texturePath = 'assets/textures/';
 var voxel = require('voxel');
 var rle = require('../shared/rle');
+var blocks = require('../shared/blocks');
 
 module.exports = function(io) {
   var settings = {
@@ -9,7 +10,7 @@ module.exports = function(io) {
       return y === 1 ? 1 : 0
     },
     chunkDistance: 2,
-    materials: ['tile', 'code', 'troll', 'doge', ['grass', 'dirt', 'grass_dirt'], 'obsidian', 'plank', 'cobblestone', 'redwool'],
+    materials: blocks.getMaterials(),
     texturePath: texturePath,
     worldOrigin: [0, 0, 0],
     controls: { discreteFire: true },
