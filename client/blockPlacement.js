@@ -51,7 +51,7 @@ module.exports = function(game, client) {
 
   function getAdjacent(pos) {
     var adj = [];
-    
+
     adj.push([pos[0] + 1, pos[1], pos[2]]);
     adj.push([pos[0], pos[1] + 1, pos[2]]);
     adj.push([pos[0], pos[1], pos[2] + 1]);
@@ -103,8 +103,10 @@ module.exports = function(game, client) {
         }
 
         if(state.fire === 1) {
-          gists.removeGist(position);
-          executor.remove(position);
+          if(gists.getGistId(position)) {
+            gists.removeGist(position);
+            executor.remove(position);
+          }
           game.setBlock(position, 0);
           client.socket.emit('set', position, 0);
         } else {

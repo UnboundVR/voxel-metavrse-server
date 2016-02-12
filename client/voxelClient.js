@@ -119,34 +119,34 @@ Client.prototype.onServerUpdate = function(update) {
   // todo use server sent location
 };
 
-Client.prototype.lerpMe = function(position) {
+/*Client.prototype.lerpMe = function(position) {
   var to = new this.game.THREE.Vector3()
   to.copy(position)
   var from = this.game.controls.target().yaw.position
   from.copy(from.lerp(to, this.lerpPercent))
-};
+};*/
 
 Client.prototype.updatePlayerPosition = function(id, update) {
-  var pos = update.position
-  var player = this.others[id]
+  var pos = update.position;
+  var player = this.others[id];
   if (!player) {
     var playerSkin = skin(this.game.THREE, 'assets/avatars/player.png', {
       scale: new this.game.THREE.Vector3(0.04, 0.04, 0.04)
-    })
-    var playerMesh = playerSkin.mesh
-    this.others[id] = playerSkin
-    playerMesh.children[0].position.y = 10
-    this.game.scene.add(playerMesh)
+    });
+    var playerMesh = playerSkin.mesh;
+    this.others[id] = playerSkin;
+    playerMesh.children[0].position.y = 10;
+    this.game.scene.add(playerMesh);
   }
-  var playerSkin = this.others[id]
-  var playerMesh = playerSkin.mesh
-  playerMesh.position.copy(playerMesh.position.lerp(pos, this.lerpPercent))
+  var playerSkin = this.others[id];
+  var playerMesh = playerSkin.mesh;
+  playerMesh.position.copy(playerMesh.position.lerp(pos, this.lerpPercent));
 
   // playerMesh.position.y += 17
-  playerMesh.children[0].rotation.y = update.rotation.y + (Math.PI / 2)
-  playerSkin.head.rotation.z = scale(update.rotation.x, -1.5, 1.5, -0.75, 0.75)
+  playerMesh.children[0].rotation.y = update.rotation.y + (Math.PI / 2);
+  playerSkin.head.rotation.z = scale(update.rotation.x, -1.5, 1.5, -0.75, 0.75);
 };
 
 function scale( x, fromLow, fromHigh, toLow, toHigh ) {
-  return ( x - fromLow ) * ( toHigh - toLow ) / ( fromHigh - fromLow ) + toLow
+  return ( x - fromLow ) * ( toHigh - toLow ) / ( fromHigh - fromLow ) + toLow;
 }
