@@ -1,3 +1,5 @@
+// TODO move the whole github interaction to server
+
 var SINGLE_FILENAME = 'single_file';
 var API_URL = 'https://api.github.com';
 

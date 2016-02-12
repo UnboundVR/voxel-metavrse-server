@@ -1,6 +1,6 @@
 var player = require('voxel-player');
 var voxel = require('voxel');
-var blocks = require('./blocks');
+var gists = require('./gists');
 var executor = require('./scriptExecutor');
 var setupBlockPlacement = require('./blockPlacement');
 var setupControls = require('./controls');
@@ -10,6 +10,7 @@ var game;
 
 module.exports = function() {
   var client = createClient('http://localhost:8080');
+  loadBlocksWithScripts();
 
   client.socket.on('noMoreChunks', function() {
     console.log('noMoreChunks')
@@ -30,18 +31,19 @@ module.exports = function() {
 
     setupControls(game, avatar);
     setupBlockPlacement(game, client);
-    loadBlocksWithScripts();
   });
 };
 
 var loadBlocksWithScripts = function() {
-  blocks.getBlocksWithGists().forEach(function(block) {
-    block.script.then(function(response) {
-      executor.create(block.position, response.code);
-      game.setBlock(block.position, 2);
-    }, function(error) {
-      console.log('cannot load script in ' + block.position.join('|') + ' from github');
-      game.setBlock(block.position, 2);
+  gists.getBlocksWithGists().then(function(gists) {
+    gists.forEach(function(block) {
+      block.script.then(function(response) {
+        executor.create(block.position, response.code);
+        game.setBlock(block.position, 2);
+      }, function(error) {
+        console.log('cannot load script in ' + block.position.join('|') + ' from github');
+        game.setBlock(block.position, 2);
+      });
     });
   });
 };
