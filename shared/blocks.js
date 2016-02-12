@@ -1,18 +1,25 @@
-var types = require('./blockTypes');
+var blockTypes = require('./blockTypes');
+
+var blocksDict = {};
+blockTypes.forEach(function(blockType) {
+  blocksDict[blockType.name.toUpperCase()] = blockType;
+});
+
+var count = 1;
+blockTypes.forEach(function(blockType) {
+  blockType.number = count++;
+});
 
 module.exports = {
+  types: blocksDict,
   getMaterials: function() {
-    return Object.keys(types).map(function(type) {
-      return types[type].material;
+    return Object.keys(blockTypes).map(function(blockType) {
+      return blockTypes[blockType].material;
     });
   },
-  getNumber: function(blockInfo) {
-    var count = 1;
-    for(var key in types) {
-      if(types[key] === blockInfo) {
-        return count;
-      }
-      count++;
-    }
+  getToolbarItems: function() {
+    return blockTypes.filter(function(blockType) {
+      return blockType.visibleInToolbar;
+    });
   }
 };

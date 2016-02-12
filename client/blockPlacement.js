@@ -3,7 +3,7 @@ var executor = require('./scriptExecutor');
 var editCode = require('./editCode');
 var toolbar = require('toolbar');
 var blocks = require('../shared/blocks');
-var blockTypes = require('../shared/blockTypes');
+var Vue = require('vue');
 
 module.exports = function(game, client) {
   // highlight blocks when you look at them, hold <Ctrl> for block placement
@@ -26,7 +26,15 @@ module.exports = function(game, client) {
      blockPosPlace = null;
   });
 
-  var currentMaterial = blocks.getNumber(blockTypes.GRASS);
+  var toolbarItems = blocks.getToolbarItems();
+  var currentMaterial = toolbarItems[0].number;
+
+  var toolbarVM = new Vue({
+    el: '#toolbar',
+    data: {
+      items: toolbarItems
+    }
+  });
 
   var selector = toolbar();
   selector.on('select', function(item) {
@@ -77,16 +85,16 @@ module.exports = function(game, client) {
     } else {
       position = blockPosErase;
       if (position) {
-        if(game.getBlock(position) == blocks.getNumber(blockTypes.TILE)) {
+        if(game.getBlock(position) == blocks.types.TILE.number) {
           return;
         }
 
-        if(game.getBlock(position) == blocks.getNumber(blockTypes.TROLL)) {
+        if(game.getBlock(position) == blocks.types.TROLL.number) {
           alert('beware of the troll');
           return;
         }
 
-        if(game.getBlock(position) == blocks.getNumber(blockTypes.DOGE)) {
+        if(game.getBlock(position) == blocks.types.DOGE.number) {
           alert('such indestructible');
           alert('wow');
           return;
@@ -98,7 +106,7 @@ module.exports = function(game, client) {
           client.socket.emit('set', position, 0);
         } else {
           editCode(position).then(function() {
-            var codeBlockNumber = blocks.getNumber(blockTypes.CODE);
+            var codeBlockNumber = blocks.types.CODE.number;
             game.setBlock(position, codeBlockNumber);
             client.socket.emit('set', position, codeBlockNumber);
           });
