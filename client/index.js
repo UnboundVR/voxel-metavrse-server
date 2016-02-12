@@ -10,10 +10,8 @@ var game;
 
 module.exports = function() {
   var client = createClient('http://localhost:8080');
-  loadBlocksWithScripts();
 
   client.socket.on('noMoreChunks', function() {
-    console.log('noMoreChunks')
     game = client.game;
     window.game = game;
     var container = document.getElementById('container');
@@ -26,17 +24,18 @@ module.exports = function() {
     var createPlayer = player(game);
     var avatar = createPlayer('assets/avatars/player.png');
     avatar.possess();
-    var settings = game.settings.avatarInitialPosition
-    avatar.position.set(settings[0],settings[1],settings[2])
+    var settings = game.settings.avatarInitialPosition;
+    avatar.position.set(settings[0],settings[1],settings[2]);
 
+    initGists(client);
     setupControls(game, avatar);
     setupBlockPlacement(game, client);
   });
 };
 
-var loadBlocksWithScripts = function() {
-  gists.getBlocksWithGists().then(function(gists) {
-    gists.forEach(function(block) {
+var initGists = function(client) {
+  gists.init(client.socket).then(function() {
+    gists.getBlocksWithGists().forEach(function(block) {
       block.script.then(function(response) {
         executor.create(block.position, response.code);
         game.setBlock(block.position, 2);

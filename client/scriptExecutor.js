@@ -8,6 +8,6 @@ module.exports = {
     eval(code);
   },
   remove: function(position) {
-
+    console.log('removing code at ' + position);
   }
 };

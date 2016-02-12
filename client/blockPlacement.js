@@ -4,6 +4,7 @@ var editCode = require('./editCode');
 var toolbar = require('toolbar');
 var blocks = require('../shared/blocks');
 var Vue = require('vue');
+var gists = require('./gists');
 
 module.exports = function(game, client) {
   // highlight blocks when you look at them, hold <Ctrl> for block placement
@@ -101,6 +102,7 @@ module.exports = function(game, client) {
         }
 
         if(state.fire === 1) {
+          gists.removeGist(position);
           executor.remove(position);
           game.setBlock(position, 0);
           client.socket.emit('set', position, 0);

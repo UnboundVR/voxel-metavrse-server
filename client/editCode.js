@@ -25,7 +25,7 @@ var openNew = function(position) {
 };
 
 var openExisting = function(position, desc, initialCode) {
-  var title = 'Editing the code of the voxel at ' + position + ' (' + desc + ')';
+  var title = 'Editing the code of the voxel at ' + position.join('|') + ' (' + desc + ')';
 
   return codemirror.open(title, initialCode).then(function(value) {
     var githubId = auth.getGithubId();

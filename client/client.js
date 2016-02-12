@@ -4,7 +4,6 @@ var skin = require('minecraft-skin');
 var player = require('voxel-player');
 var io = require('socket.io-client');
 var engine = require('voxel-engine');
-var gists = require('./gists');
 
 module.exports = Client;
 
@@ -28,7 +27,6 @@ function Client(server) {
 Client.prototype.connect = function(server) {
   var self = this;
   var socket = io.connect(server);
-  gists.init(socket);
   socket.on('disconnect', function() {
     self.connected = false;
   });
@@ -41,7 +39,6 @@ Client.prototype.bindEvents = function(socket) {
   this.connected = true;
 
   socket.on('id', function(id) {
-    console.log('got id', id);
     self.playerID = id;
   });
 
