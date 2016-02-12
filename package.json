@@ -23,6 +23,7 @@
     "browserify": "^13.0.0"
   },
   "scripts": {
-    "start": "beefy init.js:bundle.js 1337"
+    "client": "beefy client-init.js:bundle.js 1337",
+    "server": "node server-init"
   }
 }

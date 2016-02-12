@@ -1,4 +1,4 @@
-var rle = require('../rle');
+var rle = require('../shared/rle');
 var highlight = require('voxel-highlight');
 var skin = require('minecraft-skin');
 var player = require('voxel-player');

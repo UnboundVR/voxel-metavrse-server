@@ -3,7 +3,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-require('./code/server')(io);
+require('./server/')(io);
 
 var port = 8080;
 http.listen(port, function() {

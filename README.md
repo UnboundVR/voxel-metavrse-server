@@ -14,13 +14,13 @@ npm install
 
 Then run the server:
 ```
-node server-init
+npm run server
 ```
 
 Then run the client:
 
 ```
-npm start
+npm run client
 ```
 
 Then point your browser to [http://localhost:1337](http://localhost:1337) and have fun!

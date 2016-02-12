@@ -1,7 +1,7 @@
 var engine = require('voxel-engine');
 var texturePath = 'assets/textures/';
 var voxel = require('voxel');
-var rle = require('../rle');
+var rle = require('../shared/rle');
 
 module.exports = function(io) {
   var settings = {

@@ -1,3 +1,0 @@
-require('./localStorageForObjects');
-
-require('./code/')();
