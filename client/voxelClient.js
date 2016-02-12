@@ -99,9 +99,9 @@ Client.prototype.createGame = function(settings) {
   setTimeout(function() {
     socket.on('update', function(updates) {
       Object.keys(updates.positions).map(function(player) {
-        var update = updates.positions[player]
-        if (player === self.playerID) return self.onServerUpdate(update) // local player
-        self.updatePlayerPosition(player, update) // other players
+        var update = updates.positions[player];
+        if (player === self.playerID) return self.onServerUpdate(update); // local player
+        self.updatePlayerPosition(player, update); // other players
       })
     })
   }, 1000)
