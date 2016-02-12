@@ -35,6 +35,11 @@ module.exports = function() {
 };
 
 var loadBlocksWithScripts = function() {
+  if(!game) {
+    alert('race condition issue: see trello');
+    return;
+  }
+
   gists.getBlocksWithGists().then(function(gists) {
     gists.forEach(function(block) {
       block.script.then(function(response) {
