@@ -18,8 +18,8 @@
       <div id="scripting-content"></div>
     </div>
     <div id="crosshair"><img src="assets/img/crosshair.png"/></div>
-    <nav class="bar-tab">
-      <ul id="toolbar" class="tab-inner">
+    <nav id="toolbar" class="bar-tab">
+      <ul class="tab-inner">
         <li v-for="item in items" class="tab-item" v-bind:class="{'active': $index === 0}">
           <img class="tab-icon" v-bind:src="'assets/textures/' + item.icon + '.png'">
           <div class="tab-label" data-id="{{item.number}}">{{item.name}} ({{$index+1}})</div>

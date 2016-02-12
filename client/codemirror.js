@@ -2,10 +2,12 @@ var crosshair = document.getElementById('crosshair');
 var container = document.getElementById('scripting');
 var content = document.getElementById('scripting-content');
 var header = document.getElementById('scripting-header');
+var toolbar = document.getElementById('toolbar');
 
 var closeCodeWindow = function() {
   container.style.display = 'none';
   crosshair.style.display = 'block';
+  toolbar.style.display = 'block';
   content.innerHTML = '';
   header.innerHTML = '';
 };
@@ -13,6 +15,7 @@ var closeCodeWindow = function() {
 var openCodeWindow = function(codeWindowTitle, initialCode) {
   container.style.display = 'block';
   crosshair.style.display = 'none';
+  toolbar.style.display = 'none';
 
   var title = document.createElement('span');
   title.innerHTML = codeWindowTitle;
