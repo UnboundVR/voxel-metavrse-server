@@ -2,7 +2,7 @@ var gists = {};
 
 module.exports = function(io) {
   io.on('connection', function(socket) { // TODO use different namespace in socket.io
-    socket.on('gimmeGists', function(callback) {
+    socket.on('requestGists', function(callback) {
       callback(gists);
     });
 

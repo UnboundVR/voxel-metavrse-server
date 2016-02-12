@@ -8,7 +8,7 @@ module.exports = {
     var self = this;
     return new Promise(function(resolve, reject) {
       self.socket = socket;
-      socket.emit('gimmeGists', function(response) {
+      socket.emit('requestGists', function(response) {
         gistIds = response;
         resolve();
       });

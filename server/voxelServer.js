@@ -67,7 +67,7 @@ module.exports = function(io) {
 
     socket.emit('settings', settings);
 
-    socket.on('gimmeChunk', function(chunkPosition, callback) {
+    socket.on('requestChunk', function(chunkPosition, callback) {
       var chunkId = chunkPosition.join('|');
       if(!chunkExists(chunkId)) {
         game.pendingChunks.push(chunkId);
