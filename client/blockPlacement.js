@@ -1,53 +1,13 @@
-var highlight = require('voxel-highlight');
+var highlight = require('./blockHighlight');
 var executor = require('./scriptExecutor');
 var editCode = require('./editCode');
-var toolbar = require('toolbar');
 var blocks = require('../shared/blocks');
-var Vue = require('vue');
 var gists = require('./gists');
+var toolbar = require('./blocksToolbar');
 
 module.exports = function(game, client) {
-  // highlight blocks when you look at them, hold <Ctrl> for block placement
-  var blockPosPlace, blockPosErase;
-  var hl = game.highlighter = highlight(game, { color: 0xff0000 });
-
-  hl.on('highlight', function (voxelPos) {
-    blockPosErase = voxelPos;
-  });
-
-  hl.on('remove', function (voxelPos) {
-    blockPosErase = null;
-  });
-
-  hl.on('highlight-adjacent', function (voxelPos) {
-    blockPosPlace = voxelPos;
-  });
-
-  hl.on('remove-adjacent', function (voxelPos) {
-     blockPosPlace = null;
-  });
-
-  var toolbarItems = blocks.getToolbarItems();
-  var currentMaterial = toolbarItems[0].number;
-
-  var toolbarVM = new Vue({
-    el: '#toolbar',
-    data: {
-      items: toolbarItems
-    }
-  });
-
-  var selector = toolbar();
-  selector.on('select', function(item) {
-    var tabItems = document.getElementsByClassName('tab-label');
-    for(var i = 0; i < tabItems.length; i++) {
-      var tabItem = tabItems[i];
-      if(tabItem.innerText === item) {
-        currentMaterial = parseInt(tabItem.attributes['data-id'].value);
-        break;
-      }
-    }
-  });
+  highlight.init();
+  toolbar.init();
 
   function getAdjacent(pos) {
     var adj = [];
@@ -75,46 +35,69 @@ module.exports = function(game, client) {
     return false;
   }
 
+  function placeBlock(position) {
+    game.createBlock(position, toolbar.getSelected());
+    client.socket.emit('set', position, toolbar.getSelected());
+  }
+
+  function codeBlock(position) {
+    editCode(position).then(function() {
+      var codeBlockNumber = blocks.types.CODE.number;
+      game.setBlock(position, codeBlockNumber);
+      client.socket.emit('set', position, codeBlockNumber);
+    });
+  }
+
+  function removeBlock(position) {
+    if(gists.getGistId(position)) {
+      gists.removeGist(position);
+      executor.remove(position);
+    }
+
+    game.setBlock(position, 0);
+    client.socket.emit('set', position, 0);
+  }
+
+  function canPlace(position) {
+    if(adjacentToTrollBlock(position)) {
+      alert('problem?');
+      return false;
+    }
+
+    return true;
+  }
+
+  function canEdit(position) {
+    if(game.getBlock(position) == blocks.types.TILE.number) {
+      return false;
+    }
+
+    if(game.getBlock(position) == blocks.types.TROLL.number) {
+      alert('the troll must go on');
+      return false;
+    }
+
+    if(game.getBlock(position) == blocks.types.DOGE.number) {
+      alert('such indestructible');
+      alert('wow');
+      return false;
+    }
+
+    return true;
+  }
+
   game.on('fire', function (target, state) {
-    var position = blockPosPlace;
-    if (position) {
-      if(adjacentToTrollBlock(position)) {
-        alert('problem?');
-        return;
-      }
-      game.createBlock(position, currentMaterial);
-      client.socket.emit('set', position, currentMaterial);
+    var placePosition = highlight.getPlacePosition();
+    var editPosition = highlight.getEditPosition();
+
+    if (placePosition && canPlace(placePosition)) {
+      placeBlock(placePosition);
     } else {
-      position = blockPosErase;
-      if (position) {
-        if(game.getBlock(position) == blocks.types.TILE.number) {
-          return;
-        }
-
-        if(game.getBlock(position) == blocks.types.TROLL.number) {
-          alert('beware of the troll');
-          return;
-        }
-
-        if(game.getBlock(position) == blocks.types.DOGE.number) {
-          alert('such indestructible');
-          alert('wow');
-          return;
-        }
-
+      if (editPosition && canEdit(editPosition)) {
         if(state.fire === 1) {
-          if(gists.getGistId(position)) {
-            gists.removeGist(position);
-            executor.remove(position);
-          }
-          game.setBlock(position, 0);
-          client.socket.emit('set', position, 0);
+          removeBlock(editPosition);
         } else {
-          editCode(position).then(function() {
-            var codeBlockNumber = blocks.types.CODE.number;
-            game.setBlock(position, codeBlockNumber);
-            client.socket.emit('set', position, codeBlockNumber);
-          });
+          codeBlock(editPosition);
         }
       }
     }
