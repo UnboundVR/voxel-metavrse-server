@@ -1,3 +1,5 @@
+// TODO store this in server, not client
+
 var github = require('./github');
 
 var gistIds = localStorage.getObject('gistIds');
