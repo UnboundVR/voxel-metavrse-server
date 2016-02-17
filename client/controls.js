@@ -4,6 +4,7 @@ var walk = require('voxel-walk');
 module.exports = function(game, avatar) {
   var avatarVisible;
 
+  // TODO instead of doing this, we should probably show/hide the whole object, or place the camera further away (so we can use a mirror for example)
   function setAvatarVisibility(visible) {
     avatar.playerSkin.rightArm.visible = visible;
     avatar.playerSkin.leftArm.visible = visible;
