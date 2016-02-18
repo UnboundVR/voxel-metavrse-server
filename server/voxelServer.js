@@ -20,8 +20,6 @@ module.exports = function(io) {
   };
 
   var game = engine(settings);
-
-  var clients = {};
   var chunkCache = {};
 
   loadInitialChunks().then(init); // at this point we have the first chunks generated but we overwrite them with whatever is on the storage (TODO only generate a chunk if it's not in storage)
@@ -33,29 +31,6 @@ module.exports = function(io) {
     });
 
     return Promise.all(promises);
-  }
-
-  function sendUpdate() {
-    var clientKeys = Object.keys(clients);
-    if (clientKeys.length === 0) {
-      return;
-    }
-    var update = {
-      positions:{},
-      date: new Date()
-    };
-
-    clientKeys.forEach(function(key) {
-      var player = clients[key]
-      update.positions[key] = {
-        position: player.position,
-        rotation: {
-          x: player.rotation.x,
-          y: player.rotation.y
-        }
-      }
-    });
-    io.sockets.emit('update', update);
   }
 
   function saveChunks() {
@@ -134,26 +109,8 @@ module.exports = function(io) {
 
   function init() {
     setInterval(saveChunks, 1000); // 1s
-    setInterval(sendUpdate, 1000/22); // 45ms
 
     io.on('connection', function(socket) {
-      var id = socket.id;
-
-      var player = {
-        rotation: new game.THREE.Vector3(),
-        position: new game.THREE.Vector3()
-      };
-
-      clients[id] = player;
-
-      socket.emit('id', id);
-      socket.broadcast.emit('join', id);
-
-      socket.on('disconnect', function() {
-        delete clients[id];
-        socket.broadcast.emit('leave', id);
-      });
-
       socket.emit('settings', settings);
 
       socket.on('requestChunk', function(chunkPosition, callback) {
@@ -175,19 +132,6 @@ module.exports = function(io) {
       // ready for chunks to be sent
       socket.on('created', function() {
         sendInitialChunks(socket);
-        // fires when client sends us new input state
-        socket.on('state', function(state) {
-          player.rotation.x = state.rotation.x;
-          player.rotation.y = state.rotation.y;
-          var pos = player.position;
-          var distance = pos.distanceTo(state.position);
-          if (distance > 20) {
-            var before = pos.clone();
-            pos.lerp(state.position, 0.1);
-            return;
-          }
-          pos.copy(state.position);
-        });
       });
 
       socket.on('set', function(pos, val) {

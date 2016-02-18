@@ -5,6 +5,7 @@ var io = require('socket.io')(http);
 
 module.exports = function() {
   require('./voxelServer')(io);
+  require('./playerSync')(io);
   require('./coding')(io);
 
   var port = 8080;

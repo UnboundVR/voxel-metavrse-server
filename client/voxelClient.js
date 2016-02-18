@@ -72,6 +72,7 @@ Client.prototype.createGame = function(settings) {
   settings.controlsDisabled = false;
   self.game = engine(settings);
   self.game.settings = settings;
+
   function sendState() {
     if (!self.connected) {
       return;
@@ -93,7 +94,7 @@ Client.prototype.createGame = function(settings) {
       if (state[control] > 0) interacting = true
     })
     if (interacting) sendState()
-  })
+  });
 
   // setTimeout is because three.js seems to throw errors if you add stuff too soon
   setTimeout(function() {
