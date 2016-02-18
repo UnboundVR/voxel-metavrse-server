@@ -11,17 +11,11 @@ function Client(server) {
   if(!(this instanceof Client)) {
     return new Client(server);
   }
-  this.playerID;
-  this.lastProcessedSeq = 0;
-  this.localInputs = [];
+
   this.connected = false;
-  this.currentMaterial = 1;
   this.lerpPercent = 0.1;
-  this.server = server;
   this.others = {};
   this.connect(server);
-  this.game;
-  window.others = this.others;
 }
 
 Client.prototype.connect = function(server) {
@@ -60,7 +54,6 @@ Client.prototype.bindEvents = function(socket) {
     });
   });
 
-  // fires when server sends us voxel edits
   socket.on('set', function(pos, val) {
     self.game.setBlock(pos, val);
   });
@@ -89,11 +82,16 @@ Client.prototype.createGame = function(settings) {
   }
 
   self.game.controls.on('data', function(state) {
-    var interacting = false
+    var interacting = false;
     Object.keys(state).map(function(control) {
-      if (state[control] > 0) interacting = true
-    })
-    if (interacting) sendState()
+      if (state[control] > 0) {
+        interacting = true;
+      }
+    });
+    
+    if (interacting) {
+      sendState();
+    }
   });
 
   // setTimeout is because three.js seems to throw errors if you add stuff too soon
@@ -101,31 +99,28 @@ Client.prototype.createGame = function(settings) {
     socket.on('update', function(updates) {
       Object.keys(updates.positions).map(function(player) {
         var update = updates.positions[player];
-        if (player === self.playerID) return self.onServerUpdate(update); // local player
+        if (player === self.playerID) {
+          return self.onServerUpdate(update); // local player
+        }
         self.updatePlayerPosition(player, update); // other players
       })
     })
   }, 1000)
 
   socket.on('leave', function(id) {
-    if (!self.others[id]) return
-    self.game.scene.remove(self.others[id].mesh)
-    delete self.others[id]
-  })
+    if (!self.others[id]) {
+      return;
+    }
+    self.game.scene.remove(self.others[id].mesh);
+    delete self.others[id];
+  });
 
-  return self.game
+  return self.game;
 };
 
 Client.prototype.onServerUpdate = function(update) {
-  // todo use server sent location
+  // TODO use server sent location
 };
-
-/*Client.prototype.lerpMe = function(position) {
-  var to = new this.game.THREE.Vector3()
-  to.copy(position)
-  var from = this.game.controls.target().yaw.position
-  from.copy(from.lerp(to, this.lerpPercent))
-};*/
 
 Client.prototype.updatePlayerPosition = function(id, update) {
   var pos = update.position;
@@ -139,11 +134,11 @@ Client.prototype.updatePlayerPosition = function(id, update) {
     playerMesh.children[0].position.y = 10;
     this.game.scene.add(playerMesh);
   }
+
   var playerSkin = this.others[id];
   var playerMesh = playerSkin.mesh;
   playerMesh.position.copy(playerMesh.position.lerp(pos, this.lerpPercent));
 
-  // playerMesh.position.y += 17
   playerMesh.children[0].rotation.y = update.rotation.y + (Math.PI / 2);
   playerSkin.head.rotation.z = scale(update.rotation.x, -1.5, 1.5, -0.75, 0.75);
 };
