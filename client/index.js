@@ -5,31 +5,32 @@ var executor = require('./scriptExecutor');
 var setupBlockPlacement = require('./blockPlacement');
 var setupControls = require('./controls');
 var createClient = require('./voxelClient');
+var engineAccessor = require('./engineAccessor');
 
-var game;
+var engine;
 
 module.exports = function() {
   var client = createClient('http://localhost:8080');
 
   client.socket.on('noMoreChunks', function() {
-    game = client.game;
-    window.game = game;
+    engineAccessor.setEngine(client.game);
+    engine = engineAccessor.engine;
     var container = document.getElementById('container');
 
-    game.appendTo(container);
-    if (game.notCapable()) {
+    engine.appendTo(container);
+    if (engine.notCapable()) {
       return;
     }
 
-    var createPlayer = player(game);
+    var createPlayer = player(engine);
     var avatar = createPlayer('assets/avatars/player.png');
     avatar.possess();
-    var settings = game.settings.avatarInitialPosition;
+    var settings = engine.settings.avatarInitialPosition;
     avatar.position.set(settings[0],settings[1],settings[2]);
 
     initGists(client);
-    setupControls(game, avatar);
-    setupBlockPlacement(game, client);
+    setupControls(avatar);
+    setupBlockPlacement(client);
   });
 };
 
@@ -38,10 +39,10 @@ var initGists = function(client) {
     coding.getBlocksWithGists().forEach(function(block) {
       block.script.then(function(response) {
         executor.create(block.position, response.code);
-        game.setBlock(block.position, 2);
+        engine.setBlock(block.position, 2);
       }, function(error) {
         console.log('cannot load script in ' + block.position.join('|') + ' from github');
-        game.setBlock(block.position, 2);
+        engine.setBlock(block.position, 2);
       });
     });
   });

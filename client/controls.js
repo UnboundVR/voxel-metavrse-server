@@ -1,8 +1,11 @@
 var fly = require('voxel-fly');
 var walk = require('voxel-walk');
+var engineAccessor = require('./engineAccessor');
 
-module.exports = function(game, avatar) {
+module.exports = function(avatar) {
   var avatarVisible;
+
+  var engine = engineAccessor.engine;
 
   // TODO instead of doing this, we should probably show/hide the whole object, or place the camera further away (so we can use a mirror for example)
   function setAvatarVisibility(visible) {
@@ -17,9 +20,9 @@ module.exports = function(game, avatar) {
   }
 
 
-  var makeFly = fly(game);
-  var target = game.controls.target();
-  game.flyer = makeFly(target);
+  var makeFly = fly(engine);
+  var target = engine.controls.target();
+  engine.flyer = makeFly(target);
   setAvatarVisibility(false);
 
   // toggle between first and third person modes
@@ -30,7 +33,7 @@ module.exports = function(game, avatar) {
     }
   });
 
-  game.on('tick', function() {
+  engine.on('tick', function() {
     walk.render(target.playerSkin);
     var vx = Math.abs(target.velocity.x);
     var vz = Math.abs(target.velocity.z);

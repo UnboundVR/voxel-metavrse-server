@@ -4,8 +4,11 @@ var editCode = require('./editCode');
 var blocks = require('../shared/blocks');
 var coding = require('./coding');
 var toolbar = require('./blocksToolbar');
+var engineAccessor = require('./engineAccessor');
 
-module.exports = function(game, client) {
+module.exports = function(client) {
+  var engine = engineAccessor.engine;
+
   highlight.init();
   toolbar.init();
 
@@ -27,7 +30,7 @@ module.exports = function(game, client) {
 
     for(var i = 0; i < adj.length; i++) {
       var pos = adj[i];
-      if(game.getBlock(pos) == blocks.types.TROLL.number) {
+      if(engine.getBlock(pos) == blocks.types.TROLL.number) {
         return true;
       }
     }
@@ -36,14 +39,14 @@ module.exports = function(game, client) {
   }
 
   function placeBlock(position) {
-    game.createBlock(position, toolbar.getSelected());
+    engine.createBlock(position, toolbar.getSelected());
     client.socket.emit('set', position, toolbar.getSelected());
   }
 
   function codeBlock(position) {
     editCode(position).then(function() {
       var codeBlockNumber = blocks.types.CODE.number;
-      game.setBlock(position, codeBlockNumber);
+      engine.setBlock(position, codeBlockNumber);
       client.socket.emit('set', position, codeBlockNumber);
     });
   }
@@ -54,7 +57,7 @@ module.exports = function(game, client) {
       executor.remove(position);
     }
 
-    game.setBlock(position, 0);
+    engine.setBlock(position, 0);
     client.socket.emit('set', position, 0);
   }
 
@@ -68,16 +71,16 @@ module.exports = function(game, client) {
   }
 
   function canEdit(position) {
-    if(game.getBlock(position) == blocks.types.TILE.number) {
+    if(engine.getBlock(position) == blocks.types.TILE.number) {
       return false;
     }
 
-    if(game.getBlock(position) == blocks.types.TROLL.number) {
+    if(engine.getBlock(position) == blocks.types.TROLL.number) {
       alert('the troll must go on');
       return false;
     }
 
-    if(game.getBlock(position) == blocks.types.DOGE.number) {
+    if(engine.getBlock(position) == blocks.types.DOGE.number) {
       alert('such indestructible');
       alert('wow');
       return false;
@@ -86,7 +89,7 @@ module.exports = function(game, client) {
     return true;
   }
 
-  game.on('fire', function (target, state) {
+  engine.on('fire', function (target, state) {
     var placePosition = highlight.getPlacePosition();
     var editPosition = highlight.getEditPosition();
 
