@@ -21,5 +21,8 @@ module.exports = {
     return blockTypes.filter(function(blockType) {
       return blockType.visibleInToolbar;
     });
+  },
+  getBlockInfo: function(number) {
+    return blockTypes[number + 1];
   }
 };
