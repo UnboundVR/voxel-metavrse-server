@@ -4,6 +4,7 @@ var voxel = require('voxel');
 var rle = require('../shared/rle');
 var blocks = require('../shared/blocks');
 var storage = require('./storage');
+var Promise = require('promise');
 
 module.exports = function(io) {
   var settings = {
@@ -23,15 +24,22 @@ module.exports = function(io) {
   var clients = {};
   var chunkCache = {};
 
-  loadInitialChunks(); // at this point we have the first chunks generated but we overwrite them with whatever is on the storage (TODO only generate a chunk if it's not in storage)
-  init();
+  loadInitialChunks().then(init); // at this point we have the first chunks generated but we overwrite them with whatever is on the storage (TODO only generate a chunk if it's not in storage)
 
   function loadInitialChunks() {
+    var promises = [];
     Object.keys(game.voxels.chunks).forEach(function(chunkId) {
-      var chunk = getChunkFromStorage(chunkId);
-      if(chunk) {
-        game.voxels.chunks[chunkId] = chunk;
-      }
+      promises.push(loadChunkFromStorage(chunkId));
+    });
+
+    return Promise.all(promises).then(function(chunks) {
+      chunks.forEach(function(chunk) {
+        if(chunk) {
+          console.log(chunk.chunkId + ' unfreezed');
+        } else {
+          console.log('undefined chunk from storage');
+        }
+      });
     });
   }
 
@@ -63,7 +71,7 @@ module.exports = function(io) {
       var chunk = getChunk(chunkId);
       if(chunk.dirty) {
         game.voxels.chunks[chunkId].dirty = false;
-        storage.saveChunk(chunkId, chunk);
+        storage.saveChunk(chunk);
       }
     });
   }
@@ -98,30 +106,42 @@ module.exports = function(io) {
       position: chunk.position,
       dims: chunk.dims,
       dirty: chunk.dirty,
-      voxels: encoded
+      voxels: encoded,
+      chunkId: chunkId
     };
   }
 
-  function getChunkFromStorage(chunkId) {
-    var chunk = storage.loadChunk(chunkId);
-    if(chunk) {
-      chunk.voxels = rle.decode(chunk.voxels);
-      game.chunks[chunkId] = chunk;
-      return chunk;
-    }
+  function loadChunkFromStorage(chunkId) {
+    return storage.loadChunk(chunkId).then(function(chunk) {
+      if(chunk) {
+        chunk.voxels = rle.decode(chunk.voxels);
+        game.voxels.chunks[chunkId] = chunk;
+        return chunk;
+      }
+    });
+  }
+
+  function generateChunk(chunkId) {
+    game.pendingChunks.push(chunkId);
+    game.loadPendingChunks(game.pendingChunks.length);
   }
 
   function ensureChunkExists(chunkId) {
     if(!chunkExists(chunkId)) {
-      var chunk = getChunkFromStorage(chunkId);
-      if(!chunk) {
-        game.pendingChunks.push(chunkId);
-        game.loadPendingChunks(game.pendingChunks.length);
-      }
+      return loadChunkFromStorage(chunkId).then(function(chunk) {
+        if(!chunk) {
+          generateChunk(chunkId);
+        }
+      });
+    } else {
+      return new Promise(function(resolve) {
+        resolve();
+      });
     }
   }
 
   function init() {
+    console.log('init')
     setInterval(saveChunks, 1000); // 1s
     setInterval(sendUpdate, 1000/22); // 45ms
 
@@ -148,8 +168,9 @@ module.exports = function(io) {
       socket.on('requestChunk', function(chunkPosition, callback) {
         var chunkId = chunkPosition.join('|');
 
-        ensureChunkExists(chunkId);
-        callback(getChunk(chunkId));
+        ensureChunkExists(chunkId).then(function() {
+          callback(getChunk(chunkId));
+        });
       });
 
       function sendInitialChunks(socket) {
