@@ -33,6 +33,6 @@ Then point your browser to [http://localhost:1337](http://localhost:1337) and ha
 - `<CONTROL> + click` => place block.
 - `Right click` => edit the code of a block.
 
-## license
+## License
 
 BSD
