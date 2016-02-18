@@ -32,15 +32,7 @@ module.exports = function(io) {
       promises.push(loadChunkFromStorage(chunkId));
     });
 
-    return Promise.all(promises).then(function(chunks) {
-      chunks.forEach(function(chunk) {
-        if(chunk) {
-          console.log(chunk.chunkId + ' unfreezed');
-        } else {
-          console.log('undefined chunk from storage');
-        }
-      });
-    });
+    return Promise.all(promises);
   }
 
   function sendUpdate() {
@@ -141,7 +133,6 @@ module.exports = function(io) {
   }
 
   function init() {
-    console.log('init')
     setInterval(saveChunks, 1000); // 1s
     setInterval(sendUpdate, 1000/22); // 45ms
 
