@@ -67,7 +67,14 @@ module.exports = function(client) {
       return false;
     }
 
-    return true;
+    var adjPositions = getAdjacent(position);
+    var canPlace = true;
+
+    adjPositions.forEach(function(adjPos) {
+      canPlace = canPlace && executor.confirm(adjPos, 'PlaceAdjacent'); // TODO use constants
+    });
+
+    return canPlace;
   }
 
   function canEdit(position) {
@@ -86,7 +93,7 @@ module.exports = function(client) {
       return false;
     }
 
-    return true;
+    return executor.confirm(position, 'Edit'); // TODO use constants
   }
 
   engine.on('fire', function (target, state) {

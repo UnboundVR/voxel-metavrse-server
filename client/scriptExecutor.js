@@ -5,8 +5,8 @@ var EventEmitter = require('events');
 var util = require('util');
 
 var blockObjs = {};
-var blockEvents = [events.list.HOVER, events.list.LEAVE];
-blockEvents.forEach(function(eventName) {
+var supportedEvents = [events.list.HOVER, events.list.LEAVE];
+supportedEvents.forEach(function(eventName) {
   events.subscribe(eventName, function(payload) {
     Object.keys(blockObjs).forEach(function(key) {
       var block = blockObjs[key];
@@ -33,6 +33,18 @@ var remove = function(position) {
   delete blockObjs[position];
 };
 
+var confirm = function(position, action) {
+  var obj = blockObjs[position];
+  if(!obj) {
+    return true;
+  }
+  
+  var confirmFuncName = 'can' + action;
+  var confirmFunc = obj[confirmFuncName];
+
+  return !confirmFunc || confirmFunc();
+};
+
 function buildBlockObject(position) {
   var engine = engineAccessor.engine;
   var typeNumber = engine.getBlock(position);
@@ -49,7 +61,7 @@ function buildBlockObject(position) {
 }
 
 function subscribeToEvents(obj) {
-  blockEvents.forEach(function(eventName) {
+  supportedEvents.forEach(function(eventName) {
     var handlerName = 'on' + eventName;
     var handler = obj[handlerName];
     if(handler) {
@@ -63,7 +75,7 @@ function subscribeToEvents(obj) {
 }
 
 function unsubscribeToEvents(obj) {
-  blockEvents.forEach(function(eventName) {
+  supportedEvents.forEach(function(eventName) {
     obj.removeAllListeners(eventName);
   });
 }
@@ -71,5 +83,6 @@ function unsubscribeToEvents(obj) {
 module.exports = {
   create: create,
   update: update,
-  remove: remove
+  remove: remove,
+  confirm: confirm
 };
