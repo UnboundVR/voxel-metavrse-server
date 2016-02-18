@@ -1,9 +1,9 @@
 var highlight = require('./blockHighlight');
-var executor = require('./scriptExecutor');
-var editCode = require('./editCode');
+var executor = require('./coding/scriptExecutor');
+var editCode = require('./coding/editCode');
 var blocks = require('../shared/blocks');
-var coding = require('./coding');
-var toolbar = require('./blocksToolbar');
+var coding = require('./coding/coding');
+var toolbar = require('./toolbar');
 var engineAccessor = require('./engineAccessor');
 var consts = require('../shared/constants');
 

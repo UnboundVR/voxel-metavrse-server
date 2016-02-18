@@ -1,9 +1,9 @@
-var engineAccessor = require('./engineAccessor');
-var blocks = require('../shared/blocks');
-var events = require('./events');
+var engineAccessor = require('../engineAccessor');
+var blocks = require('../../shared/blocks');
+var events = require('../events');
 var EventEmitter = require('events');
 var util = require('util');
-var consts = require('../shared/constants');
+var consts = require('../../shared/constants');
 
 var blockObjs = {};
 var supportedEvents = [consts.events.HOVER, consts.events.LEAVE];
@@ -31,8 +31,10 @@ var update = function(position, code) {
 
 var remove = function(position) {
   var obj = blockObjs[position];
-  unsubscribeToEvents(obj);
-  delete blockObjs[position];
+  if(obj) {
+    unsubscribeToEvents(obj);
+    delete blockObjs[position];
+  }
 };
 
 var confirm = function(position, action) {

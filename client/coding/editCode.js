@@ -1,7 +1,7 @@
 var codemirror = require('./codemirror');
 var github = require('./github');
 var coding = require('./coding');
-var auth = require('./auth');
+var auth = require('../auth');
 var executor = require('./scriptExecutor');
 
 var openNew = function(position) {
