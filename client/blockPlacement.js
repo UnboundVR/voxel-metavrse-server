@@ -5,6 +5,7 @@ var blocks = require('../shared/blocks');
 var coding = require('./coding');
 var toolbar = require('./blocksToolbar');
 var engineAccessor = require('./engineAccessor');
+var consts = require('../shared/constants');
 
 module.exports = function(client) {
   var engine = engineAccessor.engine;
@@ -71,7 +72,7 @@ module.exports = function(client) {
     var canPlace = true;
 
     adjPositions.forEach(function(adjPos) {
-      canPlace = canPlace && executor.confirm(adjPos, 'PlaceAdjacent'); // TODO use constants
+      canPlace = canPlace && executor.confirm(adjPos, consts.confirmableFunctions.PLACE_ADJACENT);
     });
 
     return canPlace;
@@ -93,7 +94,7 @@ module.exports = function(client) {
       return false;
     }
 
-    return executor.confirm(position, 'Edit'); // TODO use constants
+    return executor.confirm(position, consts.confirmableFunctions.EDIT);
   }
 
   engine.on('fire', function (target, state) {

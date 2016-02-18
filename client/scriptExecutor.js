@@ -3,11 +3,13 @@ var blocks = require('../shared/blocks');
 var events = require('./events');
 var EventEmitter = require('events');
 var util = require('util');
+var consts = require('../shared/constants');
 
 var blockObjs = {};
-var supportedEvents = [events.list.HOVER, events.list.LEAVE];
+var supportedEvents = [consts.events.HOVER, consts.events.LEAVE];
+
 supportedEvents.forEach(function(eventName) {
-  events.subscribe(eventName, function(payload) {
+  events.on(eventName, function(payload) {
     Object.keys(blockObjs).forEach(function(key) {
       var block = blockObjs[key];
       block.emit(eventName, payload);
@@ -38,7 +40,7 @@ var confirm = function(position, action) {
   if(!obj) {
     return true;
   }
-  
+
   var confirmFuncName = 'can' + action;
   var confirmFunc = obj[confirmFuncName];
 
