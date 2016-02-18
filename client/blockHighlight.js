@@ -7,7 +7,9 @@ var blockPosPlace, blockPosEdit;
 module.exports = {
   init: function() {
     var engine = engineAccessor.engine;
-    var hl = engine.highlighter = highlight(engine, { color: 0xff0000 });
+    var hl = engine.highlighter = highlight(engine, {
+      color: 0xff0000
+    });
 
     hl.on('highlight', function (voxelPos) {
       blockPosEdit = voxelPos;
