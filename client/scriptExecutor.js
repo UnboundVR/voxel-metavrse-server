@@ -2,9 +2,18 @@ var engineAccessor = require('./engineAccessor');
 var blocks = require('../shared/blocks');
 var events = require('./events');
 var EventEmitter = require('events');
+var util = require('util');
 
 var blockObjs = {};
-var blockSpecificEvents = [events.list.HOVER, events.list.LEAVE];
+var blockEvents = [events.list.HOVER, events.list.LEAVE];
+blockEvents.forEach(function(eventName) {
+  events.subscribe(eventName, function(payload) {
+    Object.keys(blockObjs).forEach(function(key) {
+      var block = blockObjs[key];
+      block.emit(eventName, payload);
+    });
+  });
+});
 
 var create = function(position, code) {
   var obj = buildBlockObject(position);
@@ -29,33 +38,34 @@ function buildBlockObject(position) {
   var typeNumber = engine.getBlock(position);
   var typeInfo = blocks.getBlockInfo(typeNumber);
 
-  var obj = {
-    position: position,
-    blockType: typeInfo
-  };
+  var Block = function(position, blockType) {
+    this.position = position;
+    this.blockType = blockType;
+  }
+  util.inherits(Block, EventEmitter);
 
-  obj.prototype = EventEmitter;
-
+  var obj = new Block(position, typeInfo);
   return obj;
 }
 
-function forAllMatchingEvents(obj, callback) {
-  Object.keys(events.list).forEach(function(key) {
-    var eventName = events.list[key];
+function subscribeToEvents(obj) {
+  blockEvents.forEach(function(eventName) {
     var handlerName = 'on' + eventName;
     var handler = obj[handlerName];
     if(handler) {
-      callback(eventName, handler);
+      obj.on(eventName, function(payload) {
+        if(!payload.position || obj.position.join('|') == payload.position.join('|')) {
+          handler.bind(obj)(payload);
+        }
+      });
     }
   });
 }
 
-function subscribeToEvents(obj) {
-  forAllMatchingEvents(obj, events.subscribe);
-}
-
 function unsubscribeToEvents(obj) {
-  forAllMatchingEvents(obj, events.unsubscribe);
+  blockEvents.forEach(function(eventName) {
+    obj.removeAllListeners(eventName);
+  });
 }
 
 module.exports = {

@@ -11,12 +11,12 @@ module.exports = {
 
     hl.on('highlight', function (voxelPos) {
       blockPosEdit = voxelPos;
-      events.publish(events.list.HOVER, voxelPos);
+      events.publish(events.list.HOVER, {position: voxelPos});
     });
 
     hl.on('remove', function (voxelPos) {
       blockPosEdit = null;
-      events.publish(events.list.LEAVE, voxelPos);
+      events.publish(events.list.LEAVE, {position: voxelPos});
     });
 
     hl.on('highlight-adjacent', function (voxelPos) {
