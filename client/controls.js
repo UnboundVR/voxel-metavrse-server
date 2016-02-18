@@ -19,7 +19,6 @@ module.exports = function(avatar) {
     avatarVisible = visible;
   }
 
-
   var makeFly = fly(engine);
   var target = engine.controls.target();
   engine.flyer = makeFly(target);
