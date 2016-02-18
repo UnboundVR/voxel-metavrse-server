@@ -5,7 +5,7 @@ var io = require('socket.io')(http);
 
 module.exports = function() {
   require('./voxelServer')(io);
-  require('./gists')(io);
+  require('./coding')(io);
 
   var port = 8080;
   http.listen(port, function() {

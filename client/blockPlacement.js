@@ -2,7 +2,7 @@ var highlight = require('./blockHighlight');
 var executor = require('./scriptExecutor');
 var editCode = require('./editCode');
 var blocks = require('../shared/blocks');
-var gists = require('./gists');
+var coding = require('./coding');
 var toolbar = require('./blocksToolbar');
 
 module.exports = function(game, client) {
@@ -49,8 +49,8 @@ module.exports = function(game, client) {
   }
 
   function removeBlock(position) {
-    if(gists.getGistId(position)) {
-      gists.removeGist(position);
+    if(coding.getGistId(position)) {
+      coding.removeGist(position);
       executor.remove(position);
     }
 

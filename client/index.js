@@ -1,6 +1,6 @@
 var player = require('voxel-player');
 var voxel = require('voxel');
-var gists = require('./gists');
+var coding = require('./coding');
 var executor = require('./scriptExecutor');
 var setupBlockPlacement = require('./blockPlacement');
 var setupControls = require('./controls');
@@ -34,8 +34,8 @@ module.exports = function() {
 };
 
 var initGists = function(client) {
-  gists.init(client.socket).then(function() {
-    gists.getBlocksWithGists().forEach(function(block) {
+  coding.init(client.socket).then(function() {
+    coding.getBlocksWithGists().forEach(function(block) {
       block.script.then(function(response) {
         executor.create(block.position, response.code);
         game.setBlock(block.position, 2);
