@@ -19,7 +19,6 @@ function ensureDirectoryExists() {
 module.exports = {
   saveChunk: function(chunk) {
     var chunkId = chunk.chunkId;
-    console.log('saving ' + chunkId)
     return new Promise(function(resolve, reject) {
       ensureDirectoryExists().then(function() {
         fs.writeFile(getPath(chunkId), JSON.stringify(chunk), function(err) {
@@ -33,7 +32,6 @@ module.exports = {
     });
   },
   loadChunk: function(chunkId) {
-    console.log('loading ' + chunkId);
     return new Promise(function(resolve, reject) {
       fs.readFile(getPath(chunkId), function(err, data) {
         if(err) {
