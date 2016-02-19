@@ -3,7 +3,6 @@
 var watchify = require('watchify');
 var browserify = require('browserify');
 var strictify = require('strictify');
-var stringify = require('stringify');
 
 var gulp = require('gulp');
 var source = require('vinyl-source-stream');
@@ -22,14 +21,6 @@ var customOpts = {
 };
 var opts = assign({}, watchify.args, customOpts);
 var b = browserify(opts);
-
-b.transform(stringify({
-  extensions: ['.html', '.css'],
-  minify: true,
-  minifier: {
-    extensions: ['.html', '.css'],
-  }
-}));
 
 b.transform(strictify);
 b.on('log', gutil.log);

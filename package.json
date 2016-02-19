@@ -29,7 +29,6 @@
     "gulp": "^3.9.1",
     "lodash.assign": "^4.0.3",
     "strictify": "^0.2.0",
-    "stringify": "^4.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0"
