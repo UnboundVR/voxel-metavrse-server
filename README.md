@@ -16,7 +16,6 @@ You should also create a .env file with the following fields:
 ```
 PORT = <the port you'd like to run the server>
 GITHUB_SECRET = <the github secret of your Github app, for authentication> 
-
 ```
 
 *Note:* Currently the Github client_id is hardcoded in the constants file, but that will be fixed soon :)
