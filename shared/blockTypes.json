@@ -50,5 +50,11 @@
     "material": "doge",
     "icon": "doge",
     "visibleInToolbar": true
+  },
+  {
+    "name": "Glass",
+    "material": "glass",
+    "icon": "glass",
+    "visibleInToolbar": true
   }
 ]
