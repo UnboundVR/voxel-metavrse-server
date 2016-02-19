@@ -15,8 +15,8 @@ npm install
 You should also create a .env file with the following fields:
 ```
 PORT = <the port you'd like to run the server>
-GITHUB_CLIENT_ID = <the client_id of your Github app>
-GITHUB_SECRET = <the client_secret of your Github app>
+GITHUB_CLIENT_ID = <the client_id of your Github OAuth app>
+GITHUB_SECRET = <the client_secret of your Github OAuth app>
 ```
 
 Then run the gulp command to start watchify:
