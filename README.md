@@ -1,6 +1,8 @@
 # Programmable voxel-based sandbox
 
-Learn more at http://metavrse.io. Using https://github.com/maxogden/voxel-engine (awesome stuff!).
+Build your own 3D space in the web with Minecraft-like simplicity and zero deployment efforts.
+
+Using https://github.com/maxogden/voxel-engine (awesome stuff!).
 
 ## Get it running on your machine
 
