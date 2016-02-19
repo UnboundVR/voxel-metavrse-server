@@ -12,6 +12,15 @@ The first time you set up, you should install the required npm packages:
 npm install
 ```
 
+You should also create a .env file with the following fields:
+```
+PORT = <the port you'd like to run the server>
+GITHUB_SECRET = <the github secret of your Github app, for authentication> 
+
+```
+
+*Note:* Currently the Github client_id is hardcoded in the constants file, but that will be fixed soon :)
+
 Then run the gulp command to start watchify:
 ```
 gulp
@@ -23,7 +32,7 @@ Then run the server:
 npm start
 ```
 
-Then point your browser to [http://localhost:1337](http://localhost:1337) and have fun!
+Then point your browser to `http://localhost:<the port you chose above>` and have fun!
 
 ## Controls
 - When you start, click on the page to lock cursor. Press `<ESC>` to unlock cursor.
