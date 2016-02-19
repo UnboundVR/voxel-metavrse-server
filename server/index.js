@@ -7,6 +7,7 @@ module.exports = function() {
   require('./voxelServer')(io);
   require('./playerSync')(io);
   require('./coding')(io);
+  require('./auth')(app);
 
   var port = 8080;
   http.listen(port, function() {

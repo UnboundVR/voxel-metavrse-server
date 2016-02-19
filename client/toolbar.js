@@ -7,7 +7,7 @@ var currentMaterial = toolbarItems[0].number;
 
 module.exports = {
   init: function() {
-    var toolbarVM = new Vue({
+    var vm = new Vue({
       el: '#toolbar',
       data: {
         items: toolbarItems

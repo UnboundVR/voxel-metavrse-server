@@ -1,7 +1,7 @@
 // TODO move the whole github interaction to server?
+var consts = require('../../shared/constants');
 
 var SINGLE_FILENAME = 'single_file';
-var API_URL = 'https://api.github.com';
 
 module.exports = {
   createGist: function(desc, content) {
@@ -14,7 +14,7 @@ module.exports = {
       content: content
     };
 
-    var request = new Request(API_URL + '/gists', {
+    var request = new Request(constants.github.API_URL + '/gists', {
     	method: 'POST',
       body: JSON.stringify(body)
     });
@@ -24,7 +24,7 @@ module.exports = {
     });
   },
   getGist: function(id) {
-    var request = new Request(API_URL + '/gists/' + id, {
+    var request = new Request(constants.github.API_URL + '/gists/' + id, {
     	method: 'GET'
     });
 
@@ -46,7 +46,7 @@ module.exports = {
       content: code
     };
 
-    var request = new Request(API_URL + '/gists/' + id, {
+    var request = new Request(constants.github.API_URL + '/gists/' + id, {
     	method: 'PATCH',
       body: JSON.stringify(body)
     });

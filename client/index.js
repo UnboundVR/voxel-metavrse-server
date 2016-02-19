@@ -6,11 +6,14 @@ var setupBlockPlacement = require('./blockPlacement');
 var setupControls = require('./controls');
 var createClient = require('./voxelClient');
 var engineAccessor = require('./engineAccessor');
+var auth = require('./auth');
+var consts = require('../shared/constants');
 
 var engine;
 
 module.exports = function() {
-  var client = createClient('http://localhost:8080');
+  auth.init();
+  var client = createClient(consts.server.URL);
 
   client.socket.on('noMoreChunks', function() {
     engineAccessor.setEngine(client.game);
