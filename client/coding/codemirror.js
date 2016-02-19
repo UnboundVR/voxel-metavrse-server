@@ -3,11 +3,13 @@ var container = document.getElementById('scripting');
 var content = document.getElementById('scripting-content');
 var header = document.getElementById('scripting-header');
 var toolbar = document.getElementById('toolbar');
+var userInfo = document.getElementById('userInfo');
 
 var closeCodeWindow = function() {
   container.style.display = 'none';
   crosshair.style.display = 'block';
   toolbar.style.display = 'block';
+  userInfo.style.display = 'block';
   content.innerHTML = '';
   header.innerHTML = '';
 };
@@ -16,6 +18,7 @@ var openCodeWindow = function(codeWindowTitle, initialCode) {
   container.style.display = 'block';
   crosshair.style.display = 'none';
   toolbar.style.display = 'none';
+  userInfo.style.display = 'none';
 
   var title = document.createElement('span');
   title.innerHTML = codeWindowTitle;
