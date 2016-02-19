@@ -54,7 +54,7 @@ function getLoggedUserInfo() {
 }
 
 function fetchUserData() {
-  getLoggedUserInfo().then(function(me) {
+  return getLoggedUserInfo().then(function(me) {
     vm.name = me.name;
     vm.loggedIn = true;
   });
@@ -86,21 +86,24 @@ module.exports = {
     var token = localStorage.getItem('githubToken');
     if(token) {
       githubAccessToken = token;
-      fetchUserData();
-      return;
+      return fetchUserData();
     }
 
     var qs = querystring.parse(location.search.substring(1)); // TODO check state too
 
     if(qs.code) {
-      getAccessToken(qs.code).then(function(response) {
+      return getAccessToken(qs.code).then(function(response) {
         if(response.access_token) {
           githubAccessToken = response.access_token;
           localStorage.setItem('githubToken', githubAccessToken);
-          fetchUserData();
+          return fetchUserData();
         } else {
           alert('Could not log in to github');
         }
+      });
+    } else {
+      return new Promise(function(resolve, reject) {
+        resolve();
       });
     }
   }

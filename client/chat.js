@@ -1,11 +1,12 @@
 var messages = document.getElementById('messages');
 var socket;
+var name;
 
 var enterHandler = function(e) {
   if (e.keyCode !== 13) {
     return;
   }
-  
+
   var el = document.getElementById('cmd');
   if (document.activeElement === el) {
     socket.emit('message', {user: name, text: el.value});
@@ -27,11 +28,13 @@ function disable() {
 module.exports = {
   enable: enable,
   disable: disable,
-  init: function(name, socketParam) {
+  init: function(nameParam, socketParam) {
     socket = socketParam;
+    name = nameParam || 'anonymous';
     enable();
 
     socket.on('message', function(message) {
+      console.log(message)
       var li = document.createElement('li');
       li.innerHTML = message.user + ': ' + message.text;
       messages.appendChild(li);

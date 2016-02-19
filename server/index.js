@@ -13,6 +13,7 @@ module.exports = function() {
 
   require('./voxelServer')(io);
   require('./playerSync')(io);
+  require('./chat')(io);
   require('./coding')(io);
   require('./auth')(app);
 
