@@ -6,13 +6,21 @@ var githubAccessToken;
 var vm;
 
 function login() {
-  var url = consts.github.OAUTH_URL + '/authorize'
-    + '?client_id=' + consts.github.CLIENT_ID
-    + '&scope=' + consts.github.REQUESTED_SCOPE
-    + '&redirect_uri=' + consts.github.REDIRECT_URI;
-    // TODO pass state too
+  var request = new Request('/github_client_id', {
+  	method: 'GET'
+  });
 
-  location.href = url;
+  fetch(request).then(function(response) {
+    return response.text();
+  }).then(function(clientId) {
+    var url = consts.github.OAUTH_URL + '/authorize'
+      + '?client_id=' + clientId
+      + '&scope=' + consts.github.REQUESTED_SCOPE
+      + '&redirect_uri=' + consts.github.REDIRECT_URI;
+      // TODO pass state too
+
+    location.href = url;
+  });
 }
 
 function logout() {

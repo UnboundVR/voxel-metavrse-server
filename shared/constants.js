@@ -8,7 +8,6 @@ module.exports = {
     EDIT: 'Edit'
   },
   github: {
-    CLIENT_ID: '00ec1af80f60f6bcee91',
     REQUESTED_SCOPE: 'user,gist',
     REDIRECT_URI: 'http://localhost:1337',
     API_URL: 'https://api.github.com',
