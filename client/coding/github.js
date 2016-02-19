@@ -1,5 +1,6 @@
 // TODO move the whole github interaction to server?
 var consts = require('../../shared/constants');
+var auth = require('../auth');
 
 var SINGLE_FILENAME = 'single_file';
 

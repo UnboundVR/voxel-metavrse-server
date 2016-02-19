@@ -3,6 +3,7 @@ var querystring = require('querystring');
 var consts = require('../shared/constants');
 
 var githubAccessToken;
+var vm;
 
 function login() {
   var url = consts.github.OAUTH_URL + '/authorize'
@@ -14,11 +15,28 @@ function login() {
   location.href = url;
 }
 
+function logout() {
+  location.href = location.origin;
+}
+
 function getAccessToken(code) {
   var url = '/github_access_token/' + code;
 
   var request = new Request(url, {
   	method: 'GET'
+  });
+
+  return fetch(request).then(function(response) {
+    return response.json();
+  });
+}
+
+function getLoggedUserInfo() {
+  var request = new Request(consts.github.API_URL + '/user', {
+    method: 'GET',
+    headers: {
+      'Authorization': 'token ' + githubAccessToken
+    }
   });
 
   return fetch(request).then(function(response) {
@@ -34,12 +52,15 @@ module.exports = {
     return !!githubAccessToken;
   },
   init: function() {
-    var vm = new Vue({
+    vm = new Vue({
       el: '#userInfo',
       data: {
+        loggedIn: false,
+        name: ''
       },
       methods: {
-        login: login
+        login: login,
+        logout: logout
       }
     });
 
@@ -49,7 +70,11 @@ module.exports = {
       getAccessToken(qs.code).then(function(response) {
         if(response.access_token) {
           githubAccessToken = response.access_token;
-          alert('Congrats! Your access token is ' + response.access_token);
+          getLoggedUserInfo().then(function(me) {
+            console.log(me);
+            vm.name = me.name;
+            vm.loggedIn = true;
+          });
         } else {
           alert('Could not log in to github');
         }

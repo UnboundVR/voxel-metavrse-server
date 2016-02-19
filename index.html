@@ -19,7 +19,9 @@
     </div>
     <div id="userInfo">
       <h3>User info</h3>
-      <button v-on:click="login">Login</button>
+      <button v-if="loggedIn" v-on:click="logout">Logout</button>
+      <button v-else v-on:click="login">Login</button>
+      <span v-if="loggedIn">{{name}}</span>
     </div>
     <div id="crosshair"><img src="assets/img/crosshair.png"/></div>
     <nav id="toolbar" class="bar-tab">
