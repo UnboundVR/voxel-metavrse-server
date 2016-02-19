@@ -2,8 +2,6 @@
 
 Learn more at http://metavrse.io. Using https://github.com/maxogden/voxel-engine (awesome stuff!).
 
-Guaranteed that >80% of this code was written listening to metal \m/
-
 ## Get it running on your machine
 
 The first time you set up, you should install the required npm packages:
