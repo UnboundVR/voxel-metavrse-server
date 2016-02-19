@@ -4,6 +4,8 @@ var skin = require('minecraft-skin');
 var player = require('voxel-player');
 var io = require('socket.io-client');
 var engine = require('voxel-engine');
+var chat = require('./chat');
+var auth = require('./auth');
 
 module.exports = Client;
 
@@ -25,6 +27,7 @@ Client.prototype.connect = function(server) {
     self.connected = false;
   });
   this.socket = socket;
+  chat.init(auth.getName(), socket);
   this.bindEvents(socket);
 };
 
@@ -88,7 +91,7 @@ Client.prototype.createGame = function(settings) {
         interacting = true;
       }
     });
-    
+
     if (interacting) {
       sendState();
     }

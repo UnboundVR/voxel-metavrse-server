@@ -61,6 +61,9 @@ function fetchUserData() {
 }
 
 module.exports = {
+  getName: function() {
+    return vm.name;
+  },
   getAccessToken: function() {
     return githubAccessToken;
   },

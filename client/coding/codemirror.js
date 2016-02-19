@@ -4,14 +4,20 @@ var content = document.getElementById('scripting-content');
 var header = document.getElementById('scripting-header');
 var toolbar = document.getElementById('toolbar');
 var userInfo = document.getElementById('userInfo');
+var chatElememnt = document.getElementById('chat');
+var chat = require('../chat');
+var engineAccessor = require('../engineAccessor');
 
 var closeCodeWindow = function() {
   container.style.display = 'none';
   crosshair.style.display = 'block';
   toolbar.style.display = 'block';
   userInfo.style.display = 'block';
+  chatElememnt.style.display = 'block';
+  chat.enable();
   content.innerHTML = '';
   header.innerHTML = '';
+  engineAccessor.engine.interact.request();
 };
 
 var openCodeWindow = function(codeWindowTitle, initialCode) {
@@ -19,6 +25,8 @@ var openCodeWindow = function(codeWindowTitle, initialCode) {
   crosshair.style.display = 'none';
   toolbar.style.display = 'none';
   userInfo.style.display = 'none';
+  chatElememnt.style.display = 'none';
+  chat.disable();
 
   var title = document.createElement('span');
   title.innerHTML = codeWindowTitle;
@@ -44,7 +52,7 @@ var openCodeWindow = function(codeWindowTitle, initialCode) {
 
   codemirror.setOption('theme', 'tomorrow-night-bright');
   codemirror.focus();
-  document.exitPointerLock();
+  engineAccessor.engine.interact.release();
 
   var wrapper = codemirror.getWrapperElement();
   wrapper.addEventListener('keydown', function (event) {
