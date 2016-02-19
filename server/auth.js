@@ -12,13 +12,12 @@ module.exports = function(app) {
       },
       body: {
         client_id: consts.github.CLIENT_ID,
-        client_secret: 'such secret. wow.',
+        client_secret: process.env.GITHUB_SECRET,
         code: req.params.code
       },
       json: true
-    }).then(function(githubRes) {
-      console.log(githubRes);
-      res.json(githubRes);
+    }).then(function(githubResponse) {
+      res.json(githubResponse);
     });
   });
 };

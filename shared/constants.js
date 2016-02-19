@@ -13,8 +13,5 @@ module.exports = {
     REDIRECT_URI: 'http://localhost:1337',
     API_URL: 'https://api.github.com',
     OAUTH_URL: 'https://github.com/login/oauth'
-  },
-  server: {
-    URL: 'http://localhost:8080'
   }
 };

@@ -13,7 +13,7 @@ var engine;
 
 module.exports = function() {
   auth.init();
-  var client = createClient(consts.server.URL);
+  var client = createClient(location.host);
 
   client.socket.on('noMoreChunks', function() {
     engineAccessor.setEngine(client.game);

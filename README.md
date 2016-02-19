@@ -12,15 +12,15 @@ The first time you set up, you should install the required npm packages:
 npm install
 ```
 
+Then run the gulp command to start watchify:
+```
+gulp
+```
+
 Then run the server:
-```
-npm run server
-```
-
-Then run the client:
 
 ```
-npm run client
+npm start
 ```
 
 Then point your browser to [http://localhost:1337](http://localhost:1337) and have fun!

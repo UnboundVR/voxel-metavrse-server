@@ -2,7 +2,7 @@ var Vue = require('vue');
 var querystring = require('querystring');
 var consts = require('../shared/constants');
 
-var githubId;
+var githubAccessToken;
 
 function login() {
   var url = consts.github.OAUTH_URL + '/authorize'
@@ -15,7 +15,7 @@ function login() {
 }
 
 function getAccessToken(code) {
-  var url = consts.server.URL + '/github_access_token/' + code;
+  var url = '/github_access_token/' + code;
 
   var request = new Request(url, {
   	method: 'GET'
@@ -27,8 +27,11 @@ function getAccessToken(code) {
 }
 
 module.exports = {
-  getGithubId: function() {
-    return githubId;
+  getAccessToken: function() {
+    return githubAccessToken;
+  },
+  isLogged: function() {
+    return !!githubAccessToken;
   },
   init: function() {
     var vm = new Vue({
@@ -41,9 +44,15 @@ module.exports = {
     });
 
     var qs = querystring.parse(location.search.substring(1)); // TODO check state too
+
     if(qs.code) {
       getAccessToken(qs.code).then(function(response) {
-        console.log(response);
+        if(response.access_token) {
+          githubAccessToken = response.access_token;
+          alert('Congrats! Your access token is ' + response.access_token);
+        } else {
+          alert('Could not log in to github');
+        }
       });
     }
   }

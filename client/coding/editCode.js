@@ -28,9 +28,7 @@ var openExisting = function(position, desc, initialCode) {
   var title = 'Editing the code of the voxel at ' + position.join('|') + ' (' + desc + ')';
 
   return codemirror.open(title, initialCode).then(function(value) {
-    var githubId = auth.getGithubId();
-
-    if(githubId) {
+    if(auth.isLogged()) {
       return github.updateGist(coding.getGistId(position), value).then(function(response) {
         alert('Existing Gist was updated correctly');
         executor.update(position, value);
