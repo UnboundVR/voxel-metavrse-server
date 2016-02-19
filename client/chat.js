@@ -34,7 +34,6 @@ module.exports = {
     enable();
 
     socket.on('message', function(message) {
-      console.log(message)
       var li = document.createElement('li');
       li.innerHTML = message.user + ': ' + message.text;
       messages.appendChild(li);
