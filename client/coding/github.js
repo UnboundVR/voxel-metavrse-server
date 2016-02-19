@@ -4,6 +4,16 @@ var auth = require('../auth');
 
 var SINGLE_FILENAME = 'single_file';
 
+function getHeaders() {
+  if(auth.isLogged()) {
+    return {
+      'Authorization': 'token ' + auth.getAccessToken()
+    };
+  }
+
+  return {};
+}
+
 module.exports = {
   createGist: function(desc, content) {
     var body = {
@@ -15,9 +25,10 @@ module.exports = {
       content: content
     };
 
-    var request = new Request(constants.github.API_URL + '/gists', {
+    var request = new Request(consts.github.API_URL + '/gists', {
     	method: 'POST',
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
+      headers: getHeaders()
     });
 
     return fetch(request).then(function(response) {
@@ -25,8 +36,9 @@ module.exports = {
     });
   },
   getGist: function(id) {
-    var request = new Request(constants.github.API_URL + '/gists/' + id, {
-    	method: 'GET'
+    var request = new Request(consts.github.API_URL + '/gists/' + id, {
+    	method: 'GET',
+      headers: getHeaders()
     });
 
     return fetch(request).then(function(response) {
@@ -47,11 +59,18 @@ module.exports = {
       content: code
     };
 
-    var request = new Request(constants.github.API_URL + '/gists/' + id, {
+    var request = new Request(consts.github.API_URL + '/gists/' + id, {
     	method: 'PATCH',
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
+      headers: getHeaders()
     });
 
-    return fetch(request);
+    return fetch(request).then(function(response) {
+      if(!response.ok) {
+        throw response.statusText;
+      }
+
+      return response;
+    });
   }
 };
