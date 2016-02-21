@@ -15,7 +15,7 @@
     "socket.io-client": "^1.4.5",
     "use-strict": "^1.0.1",
     "voxel": "0.5.0",
-    "voxel-engine": "~0.20.2",
+    "voxel-engine": "git://github.com/UnboundVR/voxel-engine.git",
     "voxel-fly": "~0.1.0",
     "voxel-highlight": "0.0.10",
     "voxel-player": "0.1.0",
