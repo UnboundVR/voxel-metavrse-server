@@ -33,9 +33,9 @@ Client.prototype.connect = function(server) {
 
 Client.prototype.bindEvents = function(socket) {
   var self = this;
-  this.connected = true;
 
   socket.on('id', function(id) {
+    this.connected = true;
     self.playerID = id;
   });
 
