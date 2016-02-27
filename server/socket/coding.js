@@ -1,36 +1,26 @@
-var storage = require('../services/storage');
-
-var gists;
-var dirty = false;
-
-function saveGists() {
-  if(dirty) {
-    storage.saveGists(gists);
-    dirty = false;
-  }
-}
+var controller = require('./controllers/coding');
 
 module.exports = function(io) {
-  storage.loadGists().then(function(res) {
-    gists = res;
-
-    setInterval(saveGists, 1000); // 1s
-
+  controller.init().then(function() {
     io.on('connection', function(socket) { // TODO use different namespace in socket.io
       socket.on('requestGists', function(callback) {
-        callback(gists);
+        callback(controller.getGists());
       });
 
       socket.on('codeChanged', function(position, gistId) {
-        gists[position] = gistId;
-        socket.broadcast.emit('codeChanged', position, gistId);
-        dirty = true;
+        var broadcast = function(position, gistId) {
+          socket.broadcast.emit('codeChanged', position, gistId);
+        };
+
+        controller.onCodeChanged(position, gistId, broadcast);
       });
 
       socket.on('codeRemoved', function(position) {
-        delete gists[position];
-        socket.broadcast.emit('codeRemoved', position);
-        dirty = true;
+        var broadcast = function(position) {
+          socket.broadcast.emit('codeRemoved', position);
+        };
+
+        controller.onCodeRemoved(position, broadcast);
       });
     });
   });
