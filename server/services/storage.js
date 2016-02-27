@@ -17,8 +17,7 @@ function ensureDirectoryExists() {
 }
 
 module.exports = {
-  saveChunk: function(chunk) {
-    var chunkId = chunk.chunkId;
+  saveChunk: function(chunkId, chunk) {
     return new Promise(function(resolve, reject) {
       ensureDirectoryExists().then(function() {
         fs.writeFile(getPath(chunkId), JSON.stringify(chunk), function(err) {
