@@ -2,7 +2,6 @@ var blocks = require('../../shared/blocks');
 var createEngine = require('voxel-engine');
 var rle = require('../../shared/rle');
 
-var texturePath = 'assets/textures/';
 var engine;
 var settings;
 
@@ -14,7 +13,7 @@ module.exports = {
       },
       chunkDistance: 2,
       materials: blocks.getMaterials(),
-      texturePath: texturePath,
+      texturePath: 'assets/textures/',
       worldOrigin: [0, 0, 0],
       controls: { discreteFire: true },
       avatarInitialPosition: [0, 2, 0]

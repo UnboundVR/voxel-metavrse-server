@@ -4,8 +4,6 @@ var Promise = require('promise');
 var engine = require('../../services/voxelEngine');
 var compression = require('../../helpers/chunkCompression');
 
-var settings;
-
 var dirtyChunks = {};
 
 function isDirty(chunkId) {
