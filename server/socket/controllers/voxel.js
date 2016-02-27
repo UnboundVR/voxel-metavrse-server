@@ -15,7 +15,7 @@ function markDirty(chunkId) {
 }
 
 function markNotDirty(chunkId) {
-  dirtyChunks[chunkId] = true;
+  dirtyChunks[chunkId] = false;
 }
 
 function loadChunkFromStorage(chunkId) {
@@ -40,6 +40,7 @@ function saveChunks() {
   engine.getExistingChunkIds().forEach(function(chunkId) {
     var chunk = getChunk(chunkId); // this is necessary to ensure all newly compressed chunks are marked dirty
     if(isDirty(chunkId)) {
+      console.log(chunkId + ' dirty')
       storage.saveChunk(chunkId, chunk).then(function() {
         markNotDirty(chunkId);
       });
@@ -72,9 +73,7 @@ module.exports = {
       // at this point we have the first chunks generated but we overwrite them with whatever is on the storage (TODO only generate a chunk if it's not in storage)
     });
   },
-  onJoin: function(sendSettings) {
-    sendSettings(engine.getSettings());
-  },
+  getSettings: engine.getSettings,
   requestChunk: function(chunkPos, callback) {
     var chunkId = engine.getChunkId(chunkPos);
     ensureChunkExists(chunkId).then(function() {

@@ -3,11 +3,7 @@ var controller = require('./controllers/voxel');
 module.exports = function(io) {
   controller.init().then(function() {
     io.on('connection', function(socket) {
-      var sendSettings = function(settings) {
-        socket.emit('settings', settings);
-      };
-
-      controller.onJoin(sendSettings);
+      socket.emit('settings', controller.getSettings());
 
       socket.on('created', function() {
         var sendChunk = function(chunk) {

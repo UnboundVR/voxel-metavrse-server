@@ -10,7 +10,7 @@ module.exports = {
     var chunkId = chunk.chunkId;
     if(!cache[chunkId]) {
       cache[chunkId] = rle.encode(chunk.voxels);
-      markDirty(chunkId)
+      markDirty(chunkId);
     }
 
     return { // TODO clone with extend and modify voxels prop instead of returning new object
