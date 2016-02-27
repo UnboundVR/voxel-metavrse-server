@@ -2,7 +2,7 @@ var storage = require('../../services/storage');
 var Promise = require('promise');
 
 var service = require('../../services/voxel');
-var compression = require('../../services/chunkCompression');
+var compression = require('../../helpers/chunkCompression');
 
 var settings;
 
