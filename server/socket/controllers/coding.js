@@ -1,4 +1,4 @@
-var storage = require('../../services/storage');
+var storage = require('../../services/store/coding');
 
 var gists;
 var dirty = false;

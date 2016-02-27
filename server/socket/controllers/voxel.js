@@ -1,7 +1,7 @@
-var storage = require('../../services/storage');
+var storage = require('../../services/store/voxels');
 var Promise = require('promise');
 
-var service = require('../../services/voxel');
+var engine = require('../../services/voxelEngine');
 var compression = require('../../helpers/chunkCompression');
 
 var settings;
@@ -24,7 +24,7 @@ function loadChunkFromStorage(chunkId) {
   return storage.loadChunk(chunkId).then(function(chunk) {
     if(chunk) {
       chunk = compression.decompress(chunk);
-      service.setChunk(chunkId, chunk);
+      engine.setChunk(chunkId, chunk);
       return chunk;
     }
   });
@@ -32,15 +32,14 @@ function loadChunkFromStorage(chunkId) {
 
 function loadInitialChunksFromStorage() {
   var promises = [];
-  service.getExistingChunkIds().forEach(function(chunkId) {
+  engine.getExistingChunkIds().forEach(function(chunkId) {
     promises.push(loadChunkFromStorage(chunkId));
   });
-
   return Promise.all(promises);
 }
 
 function saveChunks() {
-  service.getExistingChunkIds().forEach(function(chunkId) {
+  engine.getExistingChunkIds().forEach(function(chunkId) {
     var chunk = getChunk(chunkId); // this is necessary to ensure all newly compressed chunks are marked dirty
     if(isDirty(chunkId)) {
       storage.saveChunk(chunkId, chunk).then(function() {
@@ -51,17 +50,17 @@ function saveChunks() {
 }
 
 function getChunk(chunkId) {
-  var chunk = service.getChunk(chunkId);
+  var chunk = engine.getChunk(chunkId);
   return compression.compress(chunk, markDirty);
 }
 
 function ensureChunkExists(chunkId) {
-  if(service.chunkExists(chunkId)) {
+  if(engine.chunkExists(chunkId)) {
     return Promise.resolve();
   } else {
     return loadChunkFromStorage(chunkId).then(function(chunk) {
       if(!chunk) {
-        service.generateChunk(chunkId);
+        engine.generateChunk(chunkId);
       }
     });
   }
@@ -69,32 +68,30 @@ function ensureChunkExists(chunkId) {
 
 module.exports = {
   init: function() {
-    service.init();
-
+    engine.init();
     return loadInitialChunksFromStorage().then(function() {
       setInterval(saveChunks, 1000); // 1s
       // at this point we have the first chunks generated but we overwrite them with whatever is on the storage (TODO only generate a chunk if it's not in storage)
     });
   },
   onJoin: function(sendSettings) {
-    sendSettings(service.getSettings());
+    sendSettings(engine.getSettings());
   },
   requestChunk: function(chunkPos, callback) {
-    var chunkId = service.getChunkId(chunkPos);
-
+    var chunkId = engine.getChunkId(chunkPos);
     ensureChunkExists(chunkId).then(function() {
       callback(getChunk(chunkId));
     });
   },
   sendInitialChunks: function(sendChunk, noMoreChunks) {
-    service.getExistingChunkIds().forEach(function(chunkId) {
+    engine.getExistingChunkIds().forEach(function(chunkId) {
       sendChunk(getChunk(chunkId));
     });
     noMoreChunks();
   },
   set: function(pos, val, broadcast) {
-    service.setBlock(pos, val);
-    var chunkId = service.getChunkIdAtPosition(pos);
+    engine.setBlock(pos, val);
+    var chunkId = engine.getChunkIdAtPosition(pos);
     compression.invalidateCache(chunkId);
     broadcast(pos, val);
   }
