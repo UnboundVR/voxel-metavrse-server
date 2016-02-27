@@ -19,7 +19,7 @@ GITHUB_CLIENT_ID = <the client_id of your Github OAuth app>
 GITHUB_SECRET = <the client_secret of your Github OAuth app>
 ```
 
-*Note*: If you're an Unbound VR member, you can use our Github App.
+*Note: If you're an Unbound VR member, you can use our Github App.*
 
 Then run the gulp command to start watchify:
 ```
@@ -39,6 +39,8 @@ npm run dev
 ```
 
 Then point your browser to `http://localhost:<the port you chose above>` and have fun!
+
+*Note: If you're using the Unbound VR Github App, you must use the port `1337`.*
 
 ## Controls
 - When you start, click on the page to lock cursor. Press `<ESC>` to unlock cursor.
