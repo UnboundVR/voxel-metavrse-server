@@ -1,40 +1,11 @@
-var fs = require('fs');
-var Promise = require('promise');
-
-var basePath = process.cwd() + '/storage';
-var gistsPath = basePath + '/gists.json';
-
-function ensureDirectoryExists() {
-  return new Promise(function(resolve, reject) {
-    fs.mkdir(basePath, function(err) {
-      resolve();
-    });
-  });
-}
+var files = require('./fileStorage');
+var gistsPath = 'gists.json';
 
 module.exports = {
   saveGists: function(gists) {
-    return new Promise(function(resolve, reject) {
-      ensureDirectoryExists().then(function() {
-        fs.writeFile(gistsPath, JSON.stringify(gists), function(err) {
-          if(err) {
-            reject(err);
-          } else {
-            resolve();
-          }
-        });
-      });
-    });
+    return files.save(gistsPath, gists);
   },
   loadGists: function() {
-    return new Promise(function(resolve, reject) {
-      fs.readFile(gistsPath, function(err, data) {
-        if(err) {
-          resolve({});
-        } else {
-          resolve(JSON.parse(data));
-        }
-      });
-    });
+    return files.load(gistsPath);
   }
 };
