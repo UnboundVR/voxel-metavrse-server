@@ -2,7 +2,7 @@ var controller = require('./controllers/coding');
 
 module.exports = function(io) {
   controller.init().then(function() {
-    io.on('connection', function(socket) { // TODO use different namespace in socket.io
+    io.on('connection', function(socket) {
       socket.on('requestGists', function(callback) {
         callback(controller.getGists());
       });
