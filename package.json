@@ -27,13 +27,18 @@
     "del": "^2.2.0",
     "dotenv": "^2.0.0",
     "gulp": "^3.9.1",
+    "gulp-tape": "0.0.7",
     "lodash.assign": "^4.0.3",
+    "sinon": "^1.17.3",
     "strictify": "^0.2.0",
+    "tap-colorize": "^1.2.0",
+    "tape": "^4.4.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0"
   },
   "scripts": {
-    "start": "node server-init"
+    "start": "node server-init",
+    "test": "gulp test"
   }
 }

@@ -11,6 +11,9 @@ var gutil = require('gulp-util');
 var assign = require('lodash.assign');
 var del = require('del');
 
+var tape = require('gulp-tape');
+var tapColorize = require('tap-colorize');
+
 gulp.task('clean', function() {
   return del(['build/metavrse.js']);
 });
@@ -24,6 +27,13 @@ var b = browserify(opts);
 
 b.transform(strictify);
 b.on('log', gutil.log);
+
+gulp.task('test', function () {
+  return gulp.src('spec/**/*.js')
+    .pipe(tape({
+      reporter: tapColorize()
+    }));
+});
 
 gulp.task('default', ['clean'], function() {
   var bundle = function() {
