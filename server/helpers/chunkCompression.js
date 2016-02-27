@@ -1,13 +1,19 @@
 var rle = require('../../shared/rle');
+var engine = require('../services/voxelEngine');
 
 var cache = {};
 
 module.exports = {
+  storeInCache: function(chunk) {
+    var chunkId = engine.getChunkId(chunk.position);
+    cache[chunkId] = chunk.voxels;
+  },
   invalidateCache: function(chunkId) {
     delete cache[chunkId];
   },
   compress: function(chunk, markDirty) {
-    var chunkId = chunk.chunkId;
+    var chunkId = engine.getChunkId(chunk.position);
+
     if(!cache[chunkId]) {
       cache[chunkId] = rle.encode(chunk.voxels);
       markDirty(chunkId);
@@ -16,15 +22,15 @@ module.exports = {
     return { // TODO clone with extend and modify voxels prop instead of returning new object
       position: chunk.position,
       dims: chunk.dims,
-      chunkId: chunk.chunkId,
       voxels: cache[chunkId]
     };
   },
   decompress: function(chunk) {
+    var chunkId = engine.getChunkId(chunk.position);
+
     return { // TODO clone with extend and modify voxels prop instead of returning new object
       position: chunk.position,
       dims: chunk.dims,
-      chunkId: chunk.chunkId,
       voxels: rle.decode(chunk.voxels)
     };
   }
