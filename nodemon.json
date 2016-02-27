@@ -1,4 +1,3 @@
 {
-  "verbose": true,
-  "ignore": ["*.Spec.js", "storage/*"]
+  "verbose": true
 }
