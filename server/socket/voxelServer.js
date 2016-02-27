@@ -1,10 +1,11 @@
 var engine = require('voxel-engine');
-var texturePath = 'assets/textures/';
 var voxel = require('voxel');
-var rle = require('../shared/rle');
-var blocks = require('../shared/blocks');
-var storage = require('./storage');
+var rle = require('../../shared/rle');
+var blocks = require('../../shared/blocks');
+var storage = require('../services/storage');
 var Promise = require('promise');
+
+var texturePath = 'assets/textures/';
 
 module.exports = function(io) {
   var settings = {
