@@ -1,62 +1,34 @@
-var THREE = require('three');
-
-var clients = {};
+var controller = require('./controllers/playerSync');
 
 module.exports = function(io) {
-  setInterval(sendUpdate, 1000/22); // 45ms
-
-  function sendUpdate() {
-    var clientKeys = Object.keys(clients);
-    if (clientKeys.length === 0) {
-      return;
-    }
-    var update = {
-      positions:{},
-      date: new Date()
-    };
-
-    clientKeys.forEach(function(key) {
-      var player = clients[key]
-      update.positions[key] = {
-        position: player.position,
-        rotation: {
-          x: player.rotation.x,
-          y: player.rotation.y
-        }
-      }
-    });
+  var broadcast = function(update) {
     io.sockets.emit('update', update);
-  }
+  };
+  controller.init(broadcast);
 
   io.on('connection', function(socket) {
     var id = socket.id;
 
-    var player = {
-      rotation: new THREE.Vector3(),
-      position: new THREE.Vector3()
+    var sendId = function(id) {
+      socket.emit('id', id);
     };
 
-    clients[id] = player;
+    var broadcast = function(id) {
+      socket.broadcast.emit('join', id);
+    };
 
-    socket.emit('id', id);
-    socket.broadcast.emit('join', id);
+    controller.onJoin(id, sendId, broadcast);
 
     socket.on('disconnect', function() {
-      delete clients[id];
-      socket.broadcast.emit('leave', id);
+      var broadcast = function(id) {
+        socket.broadcast.emit('leave', id);
+      };
+
+      controller.onLeave(id, broadcast);
     });
 
     socket.on('state', function(state) {
-      player.rotation.x = state.rotation.x;
-      player.rotation.y = state.rotation.y;
-      var pos = player.position;
-      var distance = pos.distanceTo(state.position);
-      if (distance > 20) {
-        var before = pos.clone();
-        pos.lerp(state.position, 0.1);
-        return;
-      }
-      pos.copy(state.position);
+      controller.onState(id, state);
     });
   });
 };
