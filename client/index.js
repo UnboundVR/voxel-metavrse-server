@@ -6,13 +6,17 @@ var setupControls = require('./controls');
 var createClient = require('./voxelClient');
 var engineAccessor = require('./engineAccessor');
 var auth = require('./auth');
+var chat = require('./chat');
 var consts = require('../shared/constants');
+var io = require('socket.io-client');
 
 var engine;
 
 module.exports = function() {
   auth.init().then(function() {
-    var client = createClient(location.host);
+    var socket = io.connect(location.host);
+    chat.init(auth.getName(), socket);
+    var client = createClient(socket);
 
     client.socket.on('noMoreChunks', function() {
       engineAccessor.setEngine(client.game);

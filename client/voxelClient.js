@@ -2,32 +2,27 @@ var rle = require('../shared/rle');
 var highlight = require('voxel-highlight');
 var skin = require('minecraft-skin');
 var player = require('voxel-player');
-var io = require('socket.io-client');
 var engine = require('voxel-engine');
-var chat = require('./chat');
-var auth = require('./auth');
 
 module.exports = Client;
 
-function Client(server) {
+function Client(socket) {
   if(!(this instanceof Client)) {
-    return new Client(server);
+    return new Client(socket);
   }
 
   this.connected = false;
   this.lerpPercent = 0.1;
   this.others = {};
-  this.connect(server);
+  this.connect(socket);
 }
 
-Client.prototype.connect = function(server) {
+Client.prototype.connect = function(socket) {
   var self = this;
-  var socket = io.connect(server);
   socket.on('disconnect', function() {
     self.connected = false;
   });
   this.socket = socket;
-  chat.init(auth.getName(), socket);
   this.bindEvents(socket);
 };
 
