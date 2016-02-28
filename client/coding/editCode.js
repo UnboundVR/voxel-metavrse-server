@@ -1,6 +1,6 @@
 var codemirror = require('./codemirror');
 var github = require('./github');
-var coding = require('./coding');
+var client = require('./codingClient');
 var auth = require('../auth');
 var executor = require('./scriptExecutor');
 
@@ -18,7 +18,7 @@ var openNew = function(position) {
 
     return github.createGist(desc, value).then(function(response) {
       alert('The gist URL is ' + response.html_url);
-      coding.storeGistId(position, response.id);
+      client.storeGistId(position, response.id);
       executor.create(position, value);
     });
   });
@@ -29,14 +29,14 @@ var openExisting = function(position, desc, initialCode) {
 
   return codemirror.open(title, initialCode).then(function(value) {
     if(auth.isLogged()) {
-      return github.updateGist(coding.getGistId(position), value).then(function(response) {
+      return github.updateGist(client.getGistId(position), value).then(function(response) {
         alert('Existing Gist was updated correctly');
         executor.update(position, value);
       });
     } else {
       return github.createGist(desc, value).then(function(response) {
         alert('The new gist URL is ' + response.html_url);
-        coding.storeGistId(position, response.id);
+        client.storeGistId(position, response.id);
         executor.update(position, value);
       });
     }
@@ -44,7 +44,7 @@ var openExisting = function(position, desc, initialCode) {
 };
 
 module.exports = function(position) {
-  var gistId = coding.getGistId(position);
+  var gistId = client.getGistId(position);
 
   if(gistId) {
     return github.getGist(gistId).then(function(response) {

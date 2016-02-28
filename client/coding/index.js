@@ -1,12 +1,12 @@
-var coding = require('./coding');
+var client = require('./codingClient');
 var executor = require('./scriptExecutor');
 var voxelEngine = require('../voxelEngine');
 var editCode = require('./editCode');
 
 module.exports = {
   init: function(socket) {
-    coding.init(socket).then(function() {
-      coding.getBlocksWithGists().forEach(function(block) {
+    client.init(socket).then(function() {
+      client.getBlocksWithGists().forEach(function(block) {
         block.script.then(function(response) {
           executor.create(block.position, response.code);
           voxelEngine.setBlock(block.position, 2);
@@ -20,8 +20,8 @@ module.exports = {
   editCode: editCode,
   confirm: executor.confirm,
   removeCode: function(position) {
-    if(coding.getGistId(position)) {
-      coding.removeGist(position);
+    if(client.getGistId(position)) {
+      client.removeGist(position);
       executor.remove(position);
     }
   }
