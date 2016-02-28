@@ -1,4 +1,4 @@
-var controller = require('./controllers/voxel');
+var controller = require('./controllers/voxelServer');
 
 module.exports = function(io) {
   controller.init().then(function() {
