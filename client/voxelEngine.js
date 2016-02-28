@@ -4,6 +4,7 @@ module.exports = {
 
     this.createBlock = engine.createBlock.bind(engine);
     this.setBlock = engine.setBlock.bind(engine);
+    this.getBlock = engine.getBlock.bind(engine);
     this.onFire = function(handler) {
       engine.on('fire', handler);
     };

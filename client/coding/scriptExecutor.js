@@ -50,7 +50,7 @@ var confirm = function(position, action) {
 };
 
 function buildBlockObject(position) {
-  var typeNumber = voxelEngine.engine.getBlock(position);
+  var typeNumber = voxelEngine.getBlock(position);
   var typeInfo = blocks.getBlockInfo(typeNumber);
 
   var Block = function(position, blockType) {
