@@ -30,7 +30,7 @@ module.exports = function() {
       var settings = engine.settings.avatarInitialPosition;
       avatar.position.set(settings[0],settings[1],settings[2]);
 
-      setupCoding(client);
+      setupCoding(client.socket);
       setupControls(avatar);
       setupBlockPlacement(client);
     });
