@@ -1,5 +1,5 @@
 var toolbar = require('toolbar');
-var blocks = require('../shared/blocks');
+var blocks = require('../../shared/blocks');
 var Vue = require('vue');
 
 var toolbarItems = blocks.getToolbarItems();

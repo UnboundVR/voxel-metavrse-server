@@ -1,7 +1,7 @@
 var highlight = require('voxel-highlight');
-var engineAccessor = require('./engineAccessor');
-var events = require('./events');
-var consts = require('../shared/constants');
+var engineAccessor = require('../engineAccessor');
+var events = require('../events');
+var consts = require('../../shared/constants');
 
 var blockPosPlace, blockPosEdit;
 
