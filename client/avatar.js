@@ -4,16 +4,6 @@ var walk = require('voxel-walk');
 var voxelEngine = require('./voxelEngine');
 
 module.exports = function() {
-  var engine = voxelEngine.engine;
-
-  var createPlayer = player(engine);
-  var avatar = createPlayer('assets/avatars/player.png');
-  avatar.possess();
-  var settings = engine.settings.avatarInitialPosition;
-  avatar.position.set(settings[0],settings[1],settings[2]);
-
-  var avatarVisible = false;
-
   // TODO instead of doing this, we should probably show/hide the whole object, or place the camera further away (so we can use a mirror for example)
   function setAvatarVisibility(visible) {
     avatar.playerSkin.rightArm.visible = visible;
@@ -26,20 +16,7 @@ module.exports = function() {
     avatarVisible = visible;
   }
 
-  var makeFly = fly(voxelEngine.engine);
-  var target = engine.controls.target();
-  engine.flyer = makeFly(target);
-  setAvatarVisibility(false);
-
-  // toggle between first and third person modes
-  window.addEventListener('keydown', function (ev) {
-    if (ev.keyCode === 'R'.charCodeAt(0)) {
-      avatar.toggle();
-      setAvatarVisibility(!avatarVisible);
-    }
-  });
-
-  engine.on('tick', function() {
+  function onTick() {
     walk.render(target.playerSkin);
     var vx = Math.abs(target.velocity.x);
     var vz = Math.abs(target.velocity.z);
@@ -48,5 +25,30 @@ module.exports = function() {
     } else {
       walk.startWalking();
     }
-  });
+  }
+
+  function onKeyDown (ev) {
+    if (ev.keyCode === 'R'.charCodeAt(0)) {
+      // toggle between first and third person modes
+      avatar.toggle();
+      setAvatarVisibility(!avatarVisible);
+    }
+  }
+
+  var engine = voxelEngine.engine;
+  var avatarVisible;
+
+  var createPlayer = player(engine);
+  var avatar = createPlayer('assets/avatars/player.png');
+  avatar.possess();
+  var settings = engine.settings.avatarInitialPosition;
+  avatar.position.set(settings[0],settings[1],settings[2]);
+
+  var makeFly = fly(voxelEngine.engine);
+  var target = engine.controls.target();
+  engine.flyer = makeFly(target);
+  setAvatarVisibility(false);
+
+  window.addEventListener('keydown', onKeyDown);
+  engine.on('tick', onTick);
 };
