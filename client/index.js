@@ -11,13 +11,14 @@ var io = require('socket.io-client');
 module.exports = function() {
   auth.init().then(function() {
     var socket = io.connect(location.host);
-    chat.init(auth.getName(), socket);
+
     var client = createClient(socket, function() {
       voxelEngine.init(client.game);
       voxelEngine.appendToContainer().then(function() {
         setupAvatar();
         setupCoding(socket);
         setupBlockPlacement(socket);
+        chat.init(auth.getName(), socket);
       }, function() {
         console.log('browser not capable');
       });

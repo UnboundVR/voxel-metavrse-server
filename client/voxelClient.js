@@ -31,8 +31,9 @@ Client.prototype.bindEvents = function(socket) {
   var self = this;
   this.connected = true;
 
-  socket.on('id', function(id) {
-    self.playerID = id;
+  socket.on('connect', function() {
+    console.log(this.id)
+    self.playerID = this.id;
   });
 
   var processChunk = function(chunk) {

@@ -29,7 +29,7 @@ module.exports = {
 
     setInterval(sendUpdate, 1000/22); // 45ms
   },
-  onJoin: function(id, sendId, broadcast) {
+  onJoin: function(id, broadcast) {
     var player = {
       rotation: new THREE.Vector3(),
       position: new THREE.Vector3()
@@ -37,7 +37,6 @@ module.exports = {
 
     clients[id] = player;
 
-    sendId(id);
     broadcast(id);
   },
   onLeave: function(id, broadcast) {
