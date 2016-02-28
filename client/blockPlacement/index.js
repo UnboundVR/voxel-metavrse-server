@@ -9,8 +9,6 @@ var consts = require('../../shared/constants');
 var getAdjacent = require('./getAdjacentPositions');
 
 module.exports = function(socket) {
-  var engine = voxelEngine.engine;
-
   highlight.init();
   toolbar.init();
 
@@ -28,14 +26,14 @@ module.exports = function(socket) {
   }
 
   function placeBlock(position) {
-    engine.createBlock(position, toolbar.getSelected());
+    voxelEngine.createBlock(position, toolbar.getSelected());
     socket.emit('set', position, toolbar.getSelected());
   }
 
   function codeBlock(position) {
     editCode(position).then(function() {
       var codeBlockNumber = blocks.types.CODE.number;
-      engine.setBlock(position, codeBlockNumber);
+      voxelEngine.setBlock(position, codeBlockNumber);
       socket.emit('set', position, codeBlockNumber);
     });
   }
@@ -46,7 +44,7 @@ module.exports = function(socket) {
       executor.remove(position);
     }
 
-    engine.setBlock(position, 0);
+    voxelEngine.setBlock(position, 0);
     socket.emit('set', position, 0);
   }
 
@@ -85,7 +83,7 @@ module.exports = function(socket) {
     return executor.confirm(position, consts.confirmableFunctions.EDIT);
   }
 
-  engine.on('fire', function (target, state) {
+  voxelEngine.onFire(function (target, state) {
     var placePosition = highlight.getPlacePosition();
     var editPosition = highlight.getEditPosition();
 

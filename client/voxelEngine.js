@@ -1,6 +1,12 @@
 module.exports = {
   init: function(engine) {
     this.engine = engine;
+
+    this.createBlock = engine.createBlock.bind(engine);
+    this.setBlock = engine.setBlock.bind(engine);
+    this.onFire = function(handler) {
+      engine.on('fire', handler);
+    };
   },
   appendToContainer: function() {
     var engine = this.engine;
