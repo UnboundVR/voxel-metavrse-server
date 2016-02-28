@@ -1,11 +1,11 @@
 var highlight = require('./blockHighlight');
-var executor = require('./coding/scriptExecutor');
-var editCode = require('./coding/editCode');
-var blocks = require('../shared/blocks');
-var coding = require('./coding/coding');
+var executor = require('../coding/scriptExecutor');
+var editCode = require('../coding/editCode');
+var blocks = require('../../shared/blocks');
+var coding = require('../coding/coding');
 var toolbar = require('./toolbar');
-var engineAccessor = require('./engineAccessor');
-var consts = require('../shared/constants');
+var engineAccessor = require('../engineAccessor');
+var consts = require('../../shared/constants');
 
 module.exports = function(client) {
   var engine = engineAccessor.engine;
