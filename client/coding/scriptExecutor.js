@@ -1,4 +1,4 @@
-var engineAccessor = require('../engineAccessor');
+var voxelEngine = require('../voxelEngine');
 var blocks = require('../../shared/blocks');
 var events = require('../events');
 var EventEmitter = require('events');
@@ -50,8 +50,7 @@ var confirm = function(position, action) {
 };
 
 function buildBlockObject(position) {
-  var engine = engineAccessor.engine;
-  var typeNumber = engine.getBlock(position);
+  var typeNumber = voxelEngine.engine.getBlock(position);
   var typeInfo = blocks.getBlockInfo(typeNumber);
 
   var Block = function(position, blockType) {

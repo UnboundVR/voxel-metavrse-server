@@ -1,9 +1,9 @@
 var coding = require('./coding');
 var executor = require('./scriptExecutor');
-var engineAccessor = require('../engineAccessor');
+var voxelEngine = require('../voxelEngine');
 
 module.exports = function(socket) {
-  var engine = engineAccessor.engine;
+  var engine = voxelEngine.engine;
 
   coding.init(socket).then(function() {
     coding.getBlocksWithGists().forEach(function(block) {

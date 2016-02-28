@@ -6,7 +6,7 @@ var toolbar = document.getElementById('toolbar');
 var userInfo = document.getElementById('userInfo');
 var chatElememnt = document.getElementById('chat');
 var chat = require('../chat');
-var engineAccessor = require('../engineAccessor');
+var pointerLock = require('../pointerLock');
 
 var closeCodeWindow = function() {
   container.style.display = 'none';
@@ -17,7 +17,7 @@ var closeCodeWindow = function() {
   chat.enable();
   content.innerHTML = '';
   header.innerHTML = '';
-  engineAccessor.engine.interact.request();
+  pointerLock.request();
 };
 
 var openCodeWindow = function(codeWindowTitle, initialCode) {
@@ -52,7 +52,7 @@ var openCodeWindow = function(codeWindowTitle, initialCode) {
 
   codemirror.setOption('theme', 'tomorrow-night-bright');
   codemirror.focus();
-  engineAccessor.engine.interact.release();
+  pointerLock.release();
 
   var wrapper = codemirror.getWrapperElement();
   wrapper.addEventListener('keydown', function (event) {

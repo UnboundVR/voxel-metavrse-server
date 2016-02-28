@@ -1,11 +1,18 @@
+var player = require('voxel-player');
 var fly = require('voxel-fly');
 var walk = require('voxel-walk');
-var engineAccessor = require('./engineAccessor');
+var voxelEngine = require('./voxelEngine');
 
-module.exports = function(avatar) {
-  var avatarVisible;
+module.exports = function() {
+  var engine = voxelEngine.engine;
 
-  var engine = engineAccessor.engine;
+  var createPlayer = player(engine);
+  var avatar = createPlayer('assets/avatars/player.png');
+  avatar.possess();
+  var settings = engine.settings.avatarInitialPosition;
+  avatar.position.set(settings[0],settings[1],settings[2]);
+
+  var avatarVisible = false;
 
   // TODO instead of doing this, we should probably show/hide the whole object, or place the camera further away (so we can use a mirror for example)
   function setAvatarVisibility(visible) {
@@ -19,7 +26,7 @@ module.exports = function(avatar) {
     avatarVisible = visible;
   }
 
-  var makeFly = fly(engine);
+  var makeFly = fly(voxelEngine.engine);
   var target = engine.controls.target();
   engine.flyer = makeFly(target);
   setAvatarVisibility(false);

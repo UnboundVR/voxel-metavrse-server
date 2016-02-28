@@ -4,34 +4,22 @@ var editCode = require('../coding/editCode');
 var blocks = require('../../shared/blocks');
 var coding = require('../coding/coding');
 var toolbar = require('./toolbar');
-var engineAccessor = require('../engineAccessor');
+var voxelEngine = require('../voxelEngine');
 var consts = require('../../shared/constants');
+var getAdjacent = require('./getAdjacentPositions');
 
-module.exports = function(client) {
-  var engine = engineAccessor.engine;
+module.exports = function(socket) {
+  var engine = voxelEngine.engine;
 
   highlight.init();
   toolbar.init();
-
-  function getAdjacent(pos) {
-    var adj = [];
-
-    adj.push([pos[0] + 1, pos[1], pos[2]]);
-    adj.push([pos[0], pos[1] + 1, pos[2]]);
-    adj.push([pos[0], pos[1], pos[2] + 1]);
-    adj.push([pos[0] - 1, pos[1], pos[2]]);
-    adj.push([pos[0], pos[1] - 1, pos[2]]);
-    adj.push([pos[0], pos[1], pos[2] - 1]);
-
-    return adj;
-  }
 
   function adjacentToTrollBlock(position) {
     var adj = getAdjacent(position);
 
     for(var i = 0; i < adj.length; i++) {
       var pos = adj[i];
-      if(engine.getBlock(pos) == blocks.types.TROLL.number) {
+      if(voxelEngine.isOfType(pos, blocks.types.TROLL.number)) {
         return true;
       }
     }
@@ -41,14 +29,14 @@ module.exports = function(client) {
 
   function placeBlock(position) {
     engine.createBlock(position, toolbar.getSelected());
-    client.socket.emit('set', position, toolbar.getSelected());
+    socket.emit('set', position, toolbar.getSelected());
   }
 
   function codeBlock(position) {
     editCode(position).then(function() {
       var codeBlockNumber = blocks.types.CODE.number;
       engine.setBlock(position, codeBlockNumber);
-      client.socket.emit('set', position, codeBlockNumber);
+      socket.emit('set', position, codeBlockNumber);
     });
   }
 
@@ -59,7 +47,7 @@ module.exports = function(client) {
     }
 
     engine.setBlock(position, 0);
-    client.socket.emit('set', position, 0);
+    socket.emit('set', position, 0);
   }
 
   function canPlace(position) {
@@ -79,16 +67,16 @@ module.exports = function(client) {
   }
 
   function canEdit(position) {
-    if(engine.getBlock(position) == blocks.types.TILE.number) {
+    if(voxelEngine.isOfType(position, blocks.types.TILE.number)) {
       return false;
     }
 
-    if(engine.getBlock(position) == blocks.types.TROLL.number) {
+    if(voxelEngine.isOfType(position, blocks.types.TROLL.number)) {
       alert('the troll must go on');
       return false;
     }
 
-    if(engine.getBlock(position) == blocks.types.DOGE.number) {
+    if(voxelEngine.isOfType(position, blocks.types.DOGE.number)) {
       alert('such indestructible');
       alert('wow');
       return false;
