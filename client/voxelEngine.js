@@ -25,5 +25,8 @@ module.exports = {
   },
   isOfType: function(pos, type) {
     return this.engine.getBlock(pos) == type;
+  },
+  clearBlock: function(pos) {
+    this.engine.setBlock(pos, 0);
   }
 };

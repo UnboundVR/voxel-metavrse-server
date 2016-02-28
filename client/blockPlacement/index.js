@@ -1,8 +1,6 @@
 var highlight = require('./blockHighlight');
-var executor = require('../coding/scriptExecutor');
-var editCode = require('../coding/editCode');
 var blocks = require('../../shared/blocks');
-var coding = require('../coding/coding');
+var coding = require('../coding');
 var toolbar = require('./toolbar');
 var voxelEngine = require('../voxelEngine');
 var consts = require('../../shared/constants');
@@ -31,7 +29,7 @@ module.exports = function(socket) {
   }
 
   function codeBlock(position) {
-    editCode(position).then(function() {
+    coding.editCode(position).then(function() {
       var codeBlockNumber = blocks.types.CODE.number;
       voxelEngine.setBlock(position, codeBlockNumber);
       socket.emit('set', position, codeBlockNumber);
@@ -39,12 +37,8 @@ module.exports = function(socket) {
   }
 
   function removeBlock(position) {
-    if(coding.getGistId(position)) {
-      coding.removeGist(position);
-      executor.remove(position);
-    }
-
-    voxelEngine.setBlock(position, 0);
+    coding.removeCode(position);
+    voxelEngine.clearBlock(position);
     socket.emit('set', position, 0);
   }
 
@@ -58,7 +52,7 @@ module.exports = function(socket) {
     var canPlace = true;
 
     adjPositions.forEach(function(adjPos) {
-      canPlace = canPlace && executor.confirm(adjPos, consts.confirmableFunctions.PLACE_ADJACENT);
+      canPlace = canPlace && coding.confirm(adjPos, consts.confirmableFunctions.PLACE_ADJACENT);
     });
 
     return canPlace;
@@ -80,7 +74,7 @@ module.exports = function(socket) {
       return false;
     }
 
-    return executor.confirm(position, consts.confirmableFunctions.EDIT);
+    return coding.confirm(position, consts.confirmableFunctions.EDIT);
   }
 
   voxelEngine.onFire(function (target, state) {

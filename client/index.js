@@ -1,4 +1,4 @@
-var setupCoding = require('./coding');
+var coding = require('./coding');
 var setupBlockPlacement = require('./blockPlacement');
 var setupAvatar = require('./avatar');
 var createClient = require('./voxelClient');
@@ -16,9 +16,9 @@ module.exports = function() {
       voxelEngine.init(client.game);
       voxelEngine.appendToContainer().then(function() {
         setupAvatar();
-        setupCoding(socket);
         setupBlockPlacement(socket);
-        chat.init(auth.getName(), socket);
+        coding.init(socket);
+        chat.init(socket);
       }, function() {
         console.log('browser not capable');
       });

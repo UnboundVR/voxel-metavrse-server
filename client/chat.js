@@ -1,3 +1,5 @@
+var auth = require('./auth');
+
 var messages = document.getElementById('messages');
 var socket;
 var name;
@@ -28,9 +30,9 @@ function disable() {
 module.exports = {
   enable: enable,
   disable: disable,
-  init: function(nameParam, socketParam) {
+  init: function(socketParam) {
     socket = socketParam;
-    name = nameParam || 'anonymous';
+    name = auth.getName() || 'anonymous';
     enable();
 
     socket.on('message', function(message) {
