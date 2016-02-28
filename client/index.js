@@ -12,9 +12,7 @@ module.exports = function() {
   auth.init().then(function() {
     var socket = io.connect(location.host);
     chat.init(auth.getName(), socket);
-    var client = createClient(socket);
-
-    client.socket.on('noMoreChunks', function() {
+    var client = createClient(socket, function() {
       voxelEngine.init(client.game);
       voxelEngine.appendToContainer().then(function() {
         setupAvatar();

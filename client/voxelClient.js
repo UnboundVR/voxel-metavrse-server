@@ -6,15 +6,16 @@ var engine = require('voxel-engine');
 
 module.exports = Client;
 
-function Client(socket) {
+function Client(socket, onReady) {
   if(!(this instanceof Client)) {
-    return new Client(socket);
+    return new Client(socket, onReady);
   }
 
   this.connected = false;
   this.lerpPercent = 0.1;
   this.others = {};
   this.connect(socket);
+  this.onReady = onReady;
 }
 
 Client.prototype.connect = function(socket) {
@@ -49,6 +50,8 @@ Client.prototype.bindEvents = function(socket) {
       self.game.voxels.on('missingChunk', function(chunkPosition) {
         socket.emit('requestChunk', chunkPosition, processChunk);
       });
+
+      self.onReady();
     });
   });
 
