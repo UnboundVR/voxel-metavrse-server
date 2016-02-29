@@ -7,7 +7,6 @@ var engine = require('voxel-engine');
 module.exports = {
   init: function(socket) {
     var self = this;
-    this.connected = false;
     this.lerpPercent = 0.1;
     this.others = {};
     this.connect(socket);
@@ -18,17 +17,15 @@ module.exports = {
   connect: function(socket) {
     var self = this;
     socket.on('disconnect', function() {
-      self.connected = false;
+      // TODO handle disconnection
     });
     this.socket = socket;
     this.bindEvents(socket);
   },
   bindEvents: function(socket) {
     var self = this;
-    this.connected = true;
 
     socket.on('connect', function() {
-      self.connected = true;
       self.playerID = this.id;
     });
 
@@ -64,7 +61,7 @@ module.exports = {
     self.engine.settings = settings;
 
     function sendState() {
-      if (!self.connected) {
+      if (!socket.connected) {
         return;
       }
       var player = self.engine.controls.target();
