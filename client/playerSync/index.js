@@ -54,7 +54,7 @@ module.exports = {
       if (!self.others[id]) {
         return;
       }
-      self.engine.scene.remove(self.others[id].mesh);
+      voxelEngine.engine.scene.remove(self.others[id].mesh);
       delete self.others[id];
     });
 
