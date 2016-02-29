@@ -2,6 +2,7 @@ var github = require('./github');
 var executor = require('./scriptExecutor');
 var voxelEngine = require('../voxelEngine');
 var blocks = require('../../shared/blocks');
+var expandGists = require('../../shared/expandGists');
 var auth = require('../auth');
 
 var blocksWithCode;
@@ -16,8 +17,10 @@ module.exports = {
           blocksWithCode = response;
           resolve();
         } else {
-          // TODO use local github api to fetch all code
-          throw 'auth error';
+          expandGists(response, github.getGist).then(function(result) {
+            blocksWithCode = result;
+            resolve();
+          });
         }
       });
       socket.on('codeChanged', function(position, codeObj) {

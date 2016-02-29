@@ -1,6 +1,6 @@
 var storage = require('../../services/store/coding');
 var github = require('../../services/github');
-var extend = require('extend');
+var expandGists = require('../../../shared/expandGists');
 
 var gists;
 var dirty = false;
@@ -20,24 +20,13 @@ module.exports = {
     });
   },
   getAllCode: function(token) {
-    var promises = [];
-    Object.keys(gists).forEach(function(position) {
-      promises.push(github.getGist(gists[position], token).then(function(gist) {
-        return extend(gist, {position: position});
-      }));
-    });
-
-    var result = {};
-    return Promise.all(promises).then(function(codeObjs) {
-      codeObjs.forEach(function(codeObj) {
-        result[codeObj.position] = {
-          id: codeObj.id,
-          code: codeObj.code
-        };
+    if(token) {
+      return expandGists(gists, function(gistId) {
+        return github.getGist(gistId, token);
       });
-
-      return result;
-    });
+    } else {
+      return Promise.resolve(gists);
+    }
   },
   onCodeChanged: function(position, code, token, broadcast) {
     if(gists[position]) {

@@ -30,8 +30,7 @@ var openExisting = function(position, codeObj) {
 
 module.exports = function(position) {
   if(!auth.isLogged()) {
-    alert('Please login to be able to edit code');
-    return;
+    return Promise.reject('Please login to be able to edit code');
   }
 
   if(client.hasCode(position)) {

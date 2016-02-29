@@ -1,5 +1,7 @@
 var consts = require('../../shared/constants');
 
+var SINGLE_FILENAME = 'single_file';
+
 module.exports = {
   getGist: function(id) {
     var request = new Request(consts.github.API_URL + '/gists/' + id, {
@@ -11,7 +13,6 @@ module.exports = {
     }).then(function(response) {
       return {
         id: response.id,
-        description: response.description,
         code: response.files[SINGLE_FILENAME].content
       }
     });
