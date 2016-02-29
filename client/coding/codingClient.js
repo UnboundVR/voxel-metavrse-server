@@ -21,13 +21,9 @@ module.exports = {
         }
       });
       socket.on('codeChanged', function(position, codeObj) {
-        if(auth.isLogged()) {
-          blocksWithCode[position] = codeObj;
-        } else {
-          // TODO use local github api to fetch code
-          throw 'auth error';
-        }
-        executor.update(position, code);
+        console.log('codeChanged')
+        blocksWithCode[position] = codeObj;
+        executor.update(position, codeObj.code);
         voxelEngine.setBlock(position, blocks.types.CODE.number);
       });
       socket.on('codeRemoved', function(position) {

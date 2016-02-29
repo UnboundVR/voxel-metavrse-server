@@ -58,12 +58,6 @@ module.exports = {
         'User-Agent': 'metavrse.io'
       },
       json: true
-    }).then(function(response) {
-      if(!response.ok) {
-        throw response.statusText;
-      }
-
-      return response;
     });
   }
 };
