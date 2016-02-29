@@ -28,7 +28,6 @@ module.exports = {
     this.connected = true;
 
     socket.on('connect', function() {
-      console.log('connected')
       self.connected = true;
       self.playerID = this.id;
     });
