@@ -18,7 +18,7 @@ module.exports = {
           executor.update(position, gist.code);
         });
       });
-      socket.on('codeRemoved', function(position, gistId) {
+      socket.on('codeRemoved', function(position) {
         delete gistIds[position];
         executor.remove(position);
       });
