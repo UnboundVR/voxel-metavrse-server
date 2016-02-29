@@ -21,8 +21,7 @@ module.exports = {
     var self = this;
 
     var processChunk = function(chunk) {
-      var voxels = rle.decode(chunk.voxels);
-      chunk.voxels = voxels;
+      chunk.voxels = rle.decode(chunk.voxels);
       self.engine.showChunk(chunk);
     };
 

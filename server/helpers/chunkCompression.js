@@ -26,8 +26,6 @@ module.exports = {
     };
   },
   decompress: function(chunk) {
-    var chunkId = engine.getChunkId(chunk.position);
-
     return { // TODO clone with extend and modify voxels prop instead of returning new object
       position: chunk.position,
       dims: chunk.dims,
