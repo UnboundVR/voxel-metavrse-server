@@ -1,7 +1,7 @@
 var player = require('voxel-player');
 var fly = require('voxel-fly');
 var walk = require('voxel-walk');
-var voxelEngine = require('./voxelEngine');
+var voxelEngine = require('../voxelEngine');
 
 module.exports = function() {
   // TODO instead of doing this, we should probably show/hide the whole object, or place the camera further away (so we can use a mirror for example)
