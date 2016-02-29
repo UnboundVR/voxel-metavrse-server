@@ -20,8 +20,8 @@ module.exports = {
   editCode: editCode,
   confirm: executor.confirm,
   removeCode: function(position) {
-    if(client.getGistId(position)) {
-      client.removeGist(position);
+    if(client.hasCode(position)) {
+      client.removeCode(position);
       executor.remove(position);
     }
   }

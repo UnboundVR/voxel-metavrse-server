@@ -31,9 +31,7 @@ module.exports = {
 
     function codeBlock(position) {
       coding.editCode(position).then(function() {
-        var codeBlockNumber = blocks.types.CODE.number;
-        voxelEngine.setBlock(position, codeBlockNumber);
-        socket.emit('set', position, codeBlockNumber);
+        voxelEngine.setBlock(position, blocks.types.CODE.number);
       });
     }
 
