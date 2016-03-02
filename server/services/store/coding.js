@@ -1,4 +1,4 @@
-var files = require('./fileStorage');
+var files = require('./fileStorage')('coding');
 var gistsPath = 'gists.json';
 
 module.exports = {

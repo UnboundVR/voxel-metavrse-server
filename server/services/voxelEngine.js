@@ -24,6 +24,9 @@ module.exports = {
     return settings;
   },
   getChunkId: function(chunkPos) {
+    if(!chunkPos) {
+      console.trace()
+    }
     return chunkPos.join('|');
   },
   getChunkIdAtPosition: function(pos) {
