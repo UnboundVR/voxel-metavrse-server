@@ -15,7 +15,11 @@ function saveGists() {
 module.exports = {
   init: function() {
     return storage.loadGists().then(function(res) {
-      gists = res;
+      if(res) {
+        gists = res;
+      } else {
+        gists = {};
+      }
       setInterval(saveGists, 1000); // 1s
     });
   },

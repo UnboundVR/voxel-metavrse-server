@@ -26,6 +26,8 @@ function loadChunkFromStorage(chunkId) {
       engine.setChunk(chunkId, chunk);
       return chunk;
     }
+  }, function(err) {
+    console.log(err)
   });
 }
 
@@ -71,6 +73,8 @@ module.exports = {
     return loadInitialChunksFromStorage().then(function() {
       setInterval(saveChunks, 1000); // 1s
       // at this point we have the first chunks generated but we overwrite them with whatever is on the storage (TODO only generate a chunk if it's not in storage)
+    }).catch(function(err) {
+      console.log('Cannot load chunks', err);
     });
   },
   getSettings: engine.getSettings,
@@ -78,6 +82,8 @@ module.exports = {
     var chunkId = engine.getChunkId(chunkPos);
     ensureChunkExists(chunkId).then(function() {
       callback(getChunk(chunkId));
+    }).catch(function(err) {
+      console.log('Cannot load chunk ' + chunkId, err)
     });
   },
   sendInitialChunks: function(sendChunk, noMoreChunks) {

@@ -1,41 +1,59 @@
 var fs = require('fs');
 var Promise = require('promise');
 
-var basePath = process.cwd() + '/storage';
+module.exports = function(subPath) {
+  if(subPath && subPath.indexOf('/') != -1) {
+    throw 'subPath must be exactly one folder deep';
+  }
 
-function ensureDirectoryExists() {
-  return new Promise(function(resolve, reject) {
-    fs.mkdir(basePath, function(err) {
-      resolve();
-    });
-  });
-}
+  var storageFolderPath = process.cwd() + '/storage'
+  var basePath = new String(storageFolderPath);
+  if(subPath) {
+    basePath += ('/' + subPath);
+  }
 
-module.exports = {
-  save: function(path, obj) {
+  function ensureDirectoryExists(path) {
     return new Promise(function(resolve, reject) {
-      ensureDirectoryExists().then(function() {
-        fs.writeFile(basePath + '/' + path, JSON.stringify(obj), function(err) {
-          if(err) {
-            reject(err);
-          } else {
-            resolve();
-          }
+      var createActualPath = function() {
+        fs.mkdir(path, function(err) {
+          resolve();
         });
-      });
-    });
-  },
-  load: function(path) {
-    return new Promise(function(resolve, reject) {
-      ensureDirectoryExists().then(function() {
-        fs.readFile(basePath + '/' + path, function(err, data) {
-          if(err) {
-            resolve({});
-          } else {
-            resolve(JSON.parse(data));
-          }
-        });
-      });
+      };
+
+      if(subPath && path != storageFolderPath) {
+        ensureDirectoryExists(storageFolderPath).then(createActualPath);
+      } else {
+        createActualPath();
+      }
     });
   }
+
+  return {
+    save: function(path, obj) {
+      return new Promise(function(resolve, reject) {
+        ensureDirectoryExists(basePath).then(function() {
+          fs.writeFile(basePath + '/' + path, JSON.stringify(obj), function(err) {
+            if(err) {
+              reject(err);
+            } else {
+              resolve();
+            }
+          });
+        });
+      });
+    },
+    load: function(path) {
+      return new Promise(function(resolve, reject) {
+        ensureDirectoryExists(basePath).then(function() {
+          fs.readFile(basePath + '/' + path, function(err, data) {
+            if(err) {
+              resolve(null);
+            } else {
+              resolve(JSON.parse(data));
+            }
+          });
+        });
+      });
+    }
+  };
 };
