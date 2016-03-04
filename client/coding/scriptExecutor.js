@@ -1,4 +1,4 @@
-var engineAccessor = require('../engineAccessor');
+var voxelEngine = require('../voxelEngine');
 var blocks = require('../../shared/blocks');
 var events = require('../events');
 var EventEmitter = require('events');
@@ -9,10 +9,10 @@ var blockObjs = {};
 var supportedEvents = [consts.events.HOVER, consts.events.LEAVE];
 
 supportedEvents.forEach(function(eventName) {
-  events.on(eventName, function(payload) {
+  events.on(eventName, function(payload, filter) {
     Object.keys(blockObjs).forEach(function(key) {
       var block = blockObjs[key];
-      block.emit(eventName, payload);
+      block.emit(eventName, payload, filter);
     });
   });
 });
@@ -50,8 +50,7 @@ var confirm = function(position, action) {
 };
 
 function buildBlockObject(position) {
-  var engine = engineAccessor.engine;
-  var typeNumber = engine.getBlock(position);
+  var typeNumber = voxelEngine.getBlock(position);
   var typeInfo = blocks.getBlockInfo(typeNumber);
 
   var Block = function(position, blockType) {
@@ -69,8 +68,8 @@ function subscribeToEvents(obj) {
     var handlerName = 'on' + eventName;
     var handler = obj[handlerName];
     if(handler) {
-      obj.on(eventName, function(payload) {
-        if(!payload.position || obj.position.join('|') == payload.position.join('|')) {
+      obj.on(eventName, function(payload, filter) {
+        if(!filter || !filter.position || obj.position.join('|') == filter.position.join('|')) {
           handler.bind(obj)(payload);
         }
       });

@@ -1,5 +1,5 @@
 var highlight = require('voxel-highlight');
-var engineAccessor = require('../engineAccessor');
+var voxelEngine = require('../voxelEngine');
 var events = require('../events');
 var consts = require('../../shared/constants');
 
@@ -7,19 +7,18 @@ var blockPosPlace, blockPosEdit;
 
 module.exports = {
   init: function() {
-    var engine = engineAccessor.engine;
-    var hl = engine.highlighter = highlight(engine, {
+    var hl = voxelEngine.engine.highlighter = highlight(voxelEngine.engine, {
       color: 0xff0000
     });
 
     hl.on('highlight', function (voxelPos) {
       blockPosEdit = voxelPos;
-      events.emit(consts.events.HOVER, {position: voxelPos});
+      events.emit(consts.events.HOVER, {}, {position: voxelPos});
     });
 
     hl.on('remove', function (voxelPos) {
       blockPosEdit = null;
-      events.emit(consts.events.LEAVE, {position: voxelPos});
+      events.emit(consts.events.LEAVE, {}, {position: voxelPos});
     });
 
     hl.on('highlight-adjacent', function (voxelPos) {

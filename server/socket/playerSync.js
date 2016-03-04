@@ -7,17 +7,13 @@ module.exports = function(io) {
   controller.init(broadcast);
 
   io.on('connection', function(socket) {
-    var id = socket.id;
-
-    var sendId = function(id) {
-      socket.emit('id', id);
-    };
+    var id = socket.id.split('#')[1];
 
     var broadcast = function(id) {
       socket.broadcast.emit('join', id);
     };
 
-    controller.onJoin(id, sendId, broadcast);
+    controller.onJoin(id, broadcast);
 
     socket.on('disconnect', function() {
       var broadcast = function(id) {

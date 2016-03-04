@@ -1,4 +1,6 @@
 var storage = require('../../services/store/coding');
+var github = require('../../services/github');
+var expandGists = require('../../../shared/expandGists');
 
 var gists;
 var dirty = false;
@@ -21,13 +23,37 @@ module.exports = {
       setInterval(saveGists, 1000); // 1s
     });
   },
-  getGists: function() {
-    return gists;
+  getAllCode: function(token) {
+    if(token) {
+      return expandGists(gists, function(gistId) {
+        return github.getGist(gistId, token);
+      });
+    } else {
+      return Promise.resolve(gists);
+    }
   },
-  onCodeChanged: function(position, gistId, broadcast) {
-    gists[position] = gistId;
-    broadcast(position, gistId);
-    dirty = true;
+  onCodeChanged: function(position, code, token, broadcast) {
+    if(gists[position]) {
+      return github.updateGist(gists[position], code, token).then(function() { // TODO if it's not mine, fork it and return new one
+        var codeObj = {
+          id: gists[position],
+          code: code
+        };
+        broadcast(position, codeObj);
+        return codeObj;
+      });
+    } else {
+      return github.createGist(code, token).then(function(response) {
+        gists[position] = response.id;
+        dirty = true;
+        var codeObj = {
+          id: gists[position],
+          code: code
+        };
+        broadcast(position, codeObj);
+        return codeObj;
+      });
+    }
   },
   onCodeRemoved: function(position, broadcast) {
     delete gists[position];
