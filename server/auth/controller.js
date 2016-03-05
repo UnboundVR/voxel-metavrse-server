@@ -1,5 +1,5 @@
 var request = require('request-promise');
-var consts = require('../../../shared/constants');
+var consts = require('../../shared/constants');
 
 module.exports = {
   getGithubClientId: function() {

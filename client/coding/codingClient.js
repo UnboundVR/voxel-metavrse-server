@@ -2,7 +2,7 @@ var github = require('./github');
 var executor = require('./scriptExecutor');
 var voxelEngine = require('../voxelEngine');
 var blocks = require('../../shared/blocks');
-var expandGists = require('../../shared/expandGists');
+var expandGists = require('../../shared/coding/expandGists');
 var auth = require('../auth');
 
 var blocksWithCode;

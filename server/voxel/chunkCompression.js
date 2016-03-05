@@ -1,5 +1,5 @@
 var rle = require('../../shared/rle');
-var engine = require('../services/voxelEngine');
+var engine = require('./voxelEngine');
 var extend = require('extend');
 
 var cache = {};

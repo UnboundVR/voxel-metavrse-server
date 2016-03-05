@@ -1,8 +1,8 @@
-var storage = require('../../services/store/voxels');
+var storage = require('./store');
 var Promise = require('promise');
 
-var engine = require('../../services/voxelEngine');
-var compression = require('../../helpers/chunkCompression');
+var engine = require('./voxelEngine');
+var compression = require('./chunkCompression');
 
 var dirtyChunks = {};
 

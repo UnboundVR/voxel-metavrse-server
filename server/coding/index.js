@@ -1,4 +1,4 @@
-var controller = require('./controllers/coding');
+var controller = require('./controller');
 
 module.exports = function(io) {
   controller.init().then(function() {

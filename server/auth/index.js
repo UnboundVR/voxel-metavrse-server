@@ -1,4 +1,4 @@
-var controller = require('./controllers/auth');
+var controller = require('./controller');
 
 module.exports = function(app) {
   app.get('/auth/github_client_id', function(req, res) {

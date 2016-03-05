@@ -1,4 +1,4 @@
-var controller = require('./controllers/chat');
+var controller = require('./controller');
 
 module.exports = function(io) {
   io.on('connection', function(socket) {
@@ -6,7 +6,7 @@ module.exports = function(io) {
       var broadcast = function(message) {
         io.sockets.emit('message', message);
       };
-      
+
       controller.onMessage(message, broadcast);
     });
   });

@@ -1,4 +1,4 @@
-var fileStorage = require('./fileStorage')('chunks');
+var fileStorage = require('../fileStorage')('chunks');
 
 module.exports = {
   saveChunk: function(chunkId, chunk) {

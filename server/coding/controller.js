@@ -1,6 +1,6 @@
-var storage = require('../../services/store/coding');
-var github = require('../../services/github');
-var expandGists = require('../../../shared/expandGists');
+var storage = require('./store');
+var github = require('./github');
+var expandGists = require('../../shared/coding/expandGists');
 
 var gists;
 var dirty = false;
