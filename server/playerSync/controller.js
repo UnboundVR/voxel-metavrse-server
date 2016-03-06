@@ -1,5 +1,5 @@
 var THREE = require('three');
-var consts = require('../../shared/consts');
+var consts = require('../../shared/constants');
 
 var clients = {};
 

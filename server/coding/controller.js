@@ -14,7 +14,9 @@ module.exports = {
       } else {
         gists = {};
       }
-      autoSave.init(consts.coding.AUTO_SAVE_INTERVAL);
+      autoSave.init(consts.coding.AUTO_SAVE_INTERVAL, function() {
+        return gists;
+      });
     });
   },
   getAllCode: function(token) {
