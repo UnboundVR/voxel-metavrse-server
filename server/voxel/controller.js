@@ -71,7 +71,7 @@ module.exports = {
   init: function() {
     engine.init();
     return loadInitialChunksFromStorage().then(function() {
-      setInterval(saveChunks, consts.voxel.AUTOSAVE_INTERVAL);
+      setInterval(saveChunks, consts.voxel.AUTO_SAVE_INTERVAL);
       // at this point we have the first chunks generated but we overwrite them with whatever is on the storage (TODO only generate a chunk if it's not in storage)
     }).catch(function(err) {
       console.log('Cannot load chunks', err);

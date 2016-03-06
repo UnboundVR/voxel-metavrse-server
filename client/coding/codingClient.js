@@ -12,7 +12,11 @@ module.exports = {
     var self = this;
     this.socket = socket;
     return new Promise(function(resolve, reject) {
-      socket.emit('requestAllCode', auth.getAccessToken(), function(response) {
+      socket.emit('requestAllCode', auth.getAccessToken(), function(err, response) {
+        if(err) {
+          throw new Error('Error fetching code. ' + err);
+        }
+
         if(auth.isLogged()) {
           blocksWithCode = response;
           resolve();

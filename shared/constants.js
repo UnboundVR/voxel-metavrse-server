@@ -17,10 +17,10 @@ module.exports = {
     MAX_MSG_LENGTH: 1000 // 1s
   },
   coding: {
-    AUTOSAVE_INTERVAL: 1000 // 1s
+    AUTO_SAVE_INTERVAL: 1000 // 1s
   },
   voxel: {
-    AUTOSAVE_INTERVAL:
+    AUTO_SAVE_INTERVAL: 1000 // 1s
   },
   playerSync: {
     SEND_UPDATE_INTERVAL: 1000/22  // 45ms

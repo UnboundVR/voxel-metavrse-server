@@ -1,17 +1,10 @@
 var storage = require('./store');
 var github = require('./github');
 var expandGists = require('../../shared/coding/expandGists');
-var consts = require('../../shared/consts');
+var autoSave = require('./autoSave');
+var consts = require('../../shared/constants');
 
 var gists;
-var dirty = false;
-
-function saveGists() {
-  if(dirty) {
-    storage.saveGists(gists);
-    dirty = false;
-  }
-}
 
 module.exports = {
   init: function() {
@@ -21,14 +14,15 @@ module.exports = {
       } else {
         gists = {};
       }
-      setInterval(saveGists, consts.coding.AUTOSAVE_INTERVAL);
+      autoSave.init(consts.coding.AUTO_SAVE_INTERVAL);
     });
   },
   getAllCode: function(token) {
     if(token) {
-      return expandGists(gists, function(gistId) {
+      var getGist = function(gistId) {
         return github.getGist(gistId, token);
-      });
+      };
+      return expandGists(gists, getGist);
     } else {
       return Promise.resolve(gists);
     }
@@ -46,7 +40,7 @@ module.exports = {
     } else {
       return github.createGist(code, token).then(function(response) {
         gists[position] = response.id;
-        dirty = true;
+        autoSave.setDirty(true);
         var codeObj = {
           id: gists[position],
           code: code
@@ -59,6 +53,6 @@ module.exports = {
   onCodeRemoved: function(position, broadcast) {
     delete gists[position];
     broadcast(position);
-    dirty = true;
+    autoSave.setDirty(true);
   }
 };

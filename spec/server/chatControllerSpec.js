@@ -3,7 +3,7 @@ var sinon = require('sinon');
 var chat = require('../../server/chat/controller');
 var consts = require('../../shared/constants');
 
-test('empty messages should be ignored', function(t) {
+test('ChatController::onMessage | empty messages should be ignored', function(t) {
   var msg = {text: ''};
   var broadcast = sinon.spy();
 
@@ -12,7 +12,7 @@ test('empty messages should be ignored', function(t) {
   t.end();
 });
 
-test('non-empty messages should be broadcasted', function(t) {
+test('ChatController::onMessage | non-empty messages should be broadcasted as is', function(t) {
   var text = 'a'.repeat(consts.chat.MAX_MSG_LENGTH / 2);
   var msg = {text: text};
   var broadcast = sinon.spy();
@@ -22,7 +22,7 @@ test('non-empty messages should be broadcasted', function(t) {
   t.end();
 });
 
-test('long messages should be trimmed', function(t) {
+test('ChatController::onMessage | long messages should be trimmed', function(t) {
   var text = 'a'.repeat(consts.chat.MAX_MSG_LENGTH + 2);
   var msg = {text: text};
   var broadcast = sinon.spy();
