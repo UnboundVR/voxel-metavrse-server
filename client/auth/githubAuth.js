@@ -25,12 +25,18 @@ module.exports = {
     });
 
     return fetch(request).then(function(response) {
-      return response.json();
+      if(response.ok) {
+        return response.json();
+      }
+
+      return response.text().then(function(errorCode) {
+        throw new Error('Could not log in to github. ' + errorCode);
+      });
     }).then(function(response) {
-      if(response.access_token) {
-        return response.access_token;
+      if(response.accessToken) {
+        return response.accessToken;
       } else {
-        throw 'Could not log in to github';
+        throw new Error('Could not log in to github');
       }
     });
   },
