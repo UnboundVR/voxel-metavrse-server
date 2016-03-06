@@ -1,11 +1,10 @@
 var extend = require('extend');
 
 module.exports = function(gists, getGist) {
-  var promises = [];
-  Object.keys(gists).forEach(function(position) {
-    promises.push(getGist(gists[position]).then(function(codeObj) {
+  var promises = Object.keys(gists).map(function(position) {
+    return getGist(gists[position]).then(function(codeObj) {
       return extend({}, codeObj, {position: position});
-    }));
+    });
   });
 
   return Promise.all(promises).then(function(codeObjs) {
