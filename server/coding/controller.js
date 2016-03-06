@@ -28,27 +28,25 @@ module.exports = {
     }
   },
   onCodeChanged: function(position, code, token, broadcast) {
-    if(gists[position]) {
-      return github.updateGist(gists[position], code, token).then(function() { // TODO if it's not mine, fork it and return new one
-        var codeObj = {
-          id: gists[position],
-          code: code
-        };
-        broadcast(position, codeObj);
-        return codeObj;
-      });
-    } else {
-      return github.createGist(code, token).then(function(response) {
-        gists[position] = response.id;
-        autoSave.setDirty(true);
-        var codeObj = {
-          id: gists[position],
-          code: code
-        };
-        broadcast(position, codeObj);
-        return codeObj;
-      });
-    }
+    var updateGithub = function() {
+      if(gists[position]) {
+        return github.updateGist(gists[position], code, token);
+      } else {
+        return github.createGist(code, token).then(function(response) {
+          gists[position] = response.id;
+          autoSave.setDirty(true);
+        });
+      }
+    };
+
+    return updateGithub().then(function() {
+      var codeObj = {
+        id: gists[position],
+        code: code
+      };
+      broadcast(position, codeObj);
+      return codeObj;
+    });
   },
   onCodeRemoved: function(position, broadcast) {
     delete gists[position];
