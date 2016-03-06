@@ -30,7 +30,7 @@ module.exports = {
   onCodeChanged: function(position, code, token, broadcast) {
     var updateGithub = function() {
       if(gists[position]) {
-        return github.updateGist(gists[position], code, token);
+        return github.updateGist(gists[position], code, token); // TODO fork if this is not mine
       } else {
         return github.createGist(code, token).then(function(response) {
           gists[position] = response.id;
