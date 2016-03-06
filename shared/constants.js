@@ -14,6 +14,15 @@ module.exports = {
     OAUTH_URL: 'https://github.com/login/oauth'
   },
   chat: {
-    MAX_MSG_LENGTH: 1000
+    MAX_MSG_LENGTH: 1000 // 1s
+  },
+  coding: {
+    AUTOSAVE_INTERVAL: 1000 // 1s
+  },
+  voxel: {
+    AUTOSAVE_INTERVAL:
+  },
+  playerSync: {
+    SEND_UPDATE_INTERVAL: 1000/22  // 45ms
   }
 };

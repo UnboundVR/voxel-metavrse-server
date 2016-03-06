@@ -1,6 +1,7 @@
 var storage = require('./store');
 var github = require('./github');
 var expandGists = require('../../shared/coding/expandGists');
+var consts = require('../../shared/consts');
 
 var gists;
 var dirty = false;
@@ -20,7 +21,7 @@ module.exports = {
       } else {
         gists = {};
       }
-      setInterval(saveGists, 1000); // 1s
+      setInterval(saveGists, consts.coding.AUTOSAVE_INTERVAL);
     });
   },
   getAllCode: function(token) {

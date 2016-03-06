@@ -1,4 +1,5 @@
 var THREE = require('three');
+var consts = require('../../shared/consts');
 
 var clients = {};
 
@@ -27,7 +28,7 @@ module.exports = {
       broadcast(update);
     };
 
-    setInterval(sendUpdate, 1000/22); // 45ms
+    setInterval(sendUpdate, consts.playerSync.SEND_UPDATE_INTERVAL);
   },
   onJoin: function(id, broadcast) {
     var player = {
