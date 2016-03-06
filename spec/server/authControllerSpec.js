@@ -1,13 +1,40 @@
 var test = require('tape');
 var sinon = require('sinon');
+var proxyquire = require('proxyquire').noCallThru();
 
-test('this test passes', function(t) {
-  var obj = {};
-  var spy = sinon.spy();
+var mockGithubAuth;
+var code = 'some code';
+var token = 'some token';
+var error = 'some error';
 
-  spy(obj);
+var setup = function(authSuccess) {
+  mockGithubAuth = {
+    getAccessToken: sinon.stub().withArgs(code).returns(
+      Promise.resolve(authSuccess ? {access_token: token} : {error: error})
+    )
+  };
 
-  t.ok(spy.calledOnce, 'callback is called once');
-  t.ok(spy.calledWith(obj), 'callback is called with the object');
-  t.end();
+  return proxyquire('../../server/auth/controller', {
+    './githubAuth': mockGithubAuth,
+  });
+};
+
+test('controller should return token if github request succeeds', function(t) {
+  var controller = setup(true);
+
+  controller.getAccessToken(code).then(function(authToken) {
+    t.ok(mockGithubAuth.getAccessToken.calledWith(code), 'githubAuth is called');
+    t.equal(authToken, token, 'authToken is ok');
+    t.end();
+  });
+});
+
+test('controller should throw error code if github request fails', function(t) {
+  var controller = setup(false);
+
+  controller.getAccessToken(code).catch(function(errorCode) {
+    t.ok(mockGithubAuth.getAccessToken.calledWith(code), 'githubAuth is called');
+    t.equal(errorCode, error, 'errorCode is ok');
+    t.end();
+  });
 });

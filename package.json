@@ -31,6 +31,7 @@
     "gulp-tape": "0.0.7",
     "lodash.assign": "^4.0.3",
     "nodemon": "^1.9.1",
+    "proxyquire": "^1.7.4",
     "sinon": "^1.17.3",
     "strictify": "^0.2.0",
     "tap-colorize": "^1.2.0",
