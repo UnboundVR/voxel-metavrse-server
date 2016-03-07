@@ -2,7 +2,6 @@ var storage = require('./store');
 var Promise = require('promise');
 var engine = require('./voxelEngine');
 var compression = require('./chunkCompression');
-var consts = require('../../shared/constants');
 
 var dirtyChunks = {};
 
@@ -26,8 +25,8 @@ function loadChunkFromStorage(chunkId) {
       engine.setChunk(chunkId, chunk);
       return chunk;
     }
-  }, function(err) {
-    console.log(err)
+  }).catch(function(err) {
+    console.log(err);
   });
 }
 
@@ -37,17 +36,6 @@ function loadInitialChunksFromStorage() {
     promises.push(loadChunkFromStorage(chunkId));
   });
   return Promise.all(promises);
-}
-
-function saveChunks() {
-  engine.getExistingChunkIds().forEach(function(chunkId) {
-    var chunk = getChunk(chunkId); // this is necessary to ensure all newly compressed chunks are marked dirty
-    if(isDirty(chunkId)) {
-      storage.saveChunk(chunkId, chunk).then(function() {
-        markNotDirty(chunkId);
-      });
-    }
-  });
 }
 
 function getChunk(chunkId) {
@@ -70,12 +58,19 @@ function ensureChunkExists(chunkId) {
 module.exports = {
   init: function() {
     engine.init();
-    return loadInitialChunksFromStorage().then(function() {
-      setInterval(saveChunks, consts.voxel.AUTO_SAVE_INTERVAL);
-      // at this point we have the first chunks generated but we overwrite them with whatever is on the storage (TODO only generate a chunk if it's not in storage)
-    }).catch(function(err) {
-      console.log('Cannot load chunks', err);
-    });
+    return loadInitialChunksFromStorage();
+  },
+  saveChunks: function() {
+    return Promise.all(engine.getExistingChunkIds().map(function(chunkId) {
+      var chunk = getChunk(chunkId); // this is necessary to ensure all newly compressed chunks are marked dirty
+      if(isDirty(chunkId)) {
+        return storage.saveChunk(chunkId, chunk).then(function() {
+          markNotDirty(chunkId);
+        });
+      } else {
+        return Promise.resolve();
+      }
+    }));
   },
   getSettings: engine.getSettings,
   requestChunk: function(chunkPos, callback) {

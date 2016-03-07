@@ -1,7 +1,14 @@
+var consts = require('../../shared/constants');
 var controller = require('./controller');
 
 module.exports = function(io) {
   controller.init().then(function() {
+    setInterval(function() {
+      controller.saveChunks().catch(function(err) {
+        console.log('Error auto saving chunks', err);
+      });
+    }, consts.voxel.AUTO_SAVE_INTERVAL);
+
     io.on('connection', function(socket) {
       socket.emit('settings', controller.getSettings());
 
@@ -29,5 +36,7 @@ module.exports = function(io) {
         controller.set(pos, val, broadcast);
       });
     });
+  }).catch(function(err) {
+    console.log('Error initializing voxel module', err);
   });
 };
