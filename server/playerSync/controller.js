@@ -33,7 +33,7 @@ module.exports = {
   onJoin: function(id, broadcast) {
     var player = {
       rotation: new THREE.Vector3(),
-      position: new THREE.Vector3()
+      position: new THREE.Vector3(0, 2, 0)
     };
 
     clients[id] = player;
