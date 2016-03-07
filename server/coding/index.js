@@ -32,11 +32,11 @@ module.exports = function(io) {
         controller.onCodeRemoved(position, broadcast);
       });
 
-      setInterval(consts.coding.AUTO_SAVE_INTERVAL, function() {
+      setInterval(function() {
         controller.storeCode().catch(function(err) {
           console.log('Error updating code', err);
         });
-      });
+      }, consts.coding.AUTO_SAVE_INTERVAL);
     });
   }).catch(function(err) {
     console.log('Cannot initialize coding.', err);
