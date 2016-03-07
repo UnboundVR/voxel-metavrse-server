@@ -23,6 +23,7 @@ module.exports = {
     AUTO_SAVE_INTERVAL: 1000 // 1s
   },
   playerSync: {
-    SEND_UPDATE_INTERVAL: 1000/22  // 45ms
+    SEND_UPDATE_INTERVAL: 1000/22,  // 45ms
+    LERP_PERCENT: 0.1
   }
 };

@@ -52,7 +52,7 @@ module.exports = {
     var distance = pos.distanceTo(state.position);
     if (distance > 20) {
       var before = pos.clone();
-      pos.lerp(state.position, 0.1);
+      pos.lerp(state.position, consts.playerSync.LERP_PERCENT);
       return;
     }
     pos.copy(state.position);
