@@ -33,7 +33,13 @@ module.exports = {
       chunks.forEach(processChunk);
 
       self.engine.voxels.on('missingChunk', function(chunkPosition) {
-        socket.emit('requestChunk', chunkPosition, processChunk);
+        socket.emit('requestChunk', chunkPosition, function(err, chunk) {
+          if(err) {
+            alert('Error getting chunk: ', err);
+          } else {
+            processChunk(chunk);
+          }
+        });
       });
 
       self.onReady();

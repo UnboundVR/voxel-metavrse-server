@@ -14,8 +14,9 @@ module.exports = function(io) {
 
       socket.on('requestChunk', function(chunkPosition, callback) {
         controller.requestChunk(chunkPosition).then(function(chunk) {
-          callback(chunk);
+          callback(null, chunk);
         }).catch(function(err) {
+          callback(err);
           console.log('Error getting chunk', err);
         });
       });
