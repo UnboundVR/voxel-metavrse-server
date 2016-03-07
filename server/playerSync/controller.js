@@ -33,8 +33,10 @@ module.exports = {
   onJoin: function(id, broadcast) {
     var player = {
       rotation: new THREE.Vector3(),
-      position: new THREE.Vector3(0, 2, 0)
+      position: new THREE.Vector3()
     };
+    var initialPosition = consts.playerSync.AVATAR_INITIAL_POSITION;
+    player.position.set(initialPosition[0], initialPosition[1], initialPosition[2]);
 
     clients[id] = player;
 

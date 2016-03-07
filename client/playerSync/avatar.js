@@ -2,6 +2,7 @@ var player = require('voxel-player');
 var fly = require('voxel-fly');
 var walk = require('voxel-walk');
 var voxelEngine = require('../voxelEngine');
+var consts = require('../../shared/constants');
 
 module.exports = function() {
   // TODO instead of doing this, we should probably show/hide the whole object, or place the camera further away (so we can use a mirror for example)
@@ -41,8 +42,8 @@ module.exports = function() {
   var createPlayer = player(engine);
   var avatar = createPlayer('assets/avatars/player.png');
   avatar.possess();
-  var settings = engine.settings.avatarInitialPosition;
-  avatar.position.set(settings[0],settings[1],settings[2]);
+  var initialPos = consts.playerSync.AVATAR_INITIAL_POSITION;
+  avatar.position.set(initialPos[0],initialPos[1],initialPos[2]);
 
   var makeFly = fly(voxelEngine.engine);
   var target = engine.controls.target();

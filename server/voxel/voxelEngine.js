@@ -15,8 +15,7 @@ module.exports = {
       materials: blocks.getMaterials(),
       texturePath: 'assets/textures/',
       worldOrigin: [0, 0, 0],
-      controls: { discreteFire: true },
-      avatarInitialPosition: [0, 2, 0]
+      controls: { discreteFire: true }
     };
     engine = createEngine(settings);
   },
