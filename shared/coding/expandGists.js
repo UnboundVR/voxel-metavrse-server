@@ -1,21 +1,12 @@
-var extend = require('extend');
-
 module.exports = function(gists, getGist) {
+  var result = {};
   var promises = Object.keys(gists).map(function(position) {
     return getGist(gists[position]).then(function(codeObj) {
-      return extend({}, codeObj, {position: position});
+      result[position] = codeObj;
     });
   });
 
   return Promise.all(promises).then(function(codeObjs) {
-    var result = {};
-    codeObjs.forEach(function(codeObj) {
-      result[codeObj.position] = {
-        id: codeObj.id,
-        code: codeObj.code
-      };
-    });
-
     return result;
   });
 };
