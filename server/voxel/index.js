@@ -25,7 +25,11 @@ module.exports = function(io) {
       });
 
       socket.on('requestChunk', function(chunkPosition, callback) {
-        controller.requestChunk(chunkPosition, callback);
+        controller.requestChunk(chunkPosition).then(function(chunk) {
+          callback(chunk);
+        }).catch(function(err) {
+          console.log('Error getting chunk', err);
+        });
       });
 
       socket.on('set', function(pos, val) {

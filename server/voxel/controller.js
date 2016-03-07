@@ -25,8 +25,6 @@ function loadChunkFromStorage(chunkId) {
       engine.setChunk(chunkId, chunk);
       return chunk;
     }
-  }).catch(function(err) {
-    console.log(err);
   });
 }
 
@@ -73,12 +71,12 @@ module.exports = {
     }));
   },
   getSettings: engine.getSettings,
-  requestChunk: function(chunkPos, callback) {
+  requestChunk: function(chunkPos) {
     var chunkId = engine.getChunkId(chunkPos);
-    ensureChunkExists(chunkId).then(function() {
-      callback(getChunk(chunkId));
+    return ensureChunkExists(chunkId).then(function() {
+      return getChunk(chunkId);
     }).catch(function(err) {
-      console.log('Cannot load chunk ' + chunkId, err)
+      return Promise.reject('Cannot load chunk ' + chunkId, err);
     });
   },
   sendInitialChunks: function(sendChunk, noMoreChunks) {
