@@ -4,31 +4,27 @@ var consts = require('../../shared/constants');
 var clients = {};
 
 module.exports = {
-  init: function(broadcast) {
-    var sendUpdate = function() {
-      var clientKeys = Object.keys(clients);
-      if (clientKeys.length === 0) {
-        return;
-      }
-      var update = {
-        positions:{},
-        date: new Date()
-      };
-      clientKeys.forEach(function(key) {
-        var player = clients[key]
-        update.positions[key] = {
-          position: player.position,
-          rotation: {
-            x: player.rotation.x,
-            y: player.rotation.y
-          }
-        }
-      });
-
-      broadcast(update);
+  sendUpdates: function(broadcast) {
+    var clientKeys = Object.keys(clients);
+    if (clientKeys.length === 0) {
+      return;
+    }
+    var update = {
+      positions:{},
+      date: new Date()
     };
+    clientKeys.forEach(function(key) {
+      var player = clients[key]
+      update.positions[key] = {
+        position: player.position,
+        rotation: {
+          x: player.rotation.x,
+          y: player.rotation.y
+        }
+      }
+    });
 
-    setInterval(sendUpdate, consts.playerSync.SEND_UPDATE_INTERVAL);
+    broadcast(update);
   },
   onJoin: function(id, broadcast) {
     var player = {

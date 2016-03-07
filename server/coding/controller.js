@@ -2,7 +2,7 @@ var storage = require('./store');
 var github = require('./github');
 var expandGists = require('../../shared/coding/expandGists');
 
-var gists;
+var gists = {};
 var dirty = false;
 
 module.exports = {
@@ -16,8 +16,6 @@ module.exports = {
     return storage.loadGists().then(function(res) {
       if(res) {
         gists = res;
-      } else {
-        gists = {};
       }
     });
   },
