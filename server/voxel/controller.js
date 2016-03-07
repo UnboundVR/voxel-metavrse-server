@@ -1,8 +1,8 @@
-var storage = require('../../services/store/voxels');
+var storage = require('./store');
 var Promise = require('promise');
-
-var engine = require('../../services/voxelEngine');
-var compression = require('../../helpers/chunkCompression');
+var engine = require('./voxelEngine');
+var compression = require('./chunkCompression');
+var consts = require('../../shared/constants');
 
 var dirtyChunks = {};
 
@@ -71,7 +71,7 @@ module.exports = {
   init: function() {
     engine.init();
     return loadInitialChunksFromStorage().then(function() {
-      setInterval(saveChunks, 1000); // 1s
+      setInterval(saveChunks, consts.voxel.AUTO_SAVE_INTERVAL);
       // at this point we have the first chunks generated but we overwrite them with whatever is on the storage (TODO only generate a chunk if it's not in storage)
     }).catch(function(err) {
       console.log('Cannot load chunks', err);

@@ -1,10 +1,14 @@
-var controller = require('./controllers/coding');
+var controller = require('./controller');
 
 module.exports = function(io) {
   controller.init().then(function() {
     io.on('connection', function(socket) {
       socket.on('requestAllCode', function(token, callback) {
-        controller.getAllCode(token).then(callback);
+        controller.getAllCode(token).then(function(allCode) {
+          callback(null, allCode);
+        }).catch(function(err) {
+          callback(err);
+        });
       });
 
       socket.on('codeChanged', function(position, code, token, callback) {
@@ -14,7 +18,7 @@ module.exports = function(io) {
 
         controller.onCodeChanged(position, code, token, broadcast).then(function(codeObj) {
           callback(null, codeObj);
-        }, function(err) {
+        }).catch(function(err) {
           callback(err);
         });
       });
@@ -27,5 +31,7 @@ module.exports = function(io) {
         controller.onCodeRemoved(position, broadcast);
       });
     });
+  }).catch(function(err) {
+    console.log('Cannot initialize coding.', err);
   });
 };

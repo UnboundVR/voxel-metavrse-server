@@ -1,4 +1,5 @@
 var THREE = require('three');
+var consts = require('../../shared/constants');
 
 var clients = {};
 
@@ -27,7 +28,7 @@ module.exports = {
       broadcast(update);
     };
 
-    setInterval(sendUpdate, 1000/22); // 45ms
+    setInterval(sendUpdate, consts.playerSync.SEND_UPDATE_INTERVAL);
   },
   onJoin: function(id, broadcast) {
     var player = {
@@ -51,7 +52,7 @@ module.exports = {
     var distance = pos.distanceTo(state.position);
     if (distance > 20) {
       var before = pos.clone();
-      pos.lerp(state.position, 0.1);
+      pos.lerp(state.position, consts.playerSync.LERP_PERCENT);
       return;
     }
     pos.copy(state.position);

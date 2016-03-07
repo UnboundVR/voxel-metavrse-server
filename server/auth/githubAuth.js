@@ -1,10 +1,7 @@
+var consts = require('../../shared/constants');
 var request = require('request-promise');
-var consts = require('../../../shared/constants');
 
 module.exports = {
-  getGithubClientId: function() {
-    return process.env.GITHUB_CLIENT_ID;
-  },
   getAccessToken: function(code) {
     var url = consts.github.OAUTH_URL + '/access_token';
 

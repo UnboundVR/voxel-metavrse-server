@@ -1,4 +1,4 @@
-var controller = require('./controllers/playerSync');
+var controller = require('./controller');
 
 module.exports = function(io) {
   var broadcast = function(update) {

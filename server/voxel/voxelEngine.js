@@ -1,6 +1,6 @@
 var blocks = require('../../shared/blocks');
-var createEngine = require('voxel-engine');
 var rle = require('../../shared/rle');
+var createEngine = require('voxel-engine');
 
 var engine;
 var settings;
@@ -24,9 +24,6 @@ module.exports = {
     return settings;
   },
   getChunkId: function(chunkPos) {
-    if(!chunkPos) {
-      console.trace()
-    }
     return chunkPos.join('|');
   },
   getChunkIdAtPosition: function(pos) {

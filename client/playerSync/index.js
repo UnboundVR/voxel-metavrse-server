@@ -1,11 +1,11 @@
 var setupAvatar = require('./avatar');
 var voxelEngine = require('../voxelEngine');
+var consts = require('../../shared/constants');
 var skin = require('minecraft-skin');
 
 module.exports = {
   init: function(socket) {
     var self = this;
-    this.lerpPercent = 0.1;
     self.playerId = socket.id;
     this.others = {};
 
@@ -82,7 +82,7 @@ module.exports = {
 
     var playerSkin = this.others[id];
     var playerMesh = playerSkin.mesh;
-    playerMesh.position.copy(playerMesh.position.lerp(pos, this.lerpPercent));
+    playerMesh.position.copy(playerMesh.position.lerp(pos, consts.playerSync.LERP_PERCENT));
 
     playerMesh.children[0].rotation.y = update.rotation.y + (Math.PI / 2);
     playerSkin.head.rotation.z = scale(update.rotation.x, -1.5, 1.5, -0.75, 0.75);
