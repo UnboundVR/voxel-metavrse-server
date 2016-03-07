@@ -7,6 +7,18 @@ var mockEngine;
 var mockCompression;
 
 var setup = function() {
+  var mockCompression = {
+
+  };
+
+  var mockStorage = {
+
+  };
+
+  var mockEngine = {
+
+  };
+
   return proxyquire('../../server/voxel/controller', {
     './chunkCompression': mockCompression,
     './store': mockStorage,
