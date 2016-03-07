@@ -80,8 +80,6 @@ module.exports = {
     var chunkId = engine.getChunkId(chunkPos);
     return ensureChunkExists(chunkId).then(function() {
       return getChunk(chunkId);
-    }).catch(function(err) {
-      return Promise.reject('Cannot load chunk ' + chunkId, err);
     });
   },
   set: function(pos, val, broadcast) {
