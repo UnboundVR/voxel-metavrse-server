@@ -1,5 +1,5 @@
-var storage = require('./store');
 var Promise = require('promise');
+var storage = require('./store');
 var engine = require('./voxelEngine');
 var compression = require('./chunkCompression');
 
@@ -70,7 +70,12 @@ module.exports = {
       }
     }));
   },
-  getSettings: engine.getSettings,
+  initClient: function() {
+    return {
+      settings: engine.getSettings(),
+      chunks: engine.getExistingChunkIds().map(getChunk)
+    };
+  },
   requestChunk: function(chunkPos) {
     var chunkId = engine.getChunkId(chunkPos);
     return ensureChunkExists(chunkId).then(function() {
@@ -78,12 +83,6 @@ module.exports = {
     }).catch(function(err) {
       return Promise.reject('Cannot load chunk ' + chunkId, err);
     });
-  },
-  sendInitialChunks: function(sendChunk, noMoreChunks) {
-    engine.getExistingChunkIds().forEach(function(chunkId) {
-      sendChunk(getChunk(chunkId));
-    });
-    noMoreChunks();
   },
   set: function(pos, val, broadcast) {
     engine.setBlock(pos, val);

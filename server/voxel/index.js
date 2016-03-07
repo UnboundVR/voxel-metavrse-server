@@ -10,19 +10,7 @@ module.exports = function(io) {
     }, consts.voxel.AUTO_SAVE_INTERVAL);
 
     io.on('connection', function(socket) {
-      socket.emit('settings', controller.getSettings());
-
-      socket.on('created', function() {
-        var sendChunk = function(chunk) {
-          socket.emit('chunk', chunk);
-        };
-
-        var noMoreChunks = function() {
-          socket.emit('noMoreChunks');
-        };
-
-        controller.sendInitialChunks(sendChunk, noMoreChunks);
-      });
+      socket.emit('init', controller.initClient());
 
       socket.on('requestChunk', function(chunkPosition, callback) {
         controller.requestChunk(chunkPosition).then(function(chunk) {

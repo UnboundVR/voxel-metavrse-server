@@ -25,18 +25,18 @@ module.exports = {
       self.engine.showChunk(chunk);
     };
 
-    socket.on('settings', function(settings) {
+    socket.on('init', function(data) {
+      var settings = data.settings;
+      var chunks = data.chunks;
       settings.generateChunks = false;
       self.engine = self.createEngine(settings);
-      socket.emit('created');
-      socket.on('chunk', processChunk);
-      socket.on('noMoreChunks', function() {
-        self.engine.voxels.on('missingChunk', function(chunkPosition) {
-          socket.emit('requestChunk', chunkPosition, processChunk);
-        });
+      chunks.forEach(processChunk);
 
-        self.onReady();
+      self.engine.voxels.on('missingChunk', function(chunkPosition) {
+        socket.emit('requestChunk', chunkPosition, processChunk);
       });
+
+      self.onReady();
     });
 
     socket.on('set', function(pos, val) {
