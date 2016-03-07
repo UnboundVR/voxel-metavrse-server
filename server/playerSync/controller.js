@@ -10,11 +10,11 @@ module.exports = {
       return;
     }
     var update = {
-      positions:{},
+      positions: {},
       date: new Date()
     };
     clientKeys.forEach(function(key) {
-      var player = clients[key]
+      var player = clients[key];
       update.positions[key] = {
         position: player.position,
         rotation: {
@@ -48,7 +48,7 @@ module.exports = {
     player.rotation.y = state.rotation.y;
     var pos = player.position;
     var distance = pos.distanceTo(state.position);
-    if (distance > 20) {
+    if (distance > consts.playerSync.ROUGH_MOVEMENT_THRESHOLD) {
       var before = pos.clone();
       pos.lerp(state.position, consts.playerSync.LERP_PERCENT);
       return;

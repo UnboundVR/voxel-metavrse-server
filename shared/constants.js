@@ -25,6 +25,7 @@ module.exports = {
   playerSync: {
     AVATAR_INITIAL_POSITION: [0, 2, 0],
     SEND_UPDATE_INTERVAL: 1000/22,  // 45ms
-    LERP_PERCENT: 0.1
+    LERP_PERCENT: 0.1,
+    ROUGH_MOVEMENT_THRESHOLD: 20
   }
 };
