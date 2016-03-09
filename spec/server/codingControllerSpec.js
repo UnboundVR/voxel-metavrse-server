@@ -1,7 +1,7 @@
 var test = require('tape');
 var sinon = require('sinon');
 var consts = require('../../shared/constants');
-var proxyquire = require('proxyquire').noCallThru();
+var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 
 var mockGithub;
 var mockStorage;
