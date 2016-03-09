@@ -32,6 +32,7 @@
     "gulp-tape": "0.0.7",
     "gulp-util": "^3.0.7",
     "lodash.assign": "^4.0.3",
+    "three": "0.56.0",
     "nodemon": "^1.9.1",
     "proxyquire": "^1.7.4",
     "sinon": "^1.17.3",

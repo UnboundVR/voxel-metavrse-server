@@ -21,7 +21,7 @@ GITHUB_SECRET = <the client_secret of your Github OAuth app>
 
 *Note: If you're an Unbound VR member, you can use our Github App.*
 
-Then run the gulp command to start watchify:
+Then run the gulp command to start watchify (if you don't have gulp, `npm install -g gulp-cli` will solve it):
 ```
 gulp
 ```
