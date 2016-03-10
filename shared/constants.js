@@ -9,7 +9,7 @@ module.exports = {
   },
   github: {
     REQUESTED_SCOPE: 'user,gist',
-    REDIRECT_URI: 'http://localhost:1337',
+    REDIRECT_URI: 'http://localhost:<port>',
     API_URL: 'https://api.github.com',
     OAUTH_URL: 'https://github.com/login/oauth'
   },
