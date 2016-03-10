@@ -2,17 +2,17 @@ var consts = require('../../shared/constants');
 
 module.exports = {
   getLoginUrl: function() {
-    var request = new Request('/auth/github_client_id', {
+    var request = new Request('/auth/github_client_info', {
       method: 'GET'
     });
 
     return fetch(request).then(function(response) {
-      return response.text();
-    }).then(function(clientId) {
+      return response.json();
+    }).then(function(clientInfo) {
       var url = consts.github.OAUTH_URL + '/authorize'
-        + '?client_id=' + clientId
+        + '?client_id=' + clientInfo.clientId
         + '&scope=' + consts.github.REQUESTED_SCOPE
-        + '&redirect_uri=' + consts.github.REDIRECT_URI;
+        + '&redirect_uri=' + clientInfo.redirectUri
         // TODO pass state too
       return url;
     });

@@ -9,7 +9,7 @@ module.exports = {
   },
   github: {
     REQUESTED_SCOPE: 'user,gist',
-    REDIRECT_URI: 'http://localhost:1337',
+    REDIRECT_URI: 'http://localhost:<port>',
     API_URL: 'https://api.github.com',
     OAUTH_URL: 'https://github.com/login/oauth'
   },
@@ -25,6 +25,7 @@ module.exports = {
   playerSync: {
     AVATAR_INITIAL_POSITION: [0, 2, 0],
     SEND_UPDATE_INTERVAL: 1000/22,  // 45ms
-    LERP_PERCENT: 0.1
+    LERP_PERCENT: 0.1,
+    ROUGH_MOVEMENT_THRESHOLD: 20
   }
 };

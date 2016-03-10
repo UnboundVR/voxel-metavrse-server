@@ -1,6 +1,6 @@
 var test = require('tape');
 var sinon = require('sinon');
-var proxyquire = require('proxyquire').noCallThru();
+var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 
 var mockGithubAuth;
 var code = 'some code';
