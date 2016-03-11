@@ -14,7 +14,9 @@ var existingPosition = '-10|2|13';
 var newPosition = '1|2|3';
 var newGistId = 'asdasdasd';
 var gists;
+// FIXME this does not consider cases when github fails - also we need to update it for granular storage in mongo, plus maybe chunk-based storage
 
+// TODO pass a single object for successes, so it's clearer in the tests :)
 var setup = function(storageSuccess, githubSuccess, saveSuccess) {
   gists = {};
   gists[existingPosition] = existingGistId;

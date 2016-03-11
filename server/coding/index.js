@@ -21,7 +21,7 @@ module.exports = function(io) {
         controller.onCodeChanged(position, code, token, broadcast).then(function(codeObj) {
           callback(null, codeObj);
         }).catch(function(err) {
-          console.log(err)
+          console.log('cannot update/create gist', err)
           callback(err);
         });
       });
