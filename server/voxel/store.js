@@ -13,11 +13,7 @@ module.exports = {
     return fileStorage.save(chunkId, chunk);
   },
   loadChunk: function(position) {
-    //fileStorage.load(position.join('|')).then(this.saveChunk);
     var collection = mongo.db.collection('chunks');
-    return Promise.denodeify(collection.findOne).bind(collection)({position: position}).then(function(doc) {
-      //console.log(position, doc)
-      return doc;
-    });
+    return Promise.denodeify(collection.findOne).bind(collection)({position: position});
   }
 };
