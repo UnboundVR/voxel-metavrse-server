@@ -3,11 +3,6 @@ var consts = require('../../shared/constants');
 
 module.exports = function(io) {
   controller.init().then(function() {
-    setInterval(function() {
-      controller.storeCode().catch(function(err) {
-        console.log('Error updating code', err);
-      });
-    }, consts.coding.AUTO_SAVE_INTERVAL);
 
     io.on('connection', function(socket) {
       socket.on('requestAllCode', function(token, callback) {
@@ -26,6 +21,7 @@ module.exports = function(io) {
         controller.onCodeChanged(position, code, token, broadcast).then(function(codeObj) {
           callback(null, codeObj);
         }).catch(function(err) {
+          console.log(err)
           callback(err);
         });
       });
@@ -35,7 +31,9 @@ module.exports = function(io) {
           socket.broadcast.emit('codeRemoved', position);
         };
 
-        controller.onCodeRemoved(position, broadcast);
+        controller.onCodeRemoved(position, broadcast).catch(function(err) {
+          console.log('Cannot delete gist.', err);
+        });
       });
     });
   }).catch(function(err) {

@@ -3,14 +3,10 @@ var github = require('./github');
 var expandGists = require('../../shared/coding/expandGists');
 
 var gists = {};
-var dirty = false;
 
 module.exports = {
   getGistIds: function() {
     return gists;
-  },
-  isDirty: function() {
-    return dirty;
   },
   init: function() {
     return storage.loadGists().then(function(res) {
@@ -20,13 +16,7 @@ module.exports = {
     });
   },
   storeCode: function() {
-    if(dirty) {
-      return storage.saveGists(gists).then(function() {
-        dirty = false;
-      });
-    } else {
-      return Promise.resolve();
-    }
+    return storage.saveGists(gists);
   },
   getAllCode: function(token) {
     if(token) {
@@ -39,13 +29,14 @@ module.exports = {
     }
   },
   onCodeChanged: function(position, code, token, broadcast) {
+    var self = this;
     var updateGithub = function() {
       if(gists[position]) {
         return github.updateGist(gists[position], code, token); // TODO fork if this is not mine
       } else {
         return github.createGist(code, token).then(function(response) {
           gists[position] = response.id;
-          dirty = true;
+          return self.storeCode();
         });
       }
     };
@@ -62,6 +53,6 @@ module.exports = {
   onCodeRemoved: function(position, broadcast) {
     delete gists[position];
     broadcast(position);
-    dirty = true;
+    return this.storeCode();
   }
 };

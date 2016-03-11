@@ -126,7 +126,7 @@ test('CodingController::onCodeChanged when code exists on that position', functi
 
   controller.init().then(function() {
     controller.onCodeChanged(existingPosition, code, token, broadcast).then(function(codeObj) {
-      t.ok(!controller.isDirty(), 'does not change autoSave dirty status');
+      t.ok(!mockStorage.saveGists.called, 'does not save gists');
       t.ok(mockGithub.updateGist.calledWith(existingGistId, code, token), 'updates code in Github');
       t.ok(broadcast.calledWith(existingPosition, codeObj), 'broadcasts position and code object');
       t.deepEqual(codeObj, {id: existingGistId, code: code}, 'returns object with id and code');
@@ -136,12 +136,11 @@ test('CodingController::onCodeChanged when code exists on that position', functi
 });
 
 test('CodingController::onCodeChanged when code does not exist on that position', function(t) {
-  var controller = setup(true, true);
+  var controller = setup(true, true, true);
   var broadcast = sinon.spy();
 
   controller.init().then(function() {
     controller.onCodeChanged(newPosition, code, token, broadcast).then(function(codeObj) {
-      t.ok(controller.isDirty(), 'sets autoSave as dirty');
       t.ok(mockGithub.createGist.calledWith(code, token), 'creates code in Github');
       t.ok(broadcast.calledWith(newPosition, codeObj), 'broadcasts position and code object');
       t.deepEqual(codeObj, {id: newGistId, code: code}, 'returns object with id and code');
@@ -153,49 +152,13 @@ test('CodingController::onCodeChanged when code does not exist on that position'
 });
 
 test('CodingController::onCodeRemoved', function(t) {
-  var controller = setup(true, true);
+  var controller = setup(true, true, true);
   var broadcast = sinon.spy();
 
   controller.init().then(function() {
     controller.onCodeRemoved(existingPosition, broadcast);
-    t.ok(controller.isDirty(), 'sets autoSave as dirty');
     t.ok(broadcast.calledWith(existingPosition), 'broadcasts position of removed code');
     t.deepEqual(controller.getGistIds(), {}, 'removes code from that position');
     t.end();
-  }).catch(t.fail);
-});
-
-test('CodingController::storeCode when store works', function(t) {
-  var controller = setup(true, true, true);
-
-  controller.init().then(function() {
-    controller.storeCode().then(function() {
-      t.ok(!mockStorage.saveGists.called, 'does nothing if not dirty');
-
-      controller.onCodeRemoved(existingPosition, function() {}); // sets stuff as dirty
-      t.ok(controller.isDirty(), 'autoSave is dirty at this point');
-      controller.storeCode().then(function() {
-        t.ok(mockStorage.saveGists.calledWith(gists), 'calls saveGists if dirty');
-        t.ok(!controller.isDirty(), 'sets autoSave dirty to false at this point');
-        t.end();
-      });
-    });
-  }).catch(t.fail);
-});
-
-test('CodingController::storeCode when store fails', function(t) {
-  var controller = setup(true, true, false);
-  controller.init().then(function() {
-    controller.storeCode().then(function() {
-      t.ok(!mockStorage.saveGists.called, 'does nothing if not dirty');
-
-      controller.onCodeRemoved(existingPosition, function() {}); // sets stuff as dirty
-      t.ok(controller.isDirty(), 'autoSave is dirty at this point');
-      controller.storeCode().catch(function(err) {
-        t.ok(controller.isDirty(), 'autoSave still dirty');
-        t.pass('Got error: ' + err);
-        t.end();
-      });
-    });
   }).catch(t.fail);
 });
