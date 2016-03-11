@@ -39,7 +39,7 @@ function loadInitialChunksFromStorage() {
 
 function getChunk(chunkId) {
   var chunk = engine.getChunk(chunkId);
-  return compression.compress(chunk, markDirty);
+  return compression.compress(chunk);
 }
 
 function ensureChunkExists(chunkId) {
