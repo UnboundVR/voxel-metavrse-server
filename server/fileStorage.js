@@ -16,11 +16,7 @@ module.exports = function(subPath) {
     return new Promise(function(resolve, reject) {
       var createActualPath = function() {
         fs.mkdir(path, function(err) {
-          if(err) {
-            reject(err);
-          } else {
-            resolve();
-          }
+          resolve();
         });
       };
 
