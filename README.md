@@ -42,6 +42,12 @@ Then point your browser to `http://localhost:<the port you chose above>` and hav
 
 *Note: If you're using the Unbound VR Github App, you must use the port `1337`.*
 
+## Tests
+We use tape for unit testing - in order to run our test, just do:
+```
+npm test
+```
+
 ## Controls
 - When you start, click on the page to lock cursor. Press `<ESC>` to unlock cursor.
 - `<W,A,S,D>` => move.
