@@ -3,11 +3,11 @@ var controller = require('./controller');
 
 module.exports = function(io) {
   controller.init().then(function() {
-    setInterval(function() {
-      controller.saveChunks().catch(function(err) {
-        console.log('Error auto saving chunks', err);
-      });
-    }, consts.voxel.AUTO_SAVE_INTERVAL);
+    // setInterval(function() {
+    //   controller.saveChunks().catch(function(err) {
+    //     console.log('Error auto saving chunks', err);
+    //   });
+    // }, consts.voxel.AUTO_SAVE_INTERVAL);
 
     io.on('connection', function(socket) {
       socket.emit('init', controller.initClient());
@@ -26,7 +26,9 @@ module.exports = function(io) {
           socket.broadcast.emit('set', pos, val);
         }
 
-        controller.set(pos, val, broadcast);
+        controller.set(pos, val, broadcast).then(function(result) {
+          console.log('save success')
+        });
       });
     });
   }).catch(function(err) {

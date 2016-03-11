@@ -22,7 +22,6 @@ function loadChunkFromStorage(chunkId) {
     return parseInt(pos);
   })).then(function(chunk) {
     if(chunk) {
-      compression.storeInCache(chunk);
       chunk = compression.decompress(chunk);
       engine.setChunk(chunkId, chunk);
       return chunk;
@@ -60,18 +59,6 @@ module.exports = {
     engine.init();
     return loadInitialChunksFromStorage();
   },
-  saveChunks: function() {
-    return Promise.all(engine.getExistingChunkIds().map(function(chunkId) {
-      var chunk = getChunk(chunkId); // this is necessary to ensure all newly compressed chunks are marked dirty
-      if(isDirty(chunkId)) {
-        return storage.saveChunk(chunk).then(function() {
-          markNotDirty(chunkId);
-        });
-      } else {
-        return Promise.resolve();
-      }
-    }));
-  },
   initClient: function() {
     return {
       settings: engine.getSettings(),
@@ -87,7 +74,8 @@ module.exports = {
   set: function(pos, val, broadcast) {
     engine.setBlock(pos, val);
     var chunkId = engine.getChunkIdAtPosition(pos);
-    compression.invalidateCache(chunkId);
+    var chunk = getChunk(chunkId);
     broadcast(pos, val);
+    return storage.saveChunk(chunk);
   }
 };

@@ -1,5 +1,13 @@
-var rle = require('../shared/rle');
+// var rle = require('../shared/rle');
 var engine = require('voxel-engine');
+
+function decompress(chunk) { // FIXME repeated
+  var voxels = new Array(chunk.dims[0] * chunk.dims[1] * chunk.dims[2]).fill(0);
+  chunk.voxels.forEach(function(obj) {
+    voxels[obj.i] = obj.v;
+  });
+  return voxels;
+}
 
 module.exports = {
   init: function(socket) {
@@ -21,7 +29,7 @@ module.exports = {
     var self = this;
 
     var processChunk = function(chunk) {
-      chunk.voxels = rle.decode(chunk.voxels);
+      chunk.voxels = decompress(chunk);
       self.engine.showChunk(chunk);
     };
 
