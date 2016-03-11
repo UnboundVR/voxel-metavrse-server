@@ -10,6 +10,7 @@
     "express": "^4.13.4",
     "extend": "^3.0.0",
     "minecraft-skin": "^0.1.2",
+    "mongodb": "^2.1.7",
     "promise": "^7.1.1",
     "request-promise": "^2.0.1",
     "socket.io": "^1.4.5",
