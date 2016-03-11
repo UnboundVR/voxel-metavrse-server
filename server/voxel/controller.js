@@ -3,20 +3,6 @@ var storage = require('./store');
 var engine = require('./voxelEngine');
 var compression = require('./chunkCompression');
 
-var dirtyChunks = {};
-
-function isDirty(chunkId) {
-  return !!dirtyChunks[chunkId];
-}
-
-function markDirty(chunkId) {
-  dirtyChunks[chunkId] = true;
-}
-
-function markNotDirty(chunkId) {
-  dirtyChunks[chunkId] = false;
-}
-
 function loadChunkFromStorage(chunkId) {
   return storage.loadChunk(chunkId.split('|').map(function(pos) {
     return parseInt(pos);
