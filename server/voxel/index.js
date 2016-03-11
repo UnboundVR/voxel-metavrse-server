@@ -26,9 +26,7 @@ module.exports = function(io) {
           socket.broadcast.emit('set', pos, val);
         }
 
-        controller.set(pos, val, broadcast).then(function(result) {
-          console.log('save success')
-        });
+        controller.set(pos, val, broadcast);
       });
     });
   }).catch(function(err) {
