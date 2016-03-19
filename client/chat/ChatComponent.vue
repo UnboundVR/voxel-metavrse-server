@@ -21,14 +21,15 @@ import Vue from 'vue';
 import auth from './../auth/';
 import pointerLock from './../pointerLock.js';
 import io from 'socket.io-client';
+import service from './service';
 
 var socket;
+var username = auth.getName() || 'anonymous';
 
 export default {
   name: 'ChatComponent',
   data() {
     return {
-      username: '',
       messageList: [],
       newMessage: '',
     };
@@ -53,7 +54,7 @@ export default {
       }
     },
     sendNewMessage: function() {
-      var msg = { date: Date.now(), user: auth.getName(), text: this.newMessage };
+      var msg = { date: Date.now(), user: username, text: this.newMessage };
       socket.emit('message', msg);
       this.addMessage(msg);
       this.newMessage = '';
@@ -67,7 +68,6 @@ export default {
   },
   created: function() {
     socket = io.connect(location.host + '/chat');
-    this.username = auth.getName() || 'anonymous';
     this.init();
     this.enable();
   },
