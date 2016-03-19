@@ -24,7 +24,6 @@ import io from 'socket.io-client';
 import service from './service';
 
 var socket;
-var username = auth.getName() || 'anonymous';
 
 export default {
   name: 'ChatComponent',
@@ -54,6 +53,7 @@ export default {
       }
     },
     sendNewMessage: function() {
+      var username = auth.getName() || 'anonymous';
       var msg = { date: Date.now(), user: username, text: this.newMessage };
       socket.emit('message', msg);
       this.addMessage(msg);
