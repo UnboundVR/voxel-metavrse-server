@@ -1,3 +1,18 @@
-// TODO here goes the socket stuff
-// We might also put here the message list, and make vue component consume it from here.
-// If index needs to export anything, it should consume it from here.
+var io = 'socket.io-client';
+
+var socket;
+
+module.exports = {
+  init: function(onMessage) {
+    this.messageList = [];
+
+    socket = io.connect(location.host + '/chat');
+    socket.on('message', function(message) {
+      this.messageList.push(message);
+    });
+  },
+  sendMessage: function(message) {
+    this.messageList.push(message);
+    socket.emit('message', message);
+  }
+}

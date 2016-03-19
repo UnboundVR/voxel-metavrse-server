@@ -19,56 +19,26 @@
 
 import Vue from 'vue';
 import auth from './../auth/';
-import pointerLock from './../pointerLock.js';
-import io from 'socket.io-client';
 import service from './service';
-
-var socket;
 
 export default {
   name: 'ChatComponent',
   data() {
     return {
-      messageList: [],
+      messageList: service.messageList,
       newMessage: '',
     };
   },
   methods: {
-    enable: function() {
-      window.addEventListener('keyup', this.enterHandler);
-    },
-    disable: function() {
-      window.removeEventListener('keyup', this.enterHandler);
-    },
-    addMessage: function(message) {
-      this.messageList.push(message);
-    },
-    enterHandler: function(e) {
-      if (e.keyCode !== 13) return;
-
-      var el = document.getElementById('cmd');
-      if (document.activeElement !== el) {
-        pointerLock.release();
-        el.focus();
-      }
-    },
-    sendNewMessage: function() {
+    sendNewMessage() {
       var username = auth.getName() || 'anonymous';
-      var msg = { date: Date.now(), user: username, text: this.newMessage };
-      socket.emit('message', msg);
-      this.addMessage(msg);
+      var message = { date: Date.now(), user: username, text: this.newMessage };
+      service.sendMessage(message);
       this.newMessage = '';
-    },
-    init: function(socketParam) {
-      let self = this;
-      socket.on('message', function(message) {
-        self.addMessage(message);
-      });
     }
   },
-  created: function() {
-    socket = io.connect(location.host + '/chat');
-    this.init();
+  created() {
+    service.init();
     this.enable();
   },
 };
