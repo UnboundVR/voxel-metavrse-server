@@ -7,6 +7,7 @@ var voxelEngine = require('./voxelEngine');
 var chat = require('./chat');
 var consts = require('../shared/constants');
 var io = require('socket.io-client');
+var Vue = require('vue');
 
 module.exports = function() {
   auth.init().then(function() {
@@ -18,7 +19,11 @@ module.exports = function() {
         blockPlacement.init(socket);
         playerSync.init(socket);
         coding.init(socket);
-        chat.init(socket);
+        chat.init();
+
+        var vue = new Vue({
+          el: 'body',
+        });
       }, function() {
         console.log('browser not capable');
       });

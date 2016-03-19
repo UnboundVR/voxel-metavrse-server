@@ -25,6 +25,7 @@
     "vue": "^1.0.16"
   },
   "devDependencies": {
+    "babelify": "^7.2.0",
     "browserify": "^13.0.0",
     "del": "^2.2.0",
     "dotenv": "^2.0.0",
@@ -32,15 +33,16 @@
     "gulp-tape": "0.0.7",
     "gulp-util": "^3.0.7",
     "lodash.assign": "^4.0.3",
-    "three": "0.56.0",
     "nodemon": "^1.9.1",
     "proxyquire": "^1.7.4",
     "sinon": "^1.17.3",
     "strictify": "^0.2.0",
     "tap-colorize": "^1.2.0",
     "tape": "^4.4.0",
+    "three": "0.56.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
+    "vueify": "^8.3.6",
     "watchify": "^3.7.0"
   },
   "scripts": {
