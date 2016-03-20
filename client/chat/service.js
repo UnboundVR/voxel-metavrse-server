@@ -4,7 +4,7 @@ var socket;
 
 module.exports = {
   init: function(onMessage) {
-    this.messageList = [];
+    this.messageList = []; // this doesn't work
 
     var self = this;
     socket = io.connect(location.host + '/chat');
