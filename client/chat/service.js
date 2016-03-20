@@ -4,13 +4,16 @@ var socket;
 
 module.exports = {
   init: function(onMessage) {
-    var self = this;
-    socket = io.connect(location.host + '/chat');
-    socket.on('message', function(message) {
-      onMessage(message);
+    return new Promise(function(resolve, reject) {
+      var self = this;
+      socket = io.connect(location.host + '/chat');
+      socket.on('message', function(message) {
+        onMessage(message);
+      });
+      resolve();
     });
   },
   sendMessage: function(message) {
     socket.emit('message', message);
-  }
-}
+  },
+};
