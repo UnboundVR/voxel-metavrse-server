@@ -25,7 +25,7 @@ export default {
   name: 'ChatComponent',
   data() {
     return {
-      messageList: service.messageList,
+      messageList: [],
       newMessage: '',
     };
   },
@@ -33,12 +33,16 @@ export default {
     sendNewMessage() {
       var username = auth.getName() || 'anonymous';
       var message = { date: Date.now(), user: username, text: this.newMessage };
+      this.addMessage(message);
       service.sendMessage(message);
       this.newMessage = '';
+    },
+    addMessage(message) {
+      this.messageList.push(message);
     }
   },
   created() {
-    service.init();
+    service.init(this.addMessage);
   },
 };
 </script>
