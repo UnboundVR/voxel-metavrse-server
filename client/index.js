@@ -15,12 +15,8 @@ module.exports = function() {
 
     client.init(socket).then(function() {
       voxelEngine.init(client.engine);
-      voxelEngine.appendToContainer().then(function() {
-        blockPlacement.init(socket);
-        playerSync.init(socket);
-        coding.init(socket);
-        chat.init();
-
+      Promise.all([blockPlacement.init(socket), playerSync.init(socket), chat.init(), coding.init(socket)]).then(function() {
+        voxelEngine.appendToContainer();
         var vue = new Vue({
           el: 'body',
         });

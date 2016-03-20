@@ -4,29 +4,32 @@ var content = document.getElementById('scripting-content');
 var header = document.getElementById('scripting-header');
 var toolbar = document.getElementById('toolbar');
 var userInfo = document.getElementById('userInfo');
-var chatElememnt = document.getElementById('chat');
-var chat = require('../chat');
 var pointerLock = require('../pointerLock');
+var events = require('../events');
+var consts = require('../../shared/constants');
+
+const CODING_WINDOW = 'coding';
 
 var closeCodeWindow = function() {
+  var chatElement = document.getElementById('chat');
   container.style.display = 'none';
   crosshair.style.display = 'block';
   toolbar.style.display = 'block';
   userInfo.style.display = 'block';
-  chatElememnt.style.display = 'block';
-  chat.enable();
+  chatElement.style.display = 'block';
   content.innerHTML = '';
   header.innerHTML = '';
   pointerLock.request();
+  events.emit(consts.events.FULLSCREEN_WINDOW_CLOSE, {name: CODING_WINDOW});
 };
 
 var openCodeWindow = function(codeWindowTitle, initialCode) {
+  var chatElement = document.getElementById('chat');
   container.style.display = 'block';
   crosshair.style.display = 'none';
   toolbar.style.display = 'none';
   userInfo.style.display = 'none';
-  chatElememnt.style.display = 'none';
-  chat.disable();
+  chatElement.style.display = 'none';
 
   var title = document.createElement('span');
   title.innerHTML = codeWindowTitle;
@@ -87,6 +90,8 @@ var openCodeWindow = function(codeWindowTitle, initialCode) {
   };
 
   header.appendChild(saveButton);
+
+  events.emit(consts.events.FULLSCREEN_WINDOW_OPEN, {name: CODING_WINDOW});
 
   return new Promise(function(resolve, reject) {
     saveButton.onclick = function() {

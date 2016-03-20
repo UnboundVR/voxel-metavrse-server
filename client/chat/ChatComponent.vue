@@ -23,6 +23,7 @@ import auth from './../auth/';
 import service from './service';
 import events from '../eventListener.js';
 import pointerLock from '../pointerLock.js';
+import consts from '../../shared/constants';
 
 export default {
   name: 'ChatComponent',
@@ -77,6 +78,9 @@ export default {
     events.on('disableChatEnterHandler', function() {
       self.disable();
     });
+
+    events.on(consts.events.FULLSCREEN_WINDOW_OPEN, this.disable);
+    events.on(consts.events.FULLSCREEN_WINDOW_CLOSE, this.enable);
   },
 };
 </script>

@@ -5,7 +5,6 @@ import events from '../eventListener.js';
 module.exports = {
   init: function() {
     Vue.component('chat-component', ChatComponent);
-    
     events.on('chatReady', function() {
       events.emit('enableChatEnterHandler');
     });
