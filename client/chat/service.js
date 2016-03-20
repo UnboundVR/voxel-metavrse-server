@@ -1,15 +1,24 @@
 var io = require('socket.io-client');
+var EventEmitter2 = require('eventemitter2').EventEmitter2;
+var util = require('util');
 
 var socket;
 
-module.exports = {
-  init: function(onMessage) {
-    socket = io.connect(location.host + '/chat');
-    socket.on('message', function(message) {
-      onMessage(message);
-    });
-  },
-  sendMessage: function(message) {
-    socket.emit('message', message);
-  },
+function ChatService() {
+
+}
+
+ChatService.prototype.init = function() {
+  socket = io.connect(location.host + '/chat');
+  socket.on('message', function(message) {
+    this.emit('message', message);
+  });
 };
+
+ChatService.prototype.init = function(message) {
+  socket.emit('message', message);
+};
+
+util.inherits(ChatService, EventEmitter2);
+
+module.exports = new ChatService();

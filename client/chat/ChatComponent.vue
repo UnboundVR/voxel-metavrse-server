@@ -66,7 +66,8 @@ export default {
   ready() {
     let self = this;
 
-    service.init(this.addMessage);
+    service.init();
+    service.on('message', this.addMessage);
     this.enable();
 
     events.on(consts.events.FULLSCREEN_WINDOW_OPEN, this.disableEnterHandler);
