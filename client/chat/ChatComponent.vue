@@ -21,8 +21,8 @@
 import Vue from 'vue';
 import auth from './../auth/';
 import service from './service';
-import events from '../eventListener.js';
-import pointerLock from '../pointerLock.js';
+import events from '../events';
+import pointerLock from '../pointerLock';
 import consts from '../../shared/constants';
 
 export default {
@@ -34,10 +34,10 @@ export default {
     };
   },
   methods: {
-    enable: function() {
+    enableEnterHandler: function() {
       window.addEventListener('keyup', this.enterHandler);
     },
-    disable: function() {
+    disableEnterHandler: function() {
       window.removeEventListener('keyup', this.enterHandler);
     },
     enterHandler: function(e) {
@@ -66,21 +66,11 @@ export default {
   ready() {
     let self = this;
 
-    service.init(this.addMessage)
-      .then(function() {
-        events.emit('chatReady');
-      });
+    service.init(this.addMessage);
+    this.enable();
 
-    events.on('enableChatEnterHandler', function() {
-      self.enable();
-    });
-
-    events.on('disableChatEnterHandler', function() {
-      self.disable();
-    });
-
-    events.on(consts.events.FULLSCREEN_WINDOW_OPEN, this.disable);
-    events.on(consts.events.FULLSCREEN_WINDOW_CLOSE, this.enable);
+    events.on(consts.events.FULLSCREEN_WINDOW_OPEN, this.disableEnterHandler);
+    events.on(consts.events.FULLSCREEN_WINDOW_CLOSE, this.enableEnterHandler);
   },
 };
 </script>
