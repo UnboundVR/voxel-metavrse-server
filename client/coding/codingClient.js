@@ -4,13 +4,14 @@ var voxelEngine = require('../voxelEngine');
 var blocks = require('../../shared/blocks');
 var expandGists = require('../../shared/coding/expandGists');
 var auth = require('../auth');
+var io = require('socket.io-client');
 
 var blocksWithCode;
+var socket;
 
 module.exports = {
-  init: function(socket) {
-    var self = this;
-    this.socket = socket;
+  init: function() {
+    socket = io.connect(location.host + '/coding');
     return new Promise(function(resolve, reject) {
       socket.emit('requestAllCode', auth.getAccessToken(), function(err, response) {
         if(err) {
@@ -56,9 +57,8 @@ module.exports = {
     return !!blocksWithCode[position];
   },
   storeCode: function(position, code) {
-    var self = this;
     return new Promise(function(resolve, reject) {
-      self.socket.emit('codeChanged', position, code, auth.getAccessToken(), function(err, codeObj) {
+      socket.emit('codeChanged', position, code, auth.getAccessToken(), function(err, codeObj) {
         if(err) {
           reject(err);
         } else {
@@ -70,6 +70,6 @@ module.exports = {
   },
   removeCode: function(position) {
     delete blocksWithCode[position];
-    this.socket.emit('codeRemoved', position);
+    socket.emit('codeRemoved', position);
   }
 };
