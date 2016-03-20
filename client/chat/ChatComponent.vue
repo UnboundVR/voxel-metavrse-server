@@ -22,6 +22,7 @@ import auth from './../auth/';
 import service from './service';
 import events from '../events';
 import consts from '../../shared/constants';
+import pointerLock from '../pointerLock';
 
 export default {
   name: 'ChatComponent',
@@ -41,14 +42,31 @@ export default {
     },
     addMessage(message) {
       this.messageList.push(message);
+    },
+    enable() {
+      window.addEventListener('keyup', this.enterHandler);
+    },
+    disable() {
+      window.removeEventListener('keyup', this.enterHandler);
+    },
+    enterHandler(e) {
+      if (e.keyCode !== 13) {
+        return;
+      }
+
+      var el = document.getElementById('cmd');
+      if (document.activeElement !== el) {
+        pointerLock.release();
+        el.focus();
+      }
     }
   },
   created() {
     service.init(this.addMessage);
+    this.enable();
 
-    events.on(consts.events.FULLSCREEN_WINDOW_OPEN, function() {
-      console.log('full screen window opend!');
-    });
+    events.on(consts.events.FULLSCREEN_WINDOW_OPEN, this.disable);
+    events.on(consts.events.FULLSCREEN_WINDOW_CLOSE, this.enable);
   },
 };
 </script>

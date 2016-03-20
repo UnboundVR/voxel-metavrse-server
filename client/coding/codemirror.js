@@ -4,7 +4,6 @@ var content = document.getElementById('scripting-content');
 var header = document.getElementById('scripting-header');
 var toolbar = document.getElementById('toolbar');
 var userInfo = document.getElementById('userInfo');
-var chat = require('../chat');
 var pointerLock = require('../pointerLock');
 var events = require('../events');
 var consts = require('../../shared/constants');
@@ -18,7 +17,6 @@ var closeCodeWindow = function() {
   toolbar.style.display = 'block';
   userInfo.style.display = 'block';
   chatElement.style.display = 'block';
-  chat.enable();
   content.innerHTML = '';
   header.innerHTML = '';
   pointerLock.request();
@@ -32,7 +30,6 @@ var openCodeWindow = function(codeWindowTitle, initialCode) {
   toolbar.style.display = 'none';
   userInfo.style.display = 'none';
   chatElement.style.display = 'none';
-  chat.disable();
 
   var title = document.createElement('span');
   title.innerHTML = codeWindowTitle;
