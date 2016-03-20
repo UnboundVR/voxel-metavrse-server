@@ -39,7 +39,6 @@ export default {
   },
   created() {
     service.init();
-    this.enable();
   },
 };
 </script>

@@ -5,6 +5,7 @@ import pointerLock from './../pointerLock.js';
 module.exports = {
   init: function() {
     Vue.component('chat-component', ChatComponent);
+    this.enable();
   },
   enable: function() {
     window.addEventListener('keyup', this.enterHandler);
