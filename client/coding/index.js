@@ -4,8 +4,8 @@ var voxelEngine = require('../voxelEngine');
 var editCode = require('./editCode');
 
 module.exports = {
-  init: function(socket) {
-    client.init(socket).then(function() {
+  init: function() {
+    client.init().then(function() {
       client.getBlocksWithCode().forEach(function(block) {
         executor.create(block.position, block.codeObj.code);
         voxelEngine.setBlock(block.position, 2);
