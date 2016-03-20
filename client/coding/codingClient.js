@@ -11,7 +11,6 @@ var socket;
 
 module.exports = {
   init: function() {
-    var self = this;
     socket = io.connect(location.host + '/coding');
     return new Promise(function(resolve, reject) {
       socket.emit('requestAllCode', auth.getAccessToken(), function(err, response) {
@@ -58,7 +57,6 @@ module.exports = {
     return !!blocksWithCode[position];
   },
   storeCode: function(position, code) {
-    var self = this;
     return new Promise(function(resolve, reject) {
       socket.emit('codeChanged', position, code, auth.getAccessToken(), function(err, codeObj) {
         if(err) {
