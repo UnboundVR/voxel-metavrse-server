@@ -16,10 +16,9 @@ module.exports = function() {
     client.init(socket).then(function() {
       voxelEngine.init(client.engine);
       Promise.all([blockPlacement.init(socket), playerSync.init(socket), chat.init(), coding.init(socket)]).then(function() {
-        voxelEngine.appendToContainer().then(function() {
-          var vue = new Vue({
-            el: 'body',
-          });
+        voxelEngine.appendToContainer();
+        var vue = new Vue({
+          el: 'body',
         });
       }, function() {
         console.log('browser not capable');
