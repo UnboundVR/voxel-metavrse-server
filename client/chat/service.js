@@ -6,9 +6,10 @@ module.exports = {
   init: function(onMessage) {
     this.messageList = [];
 
+    var self = this;
     socket = io.connect(location.host + '/chat');
     socket.on('message', function(message) {
-      this.messageList.push(message);
+      self.messageList.push(message);
     });
   },
   sendMessage: function(message) {
