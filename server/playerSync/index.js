@@ -3,14 +3,14 @@ var consts = require('../../shared/constants');
 
 module.exports = function(io) {
   var broadcast = function(update) {
-    io.sockets.emit('update', update);
+    io.of('playerSync').emit('update', update);
   };
 
   setInterval(function() {
     controller.sendUpdates(broadcast);
   }, consts.playerSync.SEND_UPDATE_INTERVAL);
 
-  io.on('connection', function(socket) {
+  io.of('playerSync').on('connection', function(socket) {
     var id = socket.id.split('#')[1];
 
     var broadcast = function(id) {

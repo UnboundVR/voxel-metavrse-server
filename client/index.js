@@ -9,19 +9,27 @@ var consts = require('../shared/constants');
 var io = require('socket.io-client');
 var Vue = require('vue');
 
+function initVue() {
+  new Vue({
+    el: 'body',
+  });
+}
+
 module.exports = function() {
   auth.init().then(function() {
-    var socket = io.connect(location.host);
-
-    client.init(socket).then(function() {
+    client.init().then(function() {
       voxelEngine.init(client.engine);
-      Promise.all([blockPlacement.init(socket), playerSync.init(socket), chat.init(), coding.init(socket)]).then(function() {
-        voxelEngine.appendToContainer();
-        var vue = new Vue({
-          el: 'body',
-        });
-      }, function() {
-        console.log('browser not capable');
+
+      Promise.all([blockPlacement.init(), playerSync.init(), chat.init(), coding.init()]).then(function() {
+        try {
+          voxelEngine.appendToContainer();
+        } catch(err) {
+          console.log('Browser not capable');
+        }
+
+        initVue();
+      }).catch(function(err) {
+        console.log('Error initializing some modules', err);
       });
     });
   });

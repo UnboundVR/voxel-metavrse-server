@@ -9,7 +9,7 @@ module.exports = function(io) {
       });
     }, consts.voxel.AUTO_SAVE_INTERVAL);
 
-    io.on('connection', function(socket) {
+    io.of('voxel').on('connection', function(socket) {
       socket.emit('init', controller.initClient());
 
       socket.on('requestChunk', function(chunkPosition, callback) {

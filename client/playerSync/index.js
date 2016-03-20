@@ -2,11 +2,17 @@ var setupAvatar = require('./avatar');
 var voxelEngine = require('../voxelEngine');
 var consts = require('../../shared/constants');
 var skin = require('minecraft-skin');
+var io = require('socket.io-client');
+
+var socket;
 
 module.exports = {
-  init: function(socket) {
+  init: function() {
     var self = this;
-    self.playerId = socket.id;
+    socket = io.connect(location.host + '/playerSync');
+    socket.on('connect', function() {
+      self.playerId = socket.id;
+    });
     this.others = {};
 
     function sendState() {

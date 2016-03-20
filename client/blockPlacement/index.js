@@ -5,9 +5,10 @@ var toolbar = require('./toolbar');
 var voxelEngine = require('../voxelEngine');
 var consts = require('../../shared/constants');
 var getAdjacent = require('./getAdjacentPositions');
+var voxelClient = require('../voxelClient');
 
 module.exports = {
-  init: function(socket) {
+  init: function() {
     highlight.init();
     toolbar.init();
 
@@ -26,7 +27,7 @@ module.exports = {
 
     function placeBlock(position) {
       voxelEngine.createBlock(position, toolbar.getSelected());
-      socket.emit('set', position, toolbar.getSelected());
+      voxelClient.setBlock(position, toolbar.getSelected());
     }
 
     function codeBlock(position) {
@@ -40,7 +41,7 @@ module.exports = {
     function removeBlock(position) {
       coding.removeCode(position);
       voxelEngine.clearBlock(position);
-      socket.emit('set', position, 0);
+      voxelClient.clearBlock(position);
     }
 
     function canPlace(position) {
