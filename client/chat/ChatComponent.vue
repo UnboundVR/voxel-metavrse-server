@@ -20,6 +20,8 @@
 import Vue from 'vue';
 import auth from './../auth/';
 import service from './service';
+import events from '../events';
+import consts from '../../shared/constants';
 
 export default {
   name: 'ChatComponent',
@@ -43,6 +45,10 @@ export default {
   },
   created() {
     service.init(this.addMessage);
+
+    events.on(consts.events.FULLSCREEN_WINDOW_OPEN, function() {
+      console.log('full screen window opend!');
+    });
   },
 };
 </script>

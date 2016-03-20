@@ -15,14 +15,11 @@ module.exports = function() {
 
     client.init(socket).then(function() {
       voxelEngine.init(client.engine);
-      voxelEngine.appendToContainer().then(function() {
-        blockPlacement.init(socket);
-        playerSync.init(socket);
-        coding.init(socket);
-        chat.init();
-
-        var vue = new Vue({
-          el: 'body',
+      Promise.all([blockPlacement.init(socket), playerSync.init(socket), chat.init(), coding.init(socket)]).then(function() {
+        voxelEngine.appendToContainer().then(function() {
+          var vue = new Vue({
+            el: 'body',
+          });
         });
       }, function() {
         console.log('browser not capable');
