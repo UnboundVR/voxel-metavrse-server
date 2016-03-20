@@ -1,7 +1,7 @@
 var voxelEngine = require('../voxelEngine');
 var blocks = require('../../shared/blocks');
 var events = require('../events');
-var EventEmitter = require('events');
+var EventEmitter2 = require('eventemitter2').EventEmitter2;
 var util = require('util');
 var consts = require('../../shared/constants');
 
@@ -57,7 +57,7 @@ function buildBlockObject(position) {
     this.position = position;
     this.blockType = blockType;
   }
-  util.inherits(Block, EventEmitter);
+  util.inherits(Block, EventEmitter2);
 
   var obj = new Block(position, typeInfo);
   return obj;
