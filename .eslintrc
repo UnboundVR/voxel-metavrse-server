@@ -40,6 +40,6 @@
     "sourceType": "module",
   },
   "plugins": [
-    "html"
+    "vue"
   ]
 }

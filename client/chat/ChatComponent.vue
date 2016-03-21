@@ -17,8 +17,6 @@
 </template>
 
 <script>
-
-import Vue from 'vue';
 import auth from './../auth/';
 import service from './service';
 import events from '../events';
@@ -30,7 +28,7 @@ export default {
   data() {
     return {
       messageList: [],
-      newMessage: '',
+      newMessage: ''
     };
   },
   methods: {
@@ -61,18 +59,16 @@ export default {
     },
     addMessage(message) {
       this.messageList.push(message);
-    },
+    }
   },
   ready() {
-    let self = this;
-
     service.init();
     service.on('message', this.addMessage);
     this.enable();
 
     events.on(consts.events.FULLSCREEN_WINDOW_OPEN, this.disableEnterHandler);
     events.on(consts.events.FULLSCREEN_WINDOW_CLOSE, this.enableEnterHandler);
-  },
+  }
 };
 </script>
 
