@@ -11,7 +11,6 @@
         placeholder="Press <enter> to chat"
         @keyup.enter="sendNewMessage"
         v-el:message-input />
-      <br/>
     </div>
   </div>
 </template>
@@ -43,21 +42,29 @@ export default {
     enterHandler: function(e) {
       if (e.keyCode !== 13) return;
 
-      var el = this.$els.messageInput;
-      if (document.activeElement !== el) {
+      if (document.activeElement !== this.$els.messageInput) {
         pointerLock.release();
-        el.focus();
+        this.$els.messageInput.focus();
       }
     },
     sendNewMessage() {
-      var username = auth.getName() || 'anonymous';
-      var message = { date: Date.now(), user: username, text: this.newMessage };
-      this.addMessage(message);
-      service.sendMessage(message);
-      this.newMessage = '';
-      pointerLock.request();
-      this.$els.messageInput.blur();
-      //console.log(pointerLock.available()); // TODO enhance chat ux
+      let el = this.$els.messageInput;
+
+      if (document.activeElement === el) {
+        if (el.value === '') {
+          el.blur();
+          pointerLock.request();
+        } else {
+          var username = auth.getName() || 'Guest';
+          var message = { date: Date.now(), user: username, text: this.newMessage };
+          this.addMessage(message);
+          service.sendMessage(message);
+          this.newMessage = ''; // TODO: See why the hell this doesn't update the model and we have to use --v
+          el.value = '';
+          el.blur(); // TODO: This doesn't css-blur the input, the cursor and the border persists.
+          pointerLock.request();
+        }
+      }
     },
     addMessage(message) {
       this.messageList.push(message);
@@ -86,6 +93,10 @@ export default {
 </script>
 
 <style>
+#cmd {
+  color: #FFFFFF;
+}
+
 #messages li {
   color: #FF0000;
 }
