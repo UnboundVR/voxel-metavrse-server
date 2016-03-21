@@ -4,9 +4,10 @@ import util from 'util';
 
 function ChatService() {
   this.init = function() {
+    var self = this;
     this.socket = io.connect(location.host + '/chat');
     this.socket.on('message', function(message) {
-      this.emit('message', message);
+      self.emit('message', message);
     });
   };
 
