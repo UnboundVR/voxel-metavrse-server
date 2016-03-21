@@ -6,7 +6,7 @@ module.exports = {
   init: function() {
     var self = this;
     this.connect();
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve) {
       self.onReady = resolve;
     });
   },

@@ -56,7 +56,7 @@ function buildBlockObject(position) {
   var Block = function(position, blockType) {
     this.position = position;
     this.blockType = blockType;
-  }
+  };
   util.inherits(Block, EventEmitter2);
 
   var obj = new Block(position, typeInfo);

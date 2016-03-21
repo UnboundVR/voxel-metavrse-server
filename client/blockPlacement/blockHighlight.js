@@ -25,7 +25,7 @@ module.exports = {
       blockPosPlace = voxelPos;
     });
 
-    hl.on('remove-adjacent', function (voxelPos) {
+    hl.on('remove-adjacent', function () {
       blockPosPlace = null;
     });
   },

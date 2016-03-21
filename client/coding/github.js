@@ -5,7 +5,7 @@ var SINGLE_FILENAME = 'single_file';
 module.exports = {
   getGist: function(id) {
     var request = new Request(consts.github.API_URL + '/gists/' + id, {
-    	method: 'GET'
+      method: 'GET'
     });
 
     return fetch(request).then(function(response) {
@@ -14,7 +14,7 @@ module.exports = {
       return {
         id: response.id,
         code: response.files[SINGLE_FILENAME].content
-      }
+      };
     });
   }
 };

@@ -24,7 +24,7 @@ module.exports = function(io) {
       socket.on('set', function(pos, val) {
         var broadcast = function(pos, val) {
           socket.broadcast.emit('set', pos, val);
-        }
+        };
 
         controller.set(pos, val, broadcast);
       });

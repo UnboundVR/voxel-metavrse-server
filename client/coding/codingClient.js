@@ -15,7 +15,7 @@ module.exports = {
     return new Promise(function(resolve, reject) {
       socket.emit('requestAllCode', auth.getAccessToken(), function(err, response) {
         if(err) {
-          throw new Error('Error fetching code. ' + err);
+          reject(new Error('Error fetching code. ' + err));
         }
 
         if(auth.isLogged()) {
@@ -29,7 +29,7 @@ module.exports = {
         }
       });
       socket.on('codeChanged', function(position, codeObj) {
-        console.log('codeChanged')
+        console.log('codeChanged');
         blocksWithCode[position] = codeObj;
         executor.update(position, codeObj.code);
         voxelEngine.setBlock(position, blocks.types.CODE.number);

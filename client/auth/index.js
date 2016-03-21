@@ -1,6 +1,5 @@
 var Vue = require('vue');
 var querystring = require('querystring');
-var consts = require('../../shared/constants');
 var githubAuth = require('./githubAuth');
 var tokenStore = require('./tokenStore');
 

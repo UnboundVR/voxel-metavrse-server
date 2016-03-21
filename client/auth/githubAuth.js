@@ -12,7 +12,7 @@ module.exports = {
       var url = consts.github.OAUTH_URL + '/authorize'
         + '?client_id=' + clientInfo.clientId
         + '&scope=' + consts.github.REQUESTED_SCOPE
-        + '&redirect_uri=' + clientInfo.redirectUri
+        + '&redirect_uri=' + clientInfo.redirectUri;
         // TODO pass state too
       return url;
     });
@@ -21,7 +21,7 @@ module.exports = {
     var url = '/auth/github_access_token/' + code;
 
     var request = new Request(url, {
-    	method: 'GET'
+      method: 'GET'
     });
 
     return fetch(request).then(function(response) {

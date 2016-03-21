@@ -5,13 +5,11 @@ var blockPlacement = require('./blockPlacement');
 var playerSync = require('./playerSync');
 var voxelEngine = require('./voxelEngine');
 var chat = require('./chat');
-var consts = require('../shared/constants');
-var io = require('socket.io-client');
 var Vue = require('vue');
 
 function initVue() {
   new Vue({
-    el: 'body',
+    el: 'body'
   });
 }
 

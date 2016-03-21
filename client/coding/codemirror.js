@@ -93,11 +93,11 @@ var openCodeWindow = function(codeWindowTitle, initialCode) {
 
   events.emit(consts.events.FULLSCREEN_WINDOW_OPEN, {name: CODING_WINDOW});
 
-  return new Promise(function(resolve, reject) {
+  return new Promise(function(resolve) {
     saveButton.onclick = function() {
       resolve(codemirror.getValue());
       closeCodeWindow();
-    }
+    };
   });
 };
 

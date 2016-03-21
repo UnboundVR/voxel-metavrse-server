@@ -32,6 +32,8 @@
     "browserify": "^13.0.0",
     "del": "^2.2.0",
     "dotenv": "^2.0.0",
+    "eslint": "^2.4.0",
+    "eslint-plugin-html": "^1.4.0",
     "eventemitter2": "^1.0.0",
     "gulp": "^3.9.1",
     "gulp-tape": "0.0.7",
