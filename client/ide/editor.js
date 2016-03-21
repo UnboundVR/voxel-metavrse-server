@@ -16,9 +16,7 @@ var doClose = function() {
   var chatElement = document.getElementById('chat');
   var toolbar = document.getElementById('toolbar');
   var userInfo = document.getElementById('userInfo');
-  var container = document.getElementById('scripting');
 
-  container.style.display = 'none';
   crosshair.style.display = 'block';
   toolbar.style.display = 'block';
   userInfo.style.display = 'block';
@@ -44,9 +42,7 @@ var open = function(data) {
   var chatElement = document.getElementById('chat');
   var toolbar = document.getElementById('toolbar');
   var userInfo = document.getElementById('userInfo');
-  var container = document.getElementById('scripting');
 
-  container.style.display = 'block';
   crosshair.style.display = 'none';
   toolbar.style.display = 'none';
   userInfo.style.display = 'none';

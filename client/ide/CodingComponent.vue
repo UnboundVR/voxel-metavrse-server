@@ -1,5 +1,5 @@
 <template>
-  <div id="scripting">
+  <div v-show="open" id="scripting">
     <div class="scripting-header">
       <span>Editing the code at {{position}}</span> <span v-if="id">({{id}})</span> <span v-else>(new)</span>
       <button v-on:click="save">Save</button>
@@ -12,6 +12,7 @@
 <script>
 
 import editor from './editor';
+import Vue from 'vue';
 
 var codemirror;
 
@@ -26,10 +27,11 @@ export default {
   },
   methods: {
     save: function() {
+      this.open = false;
       editor.save(codemirror.getValue());
     },
     close: function() {
-      this.$els.content.innerHtml = '';
+      this.open = false;
       editor.close();
     }
   },
@@ -58,12 +60,16 @@ export default {
     });
 
     editor.on('open', function(data) {
+      //document.getElementById('scripting').style.display = 'block';
+      self.open = true;
       self.position = data.position.join('|');
       self.id = data.id;
 
-      codemirror.focus();
-      codemirror.setValue(data.code);
-      editor.markClean();
+      Vue.nextTick(() => {
+        codemirror.setValue(data.code);
+        editor.markClean();
+        codemirror.focus();
+      });
     });
 
     var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -80,7 +86,7 @@ export default {
 
 <style>
 #scripting {
-  display: none;
+  display: block;
   position: absolute;
   top: 0px;
   width: 100%;
