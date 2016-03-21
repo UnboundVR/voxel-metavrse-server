@@ -1,7 +1,7 @@
-var Vue = require('vue');
-var ChatComponent = require('./ChatComponent.vue');
+import Vue from 'vue';
+import ChatComponent from './ChatComponent.vue';
 
-module.exports = {
+export default {
   init: function() {
     Vue.component('chat-component', ChatComponent);
   }
