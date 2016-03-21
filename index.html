@@ -13,11 +13,13 @@
   </head>
   <body>
     <div id="container"></div>
-    <chat-component></chat-component>
-    <toolbar-component></toolbar-component>
-    <auth-component></auth-component>
+    <div v-show="showUI">
+      <chat-component></chat-component>
+      <toolbar-component></toolbar-component>
+      <auth-component></auth-component>
+      <div id="crosshair"><img src="assets/img/crosshair.png"/></div>
+    </div>
     <coding-component></coding-component>
-    <div id="crosshair"><img src="assets/img/crosshair.png"/></div>
     <script type="text/javascript" src="build/metavrse.js"></script>
   </body>
 </html>
