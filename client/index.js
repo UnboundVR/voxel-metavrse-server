@@ -7,13 +7,8 @@ import voxelEngine from './voxelEngine';
 import chat from './chat';
 import toolbar from './toolbar';
 import ide from './ide';
-import Vue from 'vue';
+import rootVue from './rootVue';
 
-function initVue() {
-  new Vue({
-    el: 'body'
-  });
-}
 
 export default function() {
   auth.init().then(function() {
@@ -34,7 +29,7 @@ export default function() {
           console.log('Browser not capable');
         }
 
-        initVue();
+        rootVue.init();
       }).catch(function(err) {
         console.log('Error initializing some modules', err);
         throw err;
