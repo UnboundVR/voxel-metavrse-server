@@ -1,18 +1,18 @@
-var client = require('./codingClient');
-var executor = require('./scriptExecutor');
-var voxelEngine = require('../voxelEngine');
-var editCode = require('./editCode');
+import client  from './codingClient';
+import executor  from './scriptExecutor';
+import voxelEngine  from '../voxelEngine';
+import launchIde from './launchIde';
 
-module.exports = {
-  init: function(socket) {
-    client.init(socket).then(function() {
+export default {
+  init: function() {
+    client.init().then(function() {
       client.getBlocksWithCode().forEach(function(block) {
         executor.create(block.position, block.codeObj.code);
         voxelEngine.setBlock(block.position, 2);
       });
     });
   },
-  editCode: editCode,
+  editCode: launchIde,
   confirm: executor.confirm,
   removeCode: function(position) {
     if(client.hasCode(position)) {

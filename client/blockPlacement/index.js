@@ -1,15 +1,15 @@
-var highlight = require('./blockHighlight');
-var blocks = require('../../shared/blocks');
-var coding = require('../coding');
-var toolbar = require('./toolbar');
-var voxelEngine = require('../voxelEngine');
-var consts = require('../../shared/constants');
-var getAdjacent = require('./getAdjacentPositions');
+import highlight from './blockHighlight';
+import blocks from '../../shared/blocks';
+import coding from '../coding';
+import toolbar from '../toolbar';
+import voxelEngine from '../voxelEngine';
+import consts from '../../shared/constants';
+import getAdjacent from './getAdjacentPositions';
+import voxelClient from '../voxelClient';
 
-module.exports = {
-  init: function(socket) {
+export default {
+  init() {
     highlight.init();
-    toolbar.init();
 
     function adjacentToTrollBlock(position) {
       var adj = getAdjacent(position);
@@ -26,7 +26,7 @@ module.exports = {
 
     function placeBlock(position) {
       voxelEngine.createBlock(position, toolbar.getSelected());
-      socket.emit('set', position, toolbar.getSelected());
+      voxelClient.setBlock(position, toolbar.getSelected());
     }
 
     function codeBlock(position) {
@@ -40,7 +40,7 @@ module.exports = {
     function removeBlock(position) {
       coding.removeCode(position);
       voxelEngine.clearBlock(position);
-      socket.emit('set', position, 0);
+      voxelClient.clearBlock(position);
     }
 
     function canPlace(position) {

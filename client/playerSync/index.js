@@ -1,12 +1,18 @@
-var setupAvatar = require('./avatar');
-var voxelEngine = require('../voxelEngine');
-var consts = require('../../shared/constants');
-var skin = require('minecraft-skin');
+import setupAvatar from './avatar';
+import voxelEngine from '../voxelEngine';
+import consts from '../../shared/constants';
+import skin from 'minecraft-skin';
+import io from 'socket.io-client';
 
-module.exports = {
-  init: function(socket) {
+var socket;
+
+export default {
+  init: function() {
     var self = this;
-    self.playerId = socket.id;
+    socket = io.connect(location.host + '/playerSync');
+    socket.on('connect', function() {
+      self.playerId = socket.id;
+    });
     this.others = {};
 
     function sendState() {
@@ -46,9 +52,9 @@ module.exports = {
             return self.onServerUpdate(update); // local player
           }
           self.updatePlayerPosition(player, update); // other players
-        })
-      })
-    }, 1000)
+        });
+      });
+    }, 1000);
 
     socket.on('leave', function(id) {
       if (!self.others[id]) {
@@ -71,17 +77,17 @@ module.exports = {
     var pos = update.position;
     var player = this.others[id];
     if (!player) {
-      var playerSkin = skin(voxelEngine.engine.THREE, 'assets/avatars/player.png', {
+      let playerSkin = skin(voxelEngine.engine.THREE, 'assets/avatars/player.png', {
         scale: new voxelEngine.engine.THREE.Vector3(0.04, 0.04, 0.04)
       });
-      var playerMesh = playerSkin.mesh;
+      let playerMesh = playerSkin.mesh;
       this.others[id] = playerSkin;
       playerMesh.children[0].position.y = 10;
       voxelEngine.engine.scene.add(playerMesh);
     }
 
-    var playerSkin = this.others[id];
-    var playerMesh = playerSkin.mesh;
+    let playerSkin = this.others[id];
+    let playerMesh = playerSkin.mesh;
     playerMesh.position.copy(playerMesh.position.lerp(pos, consts.playerSync.LERP_PERCENT));
 
     playerMesh.children[0].rotation.y = update.rotation.y + (Math.PI / 2);

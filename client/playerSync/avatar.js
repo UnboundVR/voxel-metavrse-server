@@ -1,10 +1,10 @@
-var player = require('voxel-player');
-var fly = require('voxel-fly');
-var walk = require('voxel-walk');
-var voxelEngine = require('../voxelEngine');
-var consts = require('../../shared/constants');
+import player from 'voxel-player';
+import fly from 'voxel-fly';
+import walk from 'voxel-walk';
+import voxelEngine from '../voxelEngine';
+import consts from '../../shared/constants';
 
-module.exports = function() {
+export default function() {
   // TODO instead of doing this, we should probably show/hide the whole object, or place the camera further away (so we can use a mirror for example)
   function setAvatarVisibility(visible) {
     avatar.playerSkin.rightArm.visible = visible;

@@ -1,20 +1,21 @@
-var github = require('./github');
-var executor = require('./scriptExecutor');
-var voxelEngine = require('../voxelEngine');
-var blocks = require('../../shared/blocks');
-var expandGists = require('../../shared/coding/expandGists');
-var auth = require('../auth');
+import github from './github';
+import executor from './scriptExecutor';
+import voxelEngine from '../voxelEngine';
+import blocks from '../../shared/blocks';
+import expandGists from '../../shared/coding/expandGists';
+import auth from '../auth';
+import io from 'socket.io-client';
 
 var blocksWithCode;
+var socket;
 
-module.exports = {
-  init: function(socket) {
-    var self = this;
-    this.socket = socket;
+export default {
+  init: function() {
+    socket = io.connect(location.host + '/coding');
     return new Promise(function(resolve, reject) {
       socket.emit('requestAllCode', auth.getAccessToken(), function(err, response) {
         if(err) {
-          throw new Error('Error fetching code. ' + err);
+          reject(new Error('Error fetching code. ' + err));
         }
 
         if(auth.isLogged()) {
@@ -28,7 +29,7 @@ module.exports = {
         }
       });
       socket.on('codeChanged', function(position, codeObj) {
-        console.log('codeChanged')
+        console.log('codeChanged');
         blocksWithCode[position] = codeObj;
         executor.update(position, codeObj.code);
         voxelEngine.setBlock(position, blocks.types.CODE.number);
@@ -56,9 +57,8 @@ module.exports = {
     return !!blocksWithCode[position];
   },
   storeCode: function(position, code) {
-    var self = this;
     return new Promise(function(resolve, reject) {
-      self.socket.emit('codeChanged', position, code, auth.getAccessToken(), function(err, codeObj) {
+      socket.emit('codeChanged', position, code, auth.getAccessToken(), function(err, codeObj) {
         if(err) {
           reject(err);
         } else {
@@ -70,6 +70,6 @@ module.exports = {
   },
   removeCode: function(position) {
     delete blocksWithCode[position];
-    this.socket.emit('codeRemoved', position);
+    socket.emit('codeRemoved', position);
   }
 };

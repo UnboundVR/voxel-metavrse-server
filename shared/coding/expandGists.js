@@ -6,7 +6,7 @@ module.exports = function(gists, getGist) {
     });
   });
 
-  return Promise.all(promises).then(function(codeObjs) {
+  return Promise.all(promises).then(function() {
     return result;
   });
 };
