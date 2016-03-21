@@ -1,7 +1,11 @@
 <template>
   <div id="scripting">
-    <div id="scripting-header"></div>
-    <div id="scripting-content"></div>
+    <div class="scripting-header">
+      <span>Editing the code at {{position}}</span> <span v-if="id">({{id}})</span> <span v-else>(new)</span>
+      <button v-on:click="save">Save</button>
+      <div v-el:close class="closeButton" v-on:click="close"></div>
+    </div>
+    <div class="scripting-content" v-el:content></div>
   </div>
 </template>
 
@@ -9,15 +13,67 @@
 
 import editor from './editor';
 
+var codemirror;
+
 export default {
   name: 'CodingComponent',
   data() {
     return {
-
+      position: '',
+      id: '',
+      open: false
     };
   },
   methods: {
+    save: function() {
+      editor.save(codemirror.getValue());
+    },
+    close: function() {
+      this.$els.content.innerHtml = '';
+      editor.close();
+    }
+  },
+  ready() {
+    var self = this;
 
+    codemirror = CodeMirror(self.$els.content, {
+      value: '',
+      mode: 'javascript',
+      lineNumbers: true,
+      matchBrackets: true,
+      indentWithTabs: true,
+      tabSize: 2,
+      indentUnit: 2,
+      hintOptions: {
+        completeSingle: false
+      }
+    });
+
+    codemirror.on('change', editor.onChange);
+    codemirror.setOption('theme', 'tomorrow-night-bright');
+
+    var wrapper = codemirror.getWrapperElement();
+    wrapper.addEventListener('keydown', function (event) {
+      event.stopPropagation();
+    });
+
+    editor.on('open', function(data) {
+      self.position = data.position.join('|');
+      self.id = data.id;
+
+      codemirror.focus();
+      codemirror.setValue(data.code);
+      editor.markClean();
+    });
+
+    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', 32);
+    svg.setAttribute('height', 32);
+    var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', 'M 12,12 L 22,22 M 22,12 12,22');
+    path.setAttribute('stroke', '#fff');
+    svg.appendChild( path );
+    this.$els.close.appendChild(svg);
   }
 };
 </script>
@@ -32,7 +88,7 @@ export default {
   opacity: 0.9;
 }
 
-  #scripting-header {
+  .scripting-header {
     padding: 7px;
     width: 100%;
     background: #000;
@@ -46,7 +102,7 @@ export default {
       cursor: pointer;
     }
 
-  #scripting-content {
+  .scripting-content {
     width: 100%;
     height: 100%;
   }
