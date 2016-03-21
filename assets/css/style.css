@@ -6,12 +6,6 @@ body {
   overflow: hidden;
 }
 
-#userInfo {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-}
-
 #container {
   -moz-user-select: none;
   -webkit-user-select: none;

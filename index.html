@@ -15,15 +15,10 @@
     <div id="container"></div>
     <chat-component></chat-component>
     <toolbar-component></toolbar-component>
+    <auth-component></auth-component>
     <div id="scripting">
       <div id="scripting-header"></div>
       <div id="scripting-content"></div>
-    </div>
-    <div id="userInfo">
-      <h3>User info</h3>
-      <button v-if="loggedIn" v-on:click="logout">Logout</button>
-      <button v-else v-on:click="login">Login</button>
-      <span v-if="loggedIn">{{name}}</span>
     </div>
     <div id="crosshair"><img src="assets/img/crosshair.png"/></div>
     <script type="text/javascript" src="build/metavrse.js"></script>
