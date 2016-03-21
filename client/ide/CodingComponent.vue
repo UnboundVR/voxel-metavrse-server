@@ -60,7 +60,6 @@ export default {
     });
 
     editor.on('open', function(data) {
-      //document.getElementById('scripting').style.display = 'block';
       self.open = true;
       self.position = data.position.join('|');
       self.id = data.id;
