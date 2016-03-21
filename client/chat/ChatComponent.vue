@@ -1,12 +1,12 @@
 <template>
-  <div id="chat">
-    <ul id="messages">
-      <li v-for='message in messageList'>{{ message.user }} - {{ message.date }} - {{ message.text }}</li>
+  <div id="chat-component" v-bind:class="{ this.css.isChatFocused ? this.css.chatFocused : this.css.chatNotFocused }">
+    <ul id="chat-component-message-list">
+      <li class="chat-component-message-list-message" v-for='message in messageList'>{{ message.user }} - {{ message.date }} - {{ message.text }}</li>
     </ul>
-    <div id="cmdbox">
+    <div id="chat-component-messagebox-wrapper">
       <input
         type="text"
-        id="cmd"
+        id="chat-component-messagebox-input"
         v-model="newMessage"
         placeholder="Press <enter> to chat"
         @keyup.enter="sendNewMessage"
@@ -27,7 +27,12 @@ export default {
   data() {
     return {
       messageList: [],
-      newMessage: ''
+      newMessage: '',
+      css: {
+        isChatFocused: false,
+        chatNotFocused: 'chat-component-not-focus',
+        chatFocused: 'chat-component-focus',
+      }
     };
   },
   methods: {
@@ -43,6 +48,7 @@ export default {
       if (document.activeElement !== this.$els.messageInput) {
         pointerLock.release();
         this.$els.messageInput.focus();
+        this.css.isChatFocused = true;
       }
     },
     sendNewMessage() {
@@ -60,6 +66,7 @@ export default {
           this.newMessage = ''; // TODO: See why the hell this doesn't update the model and we have to use --v
           el.value = '';
           el.blur(); // TODO: This doesn't css-blur the input, the cursor and the border persists.
+          this.css.isChatFocused = false;
           pointerLock.request();
         }
       }
@@ -79,40 +86,49 @@ export default {
 };
 </script>
 
-<style>
-#chat {
-  padding: 10px;
-  height: 200px;
-  width: 25%;
-  position: absolute;
-  bottom: 50px;
-  left: 0;
-}
+<style lang="scss">
 
-  #chat #messages {
+#chat-component {
+  padding: 2px;
+  height: 200px;
+  width: 30%;
+  position: absolute;
+  bottom: 40px;
+  left: 10px;
+
+  .chat-component-not-focus {
+    background-color: rgba(20, 20, 20, 0.2);
+  }
+
+  .chat-component-focus {
+    background-color: rgba(20, 20, 20, 0.6);
+  }
+
+  #chat-component-message-list {
     max-height: 153px;
     overflow: auto;
-  }
 
-    #chat #messages li {
+    .chat-component-message-list-message {
       color: #FF0000;
     }
+  }
 
-  #cmdbox {
+  #chat-component-messagebox-wrapper {
+    height: 30px;
+    width: 100%;
     position: absolute;
     bottom: 0;
-  }
 
-  #chat input {
-    box-shadow: none;
-    padding: 0px 10px;
-    margin: 0;
-    background: none;
-    border: none;
-    border-radius: 0;
-  }
+    #chat-component-messagebox-input {
+      height: 20px;
+      box-shadow: none;
+      padding: 0px 10px;
+      margin: 0;
+      background: none;
+      border: none;
+      border-radius: 0;
 
-  #chat input, input:focus {
-    /* outline: none; */
+    }
   }
+}
 </style>
