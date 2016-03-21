@@ -1,7 +1,7 @@
 import highlight from './blockHighlight';
 import blocks from '../../shared/blocks';
 import coding from '../coding';
-import toolbar from './toolbar';
+import toolbar from '../toolbar';
 import voxelEngine from '../voxelEngine';
 import consts from '../../shared/constants';
 import getAdjacent from './getAdjacentPositions';
@@ -10,7 +10,6 @@ import voxelClient from '../voxelClient';
 export default {
   init() {
     highlight.init();
-    toolbar.init();
 
     function adjacentToTrollBlock(position) {
       var adj = getAdjacent(position);

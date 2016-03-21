@@ -5,6 +5,7 @@ import blockPlacement from './blockPlacement';
 import playerSync from './playerSync';
 import voxelEngine from './voxelEngine';
 import chat from './chat';
+import toolbar from './toolbar';
 import Vue from 'vue';
 
 function initVue() {
@@ -18,7 +19,13 @@ export default function() {
     client.init().then(function() {
       voxelEngine.init(client.engine);
 
-      Promise.all([blockPlacement.init(), playerSync.init(), chat.init(), coding.init()]).then(function() {
+      Promise.all([
+        blockPlacement.init(),
+        playerSync.init(),
+        chat.init(),
+        coding.init(),
+        toolbar.init()
+      ]).then(function() {
         try {
           voxelEngine.appendToContainer();
         } catch(err) {
