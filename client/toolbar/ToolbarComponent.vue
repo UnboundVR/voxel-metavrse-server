@@ -20,9 +20,6 @@ export default {
       items: service.getToolbarItems()
     };
   },
-  methods: {
-
-  },
   ready() {
     service.init();
   }
@@ -30,5 +27,9 @@ export default {
 </script>
 
 <style>
-/* this is using style from other file */
+/* this is using styles from toolbar.css */
+.bar-tab {
+  right: 33% !important;
+  left: 33% !important;
+}
 </style>

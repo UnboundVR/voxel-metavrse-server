@@ -1,8 +1,4 @@
 var crosshair = document.getElementById('crosshair');
-var container = document.getElementById('scripting');
-var content = document.getElementById('scripting-content');
-var header = document.getElementById('scripting-header');
-var userInfo = document.getElementById('userInfo');
 import pointerLock from '../pointerLock';
 import events from '../events';
 import consts from '../../shared/constants';
@@ -12,6 +8,12 @@ const CODING_WINDOW = 'coding';
 var closeCodeWindow = function() {
   var chatElement = document.getElementById('chat');
   var toolbar = document.getElementById('toolbar');
+  var userInfo = document.getElementById('userInfo');
+
+  var container = document.getElementById('scripting');
+  var content = document.getElementById('scripting-content');
+  var header = document.getElementById('scripting-header');
+
   container.style.display = 'none';
   crosshair.style.display = 'block';
   toolbar.style.display = 'block';
@@ -26,6 +28,12 @@ var closeCodeWindow = function() {
 var openCodeWindow = function(codeWindowTitle, initialCode) {
   var chatElement = document.getElementById('chat');
   var toolbar = document.getElementById('toolbar');
+  var userInfo = document.getElementById('userInfo');
+
+  var container = document.getElementById('scripting');
+  var content = document.getElementById('scripting-content');
+  var header = document.getElementById('scripting-header');
+
   container.style.display = 'block';
   crosshair.style.display = 'none';
   toolbar.style.display = 'none';

@@ -1,7 +1,7 @@
 import client  from './codingClient';
 import executor  from './scriptExecutor';
 import voxelEngine  from '../voxelEngine';
-import editCode  from './editCode';
+import launchIde from './launchIde';
 
 export default {
   init: function() {
@@ -12,7 +12,7 @@ export default {
       });
     });
   },
-  editCode: editCode,
+  editCode: launchIde,
   confirm: executor.confirm,
   removeCode: function(position) {
     if(client.hasCode(position)) {

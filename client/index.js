@@ -6,6 +6,7 @@ import playerSync from './playerSync';
 import voxelEngine from './voxelEngine';
 import chat from './chat';
 import toolbar from './toolbar';
+import ide from './ide';
 import Vue from 'vue';
 
 function initVue() {
@@ -24,7 +25,8 @@ export default function() {
         playerSync.init(),
         chat.init(),
         coding.init(),
-        toolbar.init()
+        toolbar.init(),
+        ide.init()
       ]).then(function() {
         try {
           voxelEngine.appendToContainer();
@@ -39,4 +41,4 @@ export default function() {
       });
     });
   });
-};
+}
