@@ -1,28 +1,44 @@
-var client = require('./voxelClient');
-var auth = require('./auth');
-var coding = require('./coding');
-var blockPlacement = require('./blockPlacement');
-var playerSync = require('./playerSync');
-var voxelEngine = require('./voxelEngine');
-var chat = require('./chat');
-var consts = require('../shared/constants');
-var io = require('socket.io-client');
-var Vue = require('vue');
+import client from './voxelClient';
+import auth from './auth';
+import coding from './coding';
+import blockPlacement from './blockPlacement';
+import playerSync from './playerSync';
+import voxelEngine from './voxelEngine';
+import chat from './chat';
+import toolbar from './toolbar';
+import ide from './ide';
+import Vue from 'vue';
 
-module.exports = function() {
+function initVue() {
+  new Vue({
+    el: 'body'
+  });
+}
+
+export default function() {
   auth.init().then(function() {
-    var socket = io.connect(location.host);
-
-    client.init(socket).then(function() {
+    client.init().then(function() {
       voxelEngine.init(client.engine);
-      Promise.all([blockPlacement.init(socket), playerSync.init(socket), chat.init(), coding.init(socket)]).then(function() {
-        voxelEngine.appendToContainer();
-        var vue = new Vue({
-          el: 'body',
-        });
-      }, function() {
-        console.log('browser not capable');
+
+      Promise.all([
+        blockPlacement.init(),
+        playerSync.init(),
+        chat.init(),
+        coding.init(),
+        toolbar.init(),
+        ide.init()
+      ]).then(function() {
+        try {
+          voxelEngine.appendToContainer();
+        } catch(err) {
+          console.log('Browser not capable');
+        }
+
+        initVue();
+      }).catch(function(err) {
+        console.log('Error initializing some modules', err);
+        throw err;
       });
     });
   });
-};
+}

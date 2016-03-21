@@ -1,23 +1,23 @@
-var rle = require('../shared/rle');
-var engine = require('voxel-engine');
+import rle from '../shared/rle';
+import engine from 'voxel-engine';
+import io from 'socket.io-client';
 
-module.exports = {
-  init: function(socket) {
+export default {
+  init: function() {
     var self = this;
-    this.connect(socket);
-    return new Promise(function(resolve, reject) {
+    this.connect();
+    return new Promise(function(resolve) {
       self.onReady = resolve;
     });
   },
-  connect: function(socket) {
-    var self = this;
-    socket.on('disconnect', function() {
+  connect: function() {
+    this.socket = io.connect(location.host + '/voxel');
+    this.socket.on('disconnect', function() {
       // TODO handle disconnection
     });
-    this.socket = socket;
-    this.bindEvents(socket);
+    this.bindEvents();
   },
-  bindEvents: function(socket) {
+  bindEvents: function() {
     var self = this;
 
     var processChunk = function(chunk) {
@@ -25,7 +25,7 @@ module.exports = {
       self.engine.showChunk(chunk);
     };
 
-    socket.on('init', function(data) {
+    this.socket.on('init', function(data) {
       var settings = data.settings;
       var chunks = data.chunks;
       settings.generateChunks = false;
@@ -33,7 +33,7 @@ module.exports = {
       chunks.forEach(processChunk);
 
       self.engine.voxels.on('missingChunk', function(chunkPosition) {
-        socket.emit('requestChunk', chunkPosition, function(err, chunk) {
+        self.socket.emit('requestChunk', chunkPosition, function(err, chunk) {
           if(err) {
             alert('Error getting chunk: ', err);
           } else {
@@ -45,17 +45,22 @@ module.exports = {
       self.onReady();
     });
 
-    socket.on('set', function(pos, val) {
+    this.socket.on('set', function(pos, val) {
       self.engine.setBlock(pos, val);
     });
   },
   createEngine: function(settings) {
     var self = this;
-    var socket = this.socket;
     settings.controlsDisabled = false;
     self.engine = engine(settings);
     self.engine.settings = settings;
 
     return self.engine;
+  },
+  setBlock: function(position, type) {
+    this.socket.emit('set', position, type);
+  },
+  clearBlock: function(position) {
+    this.setBlock(position, 0);
   }
 };

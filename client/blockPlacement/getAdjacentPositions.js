@@ -1,4 +1,4 @@
-module.exports = function(pos) {
+export default function(pos) {
   var adj = [];
 
   adj.push([pos[0] + 1, pos[1], pos[2]]);

@@ -1,9 +1,9 @@
-var voxelEngine = require('../voxelEngine');
-var blocks = require('../../shared/blocks');
-var events = require('../events');
-var EventEmitter = require('events');
-var util = require('util');
-var consts = require('../../shared/constants');
+import voxelEngine from '../voxelEngine';
+import blocks from '../../shared/blocks';
+import events from '../events';
+import EventEmitter2 from 'eventemitter2';
+import util from 'util';
+import consts from '../../shared/constants';
 
 var blockObjs = {};
 var supportedEvents = [consts.events.HOVER, consts.events.LEAVE];
@@ -56,8 +56,8 @@ function buildBlockObject(position) {
   var Block = function(position, blockType) {
     this.position = position;
     this.blockType = blockType;
-  }
-  util.inherits(Block, EventEmitter);
+  };
+  util.inherits(Block, EventEmitter2.EventEmitter2);
 
   var obj = new Block(position, typeInfo);
   return obj;
@@ -83,7 +83,7 @@ function unsubscribeToEvents(obj) {
   });
 }
 
-module.exports = {
+export default {
   create: create,
   update: update,
   remove: remove,

@@ -16,12 +16,10 @@
 </template>
 
 <script>
-
-import Vue from 'vue';
 import auth from './../auth/';
 import service from './service';
-import events from '../eventListener.js';
-import pointerLock from '../pointerLock.js';
+import events from '../events';
+import pointerLock from '../pointerLock';
 import consts from '../../shared/constants';
 
 export default {
@@ -29,14 +27,14 @@ export default {
   data() {
     return {
       messageList: [],
-      newMessage: '',
+      newMessage: ''
     };
   },
   methods: {
-    enable: function() {
+    enableEnterHandler: function() {
       window.addEventListener('keyup', this.enterHandler);
     },
-    disable: function() {
+    disableEnterHandler: function() {
       window.removeEventListener('keyup', this.enterHandler);
     },
     enterHandler: function(e) {
@@ -68,36 +66,53 @@ export default {
     },
     addMessage(message) {
       this.messageList.push(message);
-    },
+    }
   },
   ready() {
-    let self = this;
+    service.init();
+    service.on('message', this.addMessage);
+    this.enableEnterHandler();
 
-    service.init(this.addMessage)
-      .then(function() {
-        events.emit('chatReady');
-      });
-
-    events.on('enableChatEnterHandler', function() {
-      self.enable();
-    });
-
-    events.on('disableChatEnterHandler', function() {
-      self.disable();
-    });
-
-    events.on(consts.events.FULLSCREEN_WINDOW_OPEN, this.disable);
-    events.on(consts.events.FULLSCREEN_WINDOW_CLOSE, this.enable);
-  },
+    events.on(consts.events.FULLSCREEN_WINDOW_OPEN, this.disableEnterHandler);
+    events.on(consts.events.FULLSCREEN_WINDOW_CLOSE, this.enableEnterHandler);
+  }
 };
 </script>
 
 <style>
-#cmd {
-  color: #FFFFFF;
+#chat {
+  padding: 10px;
+  height: 200px;
+  width: 25%;
+  position: absolute;
+  bottom: 50px;
+  left: 0;
 }
 
-#messages li {
-  color: #FF0000;
-}
+  #chat #messages {
+    max-height: 153px;
+    overflow: auto;
+  }
+
+    #chat #messages li {
+      color: #FF0000;
+    }
+
+  #cmdbox {
+    position: absolute;
+    bottom: 0;
+  }
+
+  #chat input {
+    box-shadow: none;
+    padding: 0px 10px;
+    margin: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+  }
+
+  #chat input, input:focus {
+    /* outline: none; */
+  }
 </style>

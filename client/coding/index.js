@@ -1,9 +1,9 @@
-var client = require('./codingClient');
-var executor = require('./scriptExecutor');
-var voxelEngine = require('../voxelEngine');
-var editCode = require('./editCode');
+import client  from './codingClient';
+import executor  from './scriptExecutor';
+import voxelEngine  from '../voxelEngine';
+import launchIde from './launchIde';
 
-module.exports = {
+export default {
   init: function() {
     client.init().then(function() {
       client.getBlocksWithCode().forEach(function(block) {
@@ -12,7 +12,7 @@ module.exports = {
       });
     });
   },
-  editCode: editCode,
+  editCode: launchIde,
   confirm: executor.confirm,
   removeCode: function(position) {
     if(client.hasCode(position)) {

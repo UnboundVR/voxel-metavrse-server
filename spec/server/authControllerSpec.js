@@ -15,7 +15,7 @@ var setup = function(authSuccess) {
   };
 
   return proxyquire('../../server/auth/controller', {
-    './githubAuth': mockGithubAuth,
+    './githubAuth': mockGithubAuth
   });
 };
 
