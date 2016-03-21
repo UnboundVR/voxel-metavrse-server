@@ -1,4 +1,3 @@
-var crosshair = document.getElementById('crosshair');
 import events from '../events';
 import consts from '../../shared/constants';
 import EventEmitter2 from 'eventemitter2';
@@ -11,12 +10,10 @@ var dirty = false;
 var onSave;
 
 var doClose = function() {
-  dirty = false;
-
+  var crosshair = document.getElementById('crosshair');
   var chatElement = document.getElementById('chat');
   var toolbar = document.getElementById('toolbar');
   var userInfo = document.getElementById('userInfo');
-
   crosshair.style.display = 'block';
   toolbar.style.display = 'block';
   userInfo.style.display = 'block';
@@ -39,10 +36,10 @@ var close = function() {
 };
 
 var open = function(data) {
+  var crosshair = document.getElementById('crosshair');
   var chatElement = document.getElementById('chat');
   var toolbar = document.getElementById('toolbar');
   var userInfo = document.getElementById('userInfo');
-
   crosshair.style.display = 'none';
   toolbar.style.display = 'none';
   userInfo.style.display = 'none';
