@@ -7,21 +7,8 @@ import voxelEngine from './voxelEngine';
 import chat from './chat';
 import toolbar from './toolbar';
 import ide from './ide';
-import Vue from 'vue';
-import events from './events';
-import consts from '../shared/constants';
+import rootVue from './rootVue';
 
-function initVue() {
-  var vue = new Vue({
-    el: 'body',
-    data: {
-      showUI: true
-    }
-  });
-
-  events.on(consts.events.FULLSCREEN_WINDOW_OPEN, () => vue.showUI = false);
-  events.on(consts.events.FULLSCREEN_WINDOW_CLOSE, () => vue.showUI = true);
-}
 
 export default function() {
   auth.init().then(function() {
@@ -42,7 +29,7 @@ export default function() {
           console.log('Browser not capable');
         }
 
-        initVue();
+        rootVue.init();
       }).catch(function(err) {
         console.log('Error initializing some modules', err);
         throw err;
