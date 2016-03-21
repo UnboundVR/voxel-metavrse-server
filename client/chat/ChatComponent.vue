@@ -73,7 +73,39 @@ export default {
 </script>
 
 <style>
-#messages li {
-  color: #FF0000;
+#chat {
+  padding: 10px;
+  height: 200px;
+  width: 25%;
+  position: absolute;
+  bottom: 50px;
+  left: 0;
 }
+
+  #chat #messages {
+    max-height: 153px;
+    overflow: auto;
+  }
+
+    #chat #messages li {
+      color: #FF0000;
+    }
+
+  #cmdbox {
+    position: absolute;
+    bottom: 0;
+  }
+
+  #chat input {
+    box-shadow: none;
+    padding: 0px 10px;
+    margin: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+  }
+
+  #chat input, input:focus {
+    /* outline: none; */
+  }
 </style>
