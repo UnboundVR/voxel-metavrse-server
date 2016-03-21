@@ -1,8 +1,8 @@
-var rle = require('../shared/rle');
-var engine = require('voxel-engine');
-var io = require('socket.io-client');
+import rle from '../shared/rle';
+import engine from 'voxel-engine';
+import io from 'socket.io-client';
 
-module.exports = {
+export default {
   init: function() {
     var self = this;
     this.connect();

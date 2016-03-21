@@ -1,11 +1,11 @@
-var client = require('./voxelClient');
-var auth = require('./auth');
-var coding = require('./coding');
-var blockPlacement = require('./blockPlacement');
-var playerSync = require('./playerSync');
-var voxelEngine = require('./voxelEngine');
-var chat = require('./chat');
-var Vue = require('vue');
+import client from './voxelClient';
+import auth from './auth';
+import coding from './coding';
+import blockPlacement from './blockPlacement';
+import playerSync from './playerSync';
+import voxelEngine from './voxelEngine';
+import chat from './chat';
+import Vue from 'vue';
 
 function initVue() {
   new Vue({
@@ -13,7 +13,7 @@ function initVue() {
   });
 }
 
-module.exports = function() {
+export default function() {
   auth.init().then(function() {
     client.init().then(function() {
       voxelEngine.init(client.engine);
@@ -28,6 +28,7 @@ module.exports = function() {
         initVue();
       }).catch(function(err) {
         console.log('Error initializing some modules', err);
+        throw err;
       });
     });
   });

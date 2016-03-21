@@ -64,7 +64,7 @@ export default {
   ready() {
     service.init();
     service.on('message', this.addMessage);
-    this.enable();
+    this.enableEnterHandler();
 
     events.on(consts.events.FULLSCREEN_WINDOW_OPEN, this.disableEnterHandler);
     events.on(consts.events.FULLSCREEN_WINDOW_CLOSE, this.enableEnterHandler);

@@ -1,11 +1,11 @@
-var highlight = require('voxel-highlight');
-var voxelEngine = require('../voxelEngine');
-var events = require('../events');
-var consts = require('../../shared/constants');
+import highlight from 'voxel-highlight';
+import voxelEngine from '../voxelEngine';
+import events from '../events';
+import consts from '../../shared/constants';
 
 var blockPosPlace, blockPosEdit;
 
-module.exports = {
+export default {
   init: function() {
     var hl = voxelEngine.engine.highlighter = highlight(voxelEngine.engine, {
       color: 0xff0000

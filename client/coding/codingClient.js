@@ -1,15 +1,15 @@
-var github = require('./github');
-var executor = require('./scriptExecutor');
-var voxelEngine = require('../voxelEngine');
-var blocks = require('../../shared/blocks');
-var expandGists = require('../../shared/coding/expandGists');
-var auth = require('../auth');
-var io = require('socket.io-client');
+import github from './github';
+import executor from './scriptExecutor';
+import voxelEngine from '../voxelEngine';
+import blocks from '../../shared/blocks';
+import expandGists from '../../shared/coding/expandGists';
+import auth from '../auth';
+import io from 'socket.io-client';
 
 var blocksWithCode;
 var socket;
 
-module.exports = {
+export default {
   init: function() {
     socket = io.connect(location.host + '/coding');
     return new Promise(function(resolve, reject) {

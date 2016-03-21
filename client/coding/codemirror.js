@@ -4,9 +4,9 @@ var content = document.getElementById('scripting-content');
 var header = document.getElementById('scripting-header');
 var toolbar = document.getElementById('toolbar');
 var userInfo = document.getElementById('userInfo');
-var pointerLock = require('../pointerLock');
-var events = require('../events');
-var consts = require('../../shared/constants');
+import pointerLock from '../pointerLock';
+import events from '../events';
+import consts from '../../shared/constants';
 
 const CODING_WINDOW = 'coding';
 
@@ -101,6 +101,6 @@ var openCodeWindow = function(codeWindowTitle, initialCode) {
   });
 };
 
-module.exports = {
+export default {
   open: openCodeWindow
 };

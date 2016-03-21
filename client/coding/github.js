@@ -1,8 +1,8 @@
-var consts = require('../../shared/constants');
+import consts from '../../shared/constants';
 
 var SINGLE_FILENAME = 'single_file';
 
-module.exports = {
+export default {
   getGist: function(id) {
     var request = new Request(consts.github.API_URL + '/gists/' + id, {
       method: 'GET'

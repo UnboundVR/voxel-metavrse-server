@@ -1,14 +1,14 @@
-var highlight = require('./blockHighlight');
-var blocks = require('../../shared/blocks');
-var coding = require('../coding');
-var toolbar = require('./toolbar');
-var voxelEngine = require('../voxelEngine');
-var consts = require('../../shared/constants');
-var getAdjacent = require('./getAdjacentPositions');
-var voxelClient = require('../voxelClient');
+import highlight from './blockHighlight';
+import blocks from '../../shared/blocks';
+import coding from '../coding';
+import toolbar from './toolbar';
+import voxelEngine from '../voxelEngine';
+import consts from '../../shared/constants';
+import getAdjacent from './getAdjacentPositions';
+import voxelClient from '../voxelClient';
 
-module.exports = {
-  init: function() {
+export default {
+  init() {
     highlight.init();
     toolbar.init();
 

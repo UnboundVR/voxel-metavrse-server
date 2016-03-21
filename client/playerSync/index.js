@@ -1,12 +1,12 @@
-var setupAvatar = require('./avatar');
-var voxelEngine = require('../voxelEngine');
-var consts = require('../../shared/constants');
-var skin = require('minecraft-skin');
-var io = require('socket.io-client');
+import setupAvatar from './avatar';
+import voxelEngine from '../voxelEngine';
+import consts from '../../shared/constants';
+import skin from 'minecraft-skin';
+import io from 'socket.io-client';
 
 var socket;
 
-module.exports = {
+export default {
   init: function() {
     var self = this;
     socket = io.connect(location.host + '/playerSync');

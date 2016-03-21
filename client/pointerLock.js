@@ -1,6 +1,6 @@
-var voxelEngine = require('./voxelEngine');
+import voxelEngine from './voxelEngine';
 
-module.exports = {
+export default {
   request: function() {
     voxelEngine.engine.interact.request();
   },

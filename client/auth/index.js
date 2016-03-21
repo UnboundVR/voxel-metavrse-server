@@ -1,7 +1,7 @@
-var Vue = require('vue');
-var querystring = require('querystring');
-var githubAuth = require('./githubAuth');
-var tokenStore = require('./tokenStore');
+import Vue from 'vue';
+import querystring from 'querystring';
+import githubAuth from './githubAuth';
+import tokenStore from './tokenStore';
 
 var accessToken;
 var vm;
@@ -24,17 +24,17 @@ function fetchUserData() {
   });
 }
 
-module.exports = {
-  getName: function() {
+export default {
+  getName() {
     return vm.name;
   },
-  getAccessToken: function() {
+  getAccessToken() {
     return accessToken;
   },
-  isLogged: function() {
+  isLogged() {
     return !!accessToken;
   },
-  init: function() {
+  init() {
     vm = new Vue({
       el: '#userInfo',
       data: {

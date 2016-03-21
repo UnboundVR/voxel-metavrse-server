@@ -1,7 +1,7 @@
-var consts = require('../../shared/constants');
+import consts  from '../../shared/constants';
 
-module.exports = {
-  getLoginUrl: function() {
+export default {
+  getLoginUrl() {
     var request = new Request('/auth/github_client_info', {
       method: 'GET'
     });
@@ -17,7 +17,7 @@ module.exports = {
       return url;
     });
   },
-  getAccessToken: function(code) {
+  getAccessToken(code) {
     var url = '/auth/github_access_token/' + code;
 
     var request = new Request(url, {
@@ -40,7 +40,7 @@ module.exports = {
       }
     });
   },
-  getLoggedUserInfo: function(githubAccessToken) {
+  getLoggedUserInfo(githubAccessToken) {
     var request = new Request(consts.github.API_URL + '/user', {
       method: 'GET',
       headers: {

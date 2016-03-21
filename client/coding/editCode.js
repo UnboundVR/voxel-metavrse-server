@@ -1,7 +1,7 @@
-var codemirror = require('./codemirror');
-var client = require('./codingClient');
-var auth = require('../auth');
-var executor = require('./scriptExecutor');
+import codemirror from './codemirror';
+import client from './codingClient';
+import auth from '../auth';
+import executor from './scriptExecutor';
 
 var openNew = function(position) {
   var title = 'Editing the code of the voxel at ' + position;
@@ -28,7 +28,7 @@ var openExisting = function(position, codeObj) {
   });
 };
 
-module.exports = function(position) {
+export default function(position) {
   if(!auth.isLogged()) {
     return Promise.reject('Please login to be able to edit code');
   }

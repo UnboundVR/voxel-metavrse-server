@@ -1,9 +1,9 @@
-var client = require('./codingClient');
-var executor = require('./scriptExecutor');
-var voxelEngine = require('../voxelEngine');
-var editCode = require('./editCode');
+import client  from './codingClient';
+import executor  from './scriptExecutor';
+import voxelEngine  from '../voxelEngine';
+import editCode  from './editCode';
 
-module.exports = {
+export default {
   init: function() {
     client.init().then(function() {
       client.getBlocksWithCode().forEach(function(block) {
