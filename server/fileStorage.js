@@ -6,16 +6,16 @@ module.exports = function(subPath) {
     throw 'subPath must be exactly one folder deep';
   }
 
-  var storageFolderPath = process.cwd() + '/storage'
+  var storageFolderPath = process.cwd() + '/storage';
   var basePath = new String(storageFolderPath);
   if(subPath) {
     basePath += ('/' + subPath);
   }
 
   function ensureDirectoryExists(path) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve) {
       var createActualPath = function() {
-        fs.mkdir(path, function(err) {
+        fs.mkdir(path, function() {
           resolve();
         });
       };
@@ -43,7 +43,7 @@ module.exports = function(subPath) {
       });
     },
     load: function(path) {
-      return new Promise(function(resolve, reject) {
+      return new Promise(function(resolve) {
         ensureDirectoryExists(basePath).then(function() {
           fs.readFile(basePath + '/' + path, function(err, data) {
             if(err) {

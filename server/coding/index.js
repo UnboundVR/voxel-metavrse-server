@@ -9,7 +9,7 @@ module.exports = function(io) {
       });
     }, consts.coding.AUTO_SAVE_INTERVAL);
 
-    io.on('connection', function(socket) {
+    io.of('coding').on('connection', function(socket) {
       socket.on('requestAllCode', function(token, callback) {
         controller.getAllCode(token).then(function(allCode) {
           callback(null, allCode);

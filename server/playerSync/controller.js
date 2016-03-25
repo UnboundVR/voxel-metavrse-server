@@ -21,7 +21,7 @@ module.exports = {
           x: player.rotation.x,
           y: player.rotation.y
         }
-      }
+      };
     });
 
     broadcast(update);
@@ -49,7 +49,6 @@ module.exports = {
     var pos = player.position;
     var distance = pos.distanceTo(state.position);
     if (distance > consts.playerSync.ROUGH_MOVEMENT_THRESHOLD) {
-      var before = pos.clone();
       pos.lerp(state.position, consts.playerSync.LERP_PERCENT);
       return;
     }

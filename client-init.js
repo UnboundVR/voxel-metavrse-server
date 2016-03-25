@@ -1,1 +1,2 @@
-require('./client/')();
+import init from './client';
+init();

@@ -37,7 +37,7 @@ module.exports = {
       return {
         id: response.id,
         code: response.files[SINGLE_FILENAME].content
-      }
+      };
     });
   },
   updateGist: function(id, code, token) {

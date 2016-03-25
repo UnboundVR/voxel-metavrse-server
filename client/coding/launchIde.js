@@ -1,13 +1,12 @@
-var codemirror = require('./codemirror');
-var client = require('./codingClient');
-var auth = require('../auth');
-var executor = require('./scriptExecutor');
+import ide from '../ide';
+import client from './codingClient';
+import auth from '../auth';
+import executor from './scriptExecutor';
 
 var openNew = function(position) {
-  var title = 'Editing the code of the voxel at ' + position;
-  var initialCode = 'console.log(\'hello w0rld\')\n'; // TODO bring from server or something
+  var code = 'console.log(\'hello w0rld from '+ position +'\')\n'; // TODO bring from server or something
 
-  return codemirror.open(title, initialCode).then(function(value) {
+  return ide.open({position, code}).then(function(value) {
     return client.storeCode(position, value).then(function(codeObj) {
       executor.create(position, value);
       alert('New code was created correctly with ID: ' + codeObj.id);
@@ -18,9 +17,7 @@ var openNew = function(position) {
 };
 
 var openExisting = function(position, codeObj) {
-  var title = 'Editing the existing code of the voxel at ' + position.join('|') + ' (' + codeObj.id + ')';
-
-  return codemirror.open(title, codeObj.code).then(function(value) {
+  return ide.open({position, code: codeObj.code, id: codeObj.id}).then(function(value) {
     return client.storeCode(position, value).then(function() {
       alert('Existing code was updated correctly');
       executor.update(position, value);
@@ -28,7 +25,7 @@ var openExisting = function(position, codeObj) {
   });
 };
 
-module.exports = function(position) {
+export default function(position) {
   if(!auth.isLogged()) {
     return Promise.reject('Please login to be able to edit code');
   }
@@ -38,4 +35,4 @@ module.exports = function(position) {
   } else {
     return openNew(position);
   }
-};
+}
