@@ -37,10 +37,18 @@ export default {
 };
 </script>
 
-<style>
-#userInfo {
+<style lang='scss'>
+
+@import '../../assets/css/_cssmenu';
+
+#auth-component {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 10px;
+  left: 10px;
+
+  #auth-component-avatar {
+    border-radius: 25px;
+  }
 }
+
 </style>
