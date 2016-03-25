@@ -4,6 +4,7 @@ import tokenStore from './tokenStore';
 
 var accessToken;
 var name;
+var avatarUrl;
 
 function init() {
   if(tokenStore.hasToken()) {
@@ -40,6 +41,7 @@ function logout() {
 function fetchUserData() {
   return githubAuth.getLoggedUserInfo(accessToken).then(function(me) {
     name = me.name;
+    avatarUrl = me.avatar_url;
   });
 }
 
@@ -53,6 +55,9 @@ export default {
   },
   getName() {
     return name;
+  },
+  getAvatarUrl() {
+    return avatarUrl;
   },
   isLoggedIn() {
     return !!accessToken;
