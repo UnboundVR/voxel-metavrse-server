@@ -9,7 +9,6 @@
         id="chat-component-messagebox-input"
         v-model="newMessage"
         placeholder="Press <enter> to chat"
-        @keyup.enter="sendNewMessage"
         v-el:message-input />
     </div>
   </div>
@@ -47,28 +46,25 @@ export default {
     enterHandler: function(e) {
       if (e.keyCode !== 13) return;
 
-      if (document.activeElement !== this.$els.messageInput) {
+      var el = this.$els.messageInput;
+      if (document.activeElement === this.$parent.$el || document.activeElement === 'null' || document.activeElement === undefined) {
         pointerLock.release();
-        this.$els.messageInput.focus();
-        this.css.isChatFocused = true;
-      }
-    },
-    sendNewMessage() {
-      let el = this.$els.messageInput;
-
-      if (document.activeElement === el) {
-        if (el.value === '') {
+        el.focus();
+        this.css.chat.isChatFocused = true;
+      } else if (document.activeElement === el) {
+        if (this.newMessage === '' || this.newMessage === null || el.value === '') {
           el.blur();
+          this.css.chat.isChatFocused = false;
           pointerLock.request();
-        } else {
+        } else if (this.newMessage !== '' || el.value !== '') {
           var username = auth.getName() || 'Guest';
           var message = { date: Date.now(), user: username, text: this.newMessage };
           this.addMessage(message);
           service.sendMessage(message);
-          this.newMessage = ''; // TODO: See why the hell this doesn't update the model and we have to use --v
+          this.newMessage = ''; // TODO: See why the hell this doesn't update the model and we have to use this thing below --v
           el.value = '';
-          el.blur(); // TODO: This doesn't css-blur the input, the cursor and the border persists.
-          this.css.isChatFocused = false;
+          this.css.chat.isChatFocused = false;
+          el.blur();
           pointerLock.request();
         }
       }
