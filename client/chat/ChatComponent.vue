@@ -1,7 +1,7 @@
 <template>
-  <div id="chat-component" v-bind:class="{ this.css.isChatFocused ? this.css.chatFocused : this.css.chatNotFocused }">
+  <div id="chat-component" v-bind:class="[ this.css.chat.isChatFocused ? this.css.chat.chatFocused : this.css.chat.chatNotFocused ]">
     <ul id="chat-component-message-list">
-      <li class="chat-component-message-list-message" v-for='message in messageList'>{{ message.user }} - {{ message.date }} - {{ message.text }}</li>
+      <li class="chat-component-message-list-message" v-for='message in messageList'>[{{ message.date }}] [{{ message.user }}]: {{ message.text }}</li>
     </ul>
     <div id="chat-component-messagebox-wrapper">
       <input
@@ -29,9 +29,11 @@ export default {
       messageList: [],
       newMessage: '',
       css: {
-        isChatFocused: false,
-        chatNotFocused: 'chat-component-not-focus',
-        chatFocused: 'chat-component-focus',
+        chat: {
+          isChatFocused: false,
+          chatNotFocused: 'chat-component-not-focus',
+          chatFocused: 'chat-component-focus',
+        }
       }
     };
   },
@@ -82,7 +84,7 @@ export default {
 
     events.on(consts.events.FULLSCREEN_WINDOW_OPEN, this.disableEnterHandler);
     events.on(consts.events.FULLSCREEN_WINDOW_CLOSE, this.enableEnterHandler);
-  }
+  },
 };
 </script>
 
@@ -95,14 +97,6 @@ export default {
   position: absolute;
   bottom: 40px;
   left: 10px;
-
-  .chat-component-not-focus {
-    background-color: rgba(20, 20, 20, 0.2);
-  }
-
-  .chat-component-focus {
-    background-color: rgba(20, 20, 20, 0.6);
-  }
 
   #chat-component-message-list {
     max-height: 153px;
@@ -127,8 +121,20 @@ export default {
       background: none;
       border: none;
       border-radius: 0;
+      color: #FFFFFF;
 
+      &:focus {
+        outline: none;
+      }
     }
   }
+}
+
+.chat-component-not-focus {
+  background-color: rgba(20, 20, 20, 0.2);
+}
+
+.chat-component-focus {
+  background-color: rgba(20, 20, 20, 0.6);
 }
 </style>
