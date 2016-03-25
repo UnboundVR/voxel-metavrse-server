@@ -21,7 +21,7 @@
     "voxel-fly": "~0.1.0",
     "voxel-highlight": "0.0.10",
     "voxel-player": "0.1.0",
-    "voxel-walk": "git://github.com/flyswatter/voxel-walk.git",
+    "voxel-walk": "https://github.com/flyswatter/voxel-walk.git",
     "vue": "^1.0.16"
   },
   "devDependencies": {
