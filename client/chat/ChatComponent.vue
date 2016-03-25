@@ -87,7 +87,7 @@ export default {
 <style lang="scss">
 
 #chat-component {
-  padding: 2px;
+  padding: 10px;
   height: 200px;
   width: 30%;
   position: absolute;
@@ -99,7 +99,7 @@ export default {
     overflow: auto;
 
     .chat-component-message-list-message {
-      color: #FF0000;
+      color: #FFFFFF;
     }
   }
 
@@ -128,9 +128,11 @@ export default {
 
 .chat-component-not-focus {
   background-color: rgba(20, 20, 20, 0.2);
+  border: 1px solid rgba(240, 240, 240, 0.03);
 }
 
 .chat-component-focus {
   background-color: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(240, 240, 240, 0.1);
 }
 </style>
