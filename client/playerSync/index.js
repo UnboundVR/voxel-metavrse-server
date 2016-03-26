@@ -7,10 +7,10 @@ import io from 'socket.io-client';
 var socket;
 
 export default {
-  init: function() {
+  init() {
     var self = this;
     socket = io.connect(location.host + '/playerSync');
-    socket.on('connect', function() {
+    socket.on('connect', () => {
       self.playerId = socket.id;
     });
     this.others = {};
@@ -30,9 +30,9 @@ export default {
       socket.emit('state', state);
     }
 
-    voxelEngine.engine.controls.on('data', function(state) {
+    voxelEngine.engine.controls.on('data', state => {
       var interacting = false;
-      Object.keys(state).map(function(control) {
+      Object.keys(state).map(control => {
         if (state[control] > 0) {
           interacting = true;
         }
@@ -44,9 +44,9 @@ export default {
     });
 
     // setTimeout is because three.js seems to throw errors if you add stuff too soon
-    setTimeout(function() {
-      socket.on('update', function(updates) {
-        Object.keys(updates.positions).map(function(player) {
+    setTimeout(() => {
+      socket.on('update', updates => {
+        Object.keys(updates.positions).map(player => {
           var update = updates.positions[player];
           if (player === self.playerId) {
             return self.onServerUpdate(update); // local player
@@ -56,7 +56,7 @@ export default {
       });
     }, 1000);
 
-    socket.on('leave', function(id) {
+    socket.on('leave', id => {
       if (!self.others[id]) {
         return;
       }
@@ -66,10 +66,10 @@ export default {
 
     setupAvatar();
   },
-  onServerUpdate: function(update) {
+  onServerUpdate(update) {
     // TODO use server sent location
   },
-  updatePlayerPosition: function(id, update) {
+  updatePlayerPosition(id, update) {
     function scale( x, fromLow, fromHigh, toLow, toHigh ) {
       return ( x - fromLow ) * ( toHigh - toLow ) / ( fromHigh - fromLow ) + toLow;
     }

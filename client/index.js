@@ -10,8 +10,8 @@ import ide from './ide';
 import rootVue from './rootVue';
 
 export default function() {
-  auth.init().then(function() {
-    client.init().then(function() {
+  auth.init().then(() => {
+    client.init().then(() => {
       voxelEngine.init(client.engine);
 
       Promise.all([
@@ -21,7 +21,7 @@ export default function() {
         coding.init(),
         toolbar.init(),
         ide.init()
-      ]).then(function() {
+      ]).then(() => {
         try {
           voxelEngine.appendToContainer();
         } catch(err) {
@@ -29,7 +29,7 @@ export default function() {
         }
 
         rootVue.init();
-      }).catch(function(err) {
+      }).catch((err) => {
         console.log('Error initializing some modules', err);
         throw err;
       });

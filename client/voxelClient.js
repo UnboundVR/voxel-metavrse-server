@@ -3,37 +3,37 @@ import engine from 'voxel-engine';
 import io from 'socket.io-client';
 
 export default {
-  init: function() {
+  init() {
     var self = this;
     this.connect();
-    return new Promise(function(resolve) {
+    return new Promise(resolve => {
       self.onReady = resolve;
     });
   },
-  connect: function() {
+  connect() {
     this.socket = io.connect(location.host + '/voxel');
-    this.socket.on('disconnect', function() {
+    this.socket.on('disconnect', () => {
       // TODO handle disconnection
     });
     this.bindEvents();
   },
-  bindEvents: function() {
+  bindEvents() {
     var self = this;
 
-    var processChunk = function(chunk) {
+    var processChunk = chunk => {
       chunk.voxels = rle.decode(chunk.voxels);
       self.engine.showChunk(chunk);
     };
 
-    this.socket.on('init', function(data) {
+    this.socket.on('init', data => {
       var settings = data.settings;
       var chunks = data.chunks;
       settings.generateChunks = false;
       self.engine = self.createEngine(settings);
       chunks.forEach(processChunk);
 
-      self.engine.voxels.on('missingChunk', function(chunkPosition) {
-        self.socket.emit('requestChunk', chunkPosition, function(err, chunk) {
+      self.engine.voxels.on('missingChunk', chunkPosition => {
+        self.socket.emit('requestChunk', chunkPosition, (err, chunk) => {
           if(err) {
             alert('Error getting chunk: ', err);
           } else {
@@ -45,11 +45,11 @@ export default {
       self.onReady();
     });
 
-    this.socket.on('set', function(pos, val) {
+    this.socket.on('set', (pos, val) => {
       self.engine.setBlock(pos, val);
     });
   },
-  createEngine: function(settings) {
+  createEngine(settings) {
     var self = this;
     settings.controlsDisabled = false;
     self.engine = engine(settings);
@@ -57,10 +57,10 @@ export default {
 
     return self.engine;
   },
-  setBlock: function(position, type) {
+  setBlock(position, type) {
     this.socket.emit('set', position, type);
   },
-  clearBlock: function(position) {
+  clearBlock(position) {
     this.setBlock(position, 0);
   }
 };

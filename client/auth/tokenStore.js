@@ -1,14 +1,14 @@
 export default {
-  deleteToken: function() {
+  deleteToken() {
     localStorage.removeItem('authToken');
   },
-  storeToken: function(token) {
+  storeToken(token) {
     localStorage.setItem('authToken', token);
   },
-  getToken: function() {
+  getToken() {
     return localStorage.getItem('authToken');
   },
-  hasToken: function() {
+  hasToken() {
     return !!this.getToken();
   }
 };

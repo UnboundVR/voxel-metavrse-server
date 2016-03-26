@@ -52,4 +52,4 @@ export default function() {
 
   window.addEventListener('keydown', onKeyDown);
   engine.on('tick', onTick);
-};
+}

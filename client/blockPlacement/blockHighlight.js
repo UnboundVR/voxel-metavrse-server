@@ -6,7 +6,7 @@ import consts from '../../shared/constants';
 var blockPosPlace, blockPosEdit;
 
 export default {
-  init: function() {
+  init() {
     var hl = voxelEngine.engine.highlighter = highlight(voxelEngine.engine, {
       color: 0xff0000
     });
@@ -29,10 +29,10 @@ export default {
       blockPosPlace = null;
     });
   },
-  getPlacePosition: function() {
+  getPlacePosition() {
     return blockPosPlace;
   },
-  getEditPosition: function() {
+  getEditPosition() {
     return blockPosEdit;
   }
 };

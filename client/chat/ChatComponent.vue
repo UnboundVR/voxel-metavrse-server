@@ -31,19 +31,19 @@ export default {
         chat: {
           isChatFocused: false,
           chatNotFocused: 'chat-component-not-focus',
-          chatFocused: 'chat-component-focus',
+          chatFocused: 'chat-component-focus'
         }
       }
     };
   },
   methods: {
-    enableEnterHandler: function() {
+    enableEnterHandler() {
       window.addEventListener('keyup', this.enterHandler);
     },
-    disableEnterHandler: function() {
+    disableEnterHandler() {
       window.removeEventListener('keyup', this.enterHandler);
     },
-    enterHandler: function(e) {
+    enterHandler(e) {
       if (e.keyCode !== 13) return;
 
       var el = this.$els.messageInput;
@@ -80,7 +80,7 @@ export default {
 
     events.on(consts.events.FULLSCREEN_WINDOW_OPEN, this.disableEnterHandler);
     events.on(consts.events.FULLSCREEN_WINDOW_CLOSE, this.enableEnterHandler);
-  },
+  }
 };
 </script>
 
