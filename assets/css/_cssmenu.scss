@@ -12,7 +12,7 @@
     font-weight: 700;
     line-height: 32px;
     display: block;
-    padding: 0 15px;
+    //padding: 0 15px; // FIXME: Somehow this breaks the FPS counter
     text-decoration: none;
     color: #333333;
 }
@@ -59,4 +59,3 @@
 .css_menu ul li:hover > ul {
     display: block;
 }
-;
