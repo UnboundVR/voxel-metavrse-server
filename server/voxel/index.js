@@ -1,4 +1,3 @@
-var consts = require('../../shared/constants');
 var controller = require('./controller');
 
 module.exports = function(io) {

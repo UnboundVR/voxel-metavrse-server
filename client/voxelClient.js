@@ -1,5 +1,8 @@
 import engine from 'voxel-engine';
 import io from 'socket.io-client';
+import blocks from '../shared/blocks';
+import baseSettings from '../shared/voxelSettings.json';
+import extend from 'extend';
 
 function decompress(chunk) { // FIXME repeated
   var voxels = new Array(chunk.dims[0] * chunk.dims[1] * chunk.dims[2]).fill(0);
@@ -33,7 +36,11 @@ export default {
     };
 
     this.socket.on('init', data => {
-      var settings = data.settings;
+      var settings = extend({}, baseSettings, {
+        materials: blocks.getMaterials(),
+        texturePath: 'assets/textures/',
+        controls: { discreteFire: true }
+      });
       var chunks = data.chunks;
       settings.generateChunks = false;
       self.engine = self.createEngine(settings);
