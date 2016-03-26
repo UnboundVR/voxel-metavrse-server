@@ -4,17 +4,17 @@
     margin: 0;
     padding: 0;
     list-style: none;
-}
 
-.css_menu ul a, span {
-    font-family: "HelveticaNeue","Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 32px;
-    display: block;
-    //padding: 0 15px; // FIXME: Somehow this breaks the FPS counter
-    text-decoration: none;
-    color: #333333;
+    a, span {
+        font-family: "HelveticaNeue","Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 32px;
+        display: block;
+        padding: 0 15px;
+        text-decoration: none;
+        color: #333333;
+    }
 }
 
 .css_menu ul li {
