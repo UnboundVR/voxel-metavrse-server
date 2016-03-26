@@ -1,5 +1,4 @@
 var controller = require('./controller');
-var consts = require('../../shared/constants');
 
 module.exports = function(io) {
   controller.init().then(function() {
@@ -21,7 +20,7 @@ module.exports = function(io) {
         controller.onCodeChanged(position, code, token, broadcast).then(function(codeObj) {
           callback(null, codeObj);
         }).catch(function(err) {
-          console.log('cannot update/create gist', err)
+          console.log('cannot update/create gist', err);
           callback(err);
         });
       });
