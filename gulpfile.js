@@ -3,6 +3,8 @@
 var watchify = require('watchify');
 var browserify = require('browserify');
 var strictify = require('strictify');
+var vueify = require('vueify');
+var babelify = require('babelify');
 
 var gulp = require('gulp');
 var source = require('vinyl-source-stream');
@@ -26,6 +28,8 @@ var opts = assign({}, watchify.args, customOpts);
 var b = browserify(opts);
 
 b.transform(strictify);
+b.transform(vueify);
+b.transform(babelify);
 b.on('log', gutil.log);
 
 gulp.task('test', function () {

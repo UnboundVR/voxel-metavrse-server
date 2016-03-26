@@ -1,7 +1,9 @@
 module.exports = {
   events: {
     HOVER: 'Hover',
-    LEAVE: 'Leave'
+    LEAVE: 'Leave',
+    FULLSCREEN_WINDOW_OPEN: 'FullScreenWindowOpen',
+    FULLSCREEN_WINDOW_CLOSE: 'FullScreenWindowClose'
   },
   confirmableFunctions: {
     PLACE_ADJACENT: 'PlaceAdjacent',

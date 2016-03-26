@@ -1,6 +1,5 @@
 var test = require('tape');
 var sinon = require('sinon');
-var consts = require('../../shared/constants');
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 
 var mockGithub;
@@ -34,7 +33,7 @@ var setup = function(storageSuccess, githubSuccess, saveSuccess) {
   if(storageSuccess === true) {
     loadGistsResponse = Promise.resolve(gists);
   } else if(storageSuccess === null) {
-    loadGistsResponse = Promise.resolve(null)
+    loadGistsResponse = Promise.resolve(null);
   } else {
     loadGistsResponse = Promise.reject('error');
   }
@@ -53,7 +52,7 @@ var setup = function(storageSuccess, githubSuccess, saveSuccess) {
   return proxyquire('../../server/coding/controller', {
     './github': mockGithub,
     './store': mockStorage,
-    '../../shared/coding/expandGists': mockExpandGists,
+    '../../shared/coding/expandGists': mockExpandGists
   });
 };
 

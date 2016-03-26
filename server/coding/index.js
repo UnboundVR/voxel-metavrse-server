@@ -4,7 +4,7 @@ var consts = require('../../shared/constants');
 module.exports = function(io) {
   controller.init().then(function() {
 
-    io.on('connection', function(socket) {
+    io.of('coding').on('connection', function(socket) {
       socket.on('requestAllCode', function(token, callback) {
         controller.getAllCode(token).then(function(allCode) {
           callback(null, allCode);

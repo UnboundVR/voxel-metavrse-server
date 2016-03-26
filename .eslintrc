@@ -1,0 +1,45 @@
+{
+  "rules": {
+    "indent": [
+      2,
+      2,
+      {"SwitchCase": 1}
+    ],
+    "quotes": [
+      2,
+      "single"
+    ],
+    "linebreak-style": [
+      2,
+      "unix"
+    ],
+    "semi": [
+      2,
+      "always"
+    ],
+    "brace-style": [
+      2,
+      "1tbs",
+      { "allowSingleLine": true }
+    ],
+    "no-console": 0
+  },
+  "globals": {
+    "CodeMirror"
+  },
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+  },
+  "plugins": [
+    "vue"
+  ]
+}

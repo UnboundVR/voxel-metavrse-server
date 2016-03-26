@@ -8,9 +8,9 @@ module.exports = {
         encoding.push([count, prev]);
         count = 1;
         prev = input[i];
+      } else {
+        count ++;
       }
-      else
-      count ++;
     }
     encoding.push([count, prev]);
     return encoding;

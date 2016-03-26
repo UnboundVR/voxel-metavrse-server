@@ -1,27 +1,39 @@
-var client = require('./voxelClient');
-var auth = require('./auth');
-var coding = require('./coding');
-var blockPlacement = require('./blockPlacement');
-var playerSync = require('./playerSync');
-var voxelEngine = require('./voxelEngine');
-var chat = require('./chat');
-var consts = require('../shared/constants');
-var io = require('socket.io-client');
+import client from './voxelClient';
+import auth from './auth';
+import coding from './coding';
+import blockPlacement from './blockPlacement';
+import playerSync from './playerSync';
+import voxelEngine from './voxelEngine';
+import chat from './chat';
+import toolbar from './toolbar';
+import ide from './ide';
+import rootVue from './rootVue';
 
-module.exports = function() {
+
+export default function() {
   auth.init().then(function() {
-    var socket = io.connect(location.host);
-
-    client.init(socket).then(function() {
+    client.init().then(function() {
       voxelEngine.init(client.engine);
-      voxelEngine.appendToContainer().then(function() {
-        blockPlacement.init(socket);
-        playerSync.init(socket);
-        coding.init(socket);
-        chat.init(socket);
-      }, function() {
-        console.log('browser not capable');
+
+      Promise.all([
+        blockPlacement.init(),
+        playerSync.init(),
+        chat.init(),
+        coding.init(),
+        toolbar.init(),
+        ide.init()
+      ]).then(function() {
+        try {
+          voxelEngine.appendToContainer();
+        } catch(err) {
+          console.log('Browser not capable');
+        }
+
+        rootVue.init();
+      }).catch(function(err) {
+        console.log('Error initializing some modules', err);
+        throw err;
       });
     });
   });
-};
+}

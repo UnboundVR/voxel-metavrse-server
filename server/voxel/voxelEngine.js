@@ -1,5 +1,4 @@
 var blocks = require('../../shared/blocks');
-var rle = require('../../shared/rle');
 var createEngine = require('voxel-engine');
 
 var engine;
@@ -9,7 +8,7 @@ module.exports = {
   init: function() {
     settings = {
       generate: function(x, y, z) {
-        return y === 1 ? 1 : 0
+        return y === 1 ? 1 : 0;
       },
       chunkDistance: 2,
       materials: blocks.getMaterials(),

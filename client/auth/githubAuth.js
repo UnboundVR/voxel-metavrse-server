@@ -1,7 +1,7 @@
-var consts = require('../../shared/constants');
+import consts  from '../../shared/constants';
 
-module.exports = {
-  getLoginUrl: function() {
+export default {
+  getLoginUrl() {
     var request = new Request('/auth/github_client_info', {
       method: 'GET'
     });
@@ -12,16 +12,16 @@ module.exports = {
       var url = consts.github.OAUTH_URL + '/authorize'
         + '?client_id=' + clientInfo.clientId
         + '&scope=' + consts.github.REQUESTED_SCOPE
-        + '&redirect_uri=' + clientInfo.redirectUri
+        + '&redirect_uri=' + clientInfo.redirectUri;
         // TODO pass state too
       return url;
     });
   },
-  getAccessToken: function(code) {
+  getAccessToken(code) {
     var url = '/auth/github_access_token/' + code;
 
     var request = new Request(url, {
-    	method: 'GET'
+      method: 'GET'
     });
 
     return fetch(request).then(function(response) {
@@ -40,7 +40,7 @@ module.exports = {
       }
     });
   },
-  getLoggedUserInfo: function(githubAccessToken) {
+  getLoggedUserInfo(githubAccessToken) {
     var request = new Request(consts.github.API_URL + '/user', {
       method: 'GET',
       headers: {

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   deleteToken: function() {
     localStorage.removeItem('authToken');
   },
