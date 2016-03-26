@@ -32,10 +32,14 @@ var setup = function(success) {
   });
 };
 
-test('VoxelController::initClient when load works fine', function(t) {
+test('VoxelController::initClient', function(t) {
   var controller = setup(true);
   controller.initClient().then(function(result) {
-    t.equals(result.size, 16, 'contains correct amount of chunks');
+    var chunkPositions = result.map(function(chunk) {
+      return chunk.position;
+    });
+    t.equals(result.size, 16, 'brings correct amount of chunks');
+    t.ok(chunkPositions.contains([0,0,0]));
     t.end();
   });
 });

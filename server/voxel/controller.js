@@ -9,12 +9,9 @@ module.exports = {
 
   },
   initClient: function() {
-    var chunkPositions = [];
-
-
-    return {
+    return Promise.resolve({
       chunks: []
-    };
+    });
   },
   requestChunk: function(chunkPosition) {
 
