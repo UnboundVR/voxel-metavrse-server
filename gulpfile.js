@@ -60,6 +60,6 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('./build'));
 });
 
-gulp.task('watch-css', function () {
+gulp.task('watch-css', ['sass'], function () {
   return gulp.watch('assets/css/**/*.scss', ['sass']);
 });
