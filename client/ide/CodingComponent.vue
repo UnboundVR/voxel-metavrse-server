@@ -26,11 +26,11 @@ export default {
     };
   },
   methods: {
-    save: function() {
+    save() {
       this.open = false;
       editor.save(codemirror.getValue());
     },
-    close: function() {
+    close() {
       this.open = false;
       editor.close();
     }
@@ -55,12 +55,11 @@ export default {
     codemirror.setOption('theme', 'tomorrow-night-bright');
 
     var wrapper = codemirror.getWrapperElement();
-    wrapper.addEventListener('keydown', function (event) {
-      event.stopPropagation();
+    wrapper.addEventListener('keydown', e => {
+      e.stopPropagation();
     });
 
-    editor.on('open', function(data) {
-      //document.getElementById('scripting').style.display = 'block';
+    editor.on('open', data => {
       self.open = true;
       self.position = data.position.join('|');
       self.id = data.id;

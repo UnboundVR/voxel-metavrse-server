@@ -10,10 +10,10 @@ var blocksWithCode;
 var socket;
 
 export default {
-  init: function() {
+  init() {
     socket = io.connect(location.host + '/coding');
     return new Promise(function(resolve, reject) {
-      socket.emit('requestAllCode', auth.getAccessToken(), function(err, response) {
+      socket.emit('requestAllCode', auth.getAccessToken(), (err, response) => {
         if(err) {
           reject(new Error('Error fetching code. ' + err));
         }
@@ -22,27 +22,27 @@ export default {
           blocksWithCode = response;
           resolve();
         } else {
-          expandGists(response, github.getGist).then(function(result) {
+          expandGists(response, github.getGist).then(result => {
             blocksWithCode = result;
             resolve();
           });
         }
       });
-      socket.on('codeChanged', function(position, codeObj) {
+      socket.on('codeChanged', (position, codeObj) => {
         console.log('codeChanged');
         blocksWithCode[position] = codeObj;
         executor.update(position, codeObj.code);
         voxelEngine.setBlock(position, blocks.types.CODE.number);
       });
-      socket.on('codeRemoved', function(position) {
+      socket.on('codeRemoved', position => {
         delete blocksWithCode[position];
         executor.remove(position);
       });
     });
   },
-  getBlocksWithCode: function() {
+  getBlocksWithCode() {
     var result = [];
-    Object.keys(blocksWithCode).forEach(function(pos) {
+    Object.keys(blocksWithCode).forEach(pos => {
       result.push({
         position: pos.split(','),
         codeObj: blocksWithCode[pos]
@@ -50,15 +50,15 @@ export default {
     });
     return result;
   },
-  getCode: function(position) {
+  getCode(position) {
     return blocksWithCode[position];
   },
-  hasCode: function(position) {
+  hasCode(position) {
     return !!blocksWithCode[position];
   },
-  storeCode: function(position, code) {
+  storeCode(position, code) {
     return new Promise(function(resolve, reject) {
-      socket.emit('codeChanged', position, code, auth.getAccessToken(), function(err, codeObj) {
+      socket.emit('codeChanged', position, code, auth.getAccessToken(), (err, codeObj) => {
         if(err) {
           reject(err);
         } else {
@@ -68,7 +68,7 @@ export default {
       });
     });
   },
-  removeCode: function(position) {
+  removeCode(position) {
     delete blocksWithCode[position];
     socket.emit('codeRemoved', position);
   }

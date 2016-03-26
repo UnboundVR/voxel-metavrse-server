@@ -21,21 +21,15 @@ GITHUB_SECRET = <the client_secret of your Github OAuth app>
 
 *Note: If you're an Unbound VR member, you can use our Github App.*
 
-Then run the gulp command to start watchify (if you don't have gulp, `npm install -g gulp-cli` will solve it):
+Then run the watch (to auto-rebuild sass and js on each change):
 ```
-gulp
-```
-
-Then run the server:
-
-```
-npm start
+npm run watch-client
 ```
 
-Or if you want to use nodemon:
+Then start the server (also with a watch):
 
 ```
-npm run dev
+npm run watch-server
 ```
 
 Then point your browser to `http://localhost:<the port you chose above>` and have fun!
