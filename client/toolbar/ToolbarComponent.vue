@@ -27,6 +27,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import '../../assets/css/_toolbar';
+
 .bar-tab {
   right: 33% !important;
   left: 33% !important;
