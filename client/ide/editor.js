@@ -31,7 +31,7 @@ var open = function(data) {
   pointerLock.release();
   events.emit(consts.events.FULLSCREEN_WINDOW_OPEN, {name: CODING_WINDOW});
 
-  return new Promise(function(resolve) {
+  return new Promise(resolve => {
     onSave = resolve;
   });
 };

@@ -3,7 +3,7 @@ import CodingComponent from './CodingComponent.vue';
 import editor from './editor';
 
 export default {
-  init: function() {
+  init() {
     Vue.component('coding-component', CodingComponent);
   },
   open: editor.open

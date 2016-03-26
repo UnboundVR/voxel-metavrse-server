@@ -2,13 +2,13 @@ import voxelEngine from './voxelEngine';
 var pointerLock = require('pointer-lock');
 
 export default {
-  request: function() {
+  request() {
     voxelEngine.engine.interact.request();
   },
-  release: function() {
+  release() {
     voxelEngine.engine.interact.release();
   },
-  available: function() {
+  available() {
     return pointerLock.available();
   }
 };

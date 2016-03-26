@@ -8,9 +8,9 @@ import consts from '../../shared/constants';
 var blockObjs = {};
 var supportedEvents = [consts.events.HOVER, consts.events.LEAVE];
 
-supportedEvents.forEach(function(eventName) {
+supportedEvents.forEach(eventName => {
   events.on(eventName, function(payload, filter) {
-    Object.keys(blockObjs).forEach(function(key) {
+    Object.keys(blockObjs).forEach(key => {
       var block = blockObjs[key];
       block.emit(eventName, payload, filter);
     });
@@ -64,11 +64,11 @@ function buildBlockObject(position) {
 }
 
 function subscribeToEvents(obj) {
-  supportedEvents.forEach(function(eventName) {
+  supportedEvents.forEach(eventName => {
     var handlerName = 'on' + eventName;
     var handler = obj[handlerName];
     if(handler) {
-      obj.on(eventName, function(payload, filter) {
+      obj.on(eventName, (payload, filter) => {
         if(!filter || !filter.position || obj.position.join('|') == filter.position.join('|')) {
           handler.bind(obj)(payload);
         }
@@ -78,7 +78,7 @@ function subscribeToEvents(obj) {
 }
 
 function unsubscribeToEvents(obj) {
-  supportedEvents.forEach(function(eventName) {
+  supportedEvents.forEach(eventName => {
     obj.removeAllListeners(eventName);
   });
 }

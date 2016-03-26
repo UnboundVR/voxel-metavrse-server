@@ -1,15 +1,14 @@
 <template>
-  <div id="chat">
-    <ul id="messages">
-      <li v-for='message in messageList'>{{ message.user }} - {{ message.date }} - {{ message.text }}</li>
+  <div id="chat-component" v-bind:class="[ this.css.chat.isChatFocused ? this.css.chat.chatFocused : this.css.chat.chatNotFocused ]">
+    <ul id="chat-component-message-list">
+      <li class="chat-component-message-list-message" v-for='message in messageList'>[{{ message.date }}] [{{ message.user }}]: {{ message.text }}</li>
     </ul>
-    <div id="cmdbox">
+    <div id="chat-component-messagebox-wrapper">
       <input
         type="text"
-        id="cmd"
+        id="chat-component-messagebox-input"
         v-model="newMessage"
         placeholder="Press <enter> to chat"
-        @keyup.enter="sendNewMessage"
         v-el:message-input />
     </div>
   </div>
@@ -27,39 +26,45 @@ export default {
   data() {
     return {
       messageList: [],
-      newMessage: ''
+      newMessage: '',
+      css: {
+        chat: {
+          isChatFocused: false,
+          chatNotFocused: 'chat-component-not-focus',
+          chatFocused: 'chat-component-focus'
+        }
+      }
     };
   },
   methods: {
-    enableEnterHandler: function() {
+    enableEnterHandler() {
       window.addEventListener('keyup', this.enterHandler);
     },
-    disableEnterHandler: function() {
+    disableEnterHandler() {
       window.removeEventListener('keyup', this.enterHandler);
     },
-    enterHandler: function(e) {
+    enterHandler(e) {
       if (e.keyCode !== 13) return;
 
-      if (document.activeElement !== this.$els.messageInput) {
+      var el = this.$els.messageInput;
+      if (document.activeElement === this.$parent.$el || document.activeElement === 'null' || document.activeElement === undefined) {
         pointerLock.release();
-        this.$els.messageInput.focus();
-      }
-    },
-    sendNewMessage() {
-      let el = this.$els.messageInput;
-
-      if (document.activeElement === el) {
-        if (el.value === '') {
+        el.focus();
+        this.css.chat.isChatFocused = true;
+      } else if (document.activeElement === el) {
+        if (this.newMessage === '' || this.newMessage === null || el.value === '') {
           el.blur();
+          this.css.chat.isChatFocused = false;
           pointerLock.request();
-        } else {
+        } else if (this.newMessage !== '' || el.value !== '') {
           var username = auth.getName() || 'Guest';
           var message = { date: Date.now(), user: username, text: this.newMessage };
           this.addMessage(message);
           service.sendMessage(message);
-          this.newMessage = ''; // TODO: See why the hell this doesn't update the model and we have to use --v
+          this.newMessage = ''; // TODO: See why the hell this doesn't update the model and we have to use this thing below --v
           el.value = '';
-          el.blur(); // TODO: This doesn't css-blur the input, the cursor and the border persists.
+          this.css.chat.isChatFocused = false;
+          el.blur();
           pointerLock.request();
         }
       }
@@ -79,40 +84,55 @@ export default {
 };
 </script>
 
-<style>
-#chat {
+<style lang="scss">
+
+#chat-component {
   padding: 10px;
   height: 200px;
-  width: 25%;
+  width: 30%;
   position: absolute;
-  bottom: 50px;
-  left: 0;
-}
+  bottom: 40px;
+  left: 10px;
 
-  #chat #messages {
+  #chat-component-message-list {
     max-height: 153px;
     overflow: auto;
+
+    .chat-component-message-list-message {
+      color: #FFFFFF;
+    }
   }
 
-    #chat #messages li {
-      color: #FF0000;
-    }
-
-  #cmdbox {
+  #chat-component-messagebox-wrapper {
+    height: 30px;
+    width: 100%;
     position: absolute;
     bottom: 0;
-  }
 
-  #chat input {
-    box-shadow: none;
-    padding: 0px 10px;
-    margin: 0;
-    background: none;
-    border: none;
-    border-radius: 0;
-  }
+    #chat-component-messagebox-input {
+      height: 20px;
+      box-shadow: none;
+      padding: 0px 10px;
+      margin: 0;
+      background: none;
+      border: none;
+      border-radius: 0;
+      color: #FFFFFF;
 
-  #chat input, input:focus {
-    /* outline: none; */
+      &:focus {
+        outline: none;
+      }
+    }
   }
+}
+
+.chat-component-not-focus {
+  background-color: rgba(20, 20, 20, 0.2);
+  border: 1px solid rgba(240, 240, 240, 0.03);
+}
+
+.chat-component-focus {
+  background-color: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(240, 240, 240, 0.1);
+}
 </style>

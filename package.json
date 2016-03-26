@@ -56,7 +56,10 @@
   },
   "scripts": {
     "start": "node server-init",
-    "dev": "./node_modules/.bin/nodemon --watch server --watch shared",
-    "test": "gulp test"
+    "watch-server": "./node_modules/.bin/nodemon --watch server --watch shared",
+    "watch-js": "./node_modules/.bin/gulp watch-js",
+    "watch-css": "./node_modules/.bin/gulp watch-css",
+    "watch-client": "npm run watch-js & npm run watch-css",
+    "test": "./node_modules/.bin/gulp test"
   }
 }

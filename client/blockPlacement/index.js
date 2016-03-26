@@ -30,9 +30,9 @@ export default {
     }
 
     function codeBlock(position) {
-      coding.editCode(position).then(function() {
+      coding.editCode(position).then(() => {
         voxelEngine.setBlock(position, blocks.types.CODE.number);
-      }, function(err) {
+      }, err => {
         alert(err);
       });
     }
@@ -52,7 +52,7 @@ export default {
       var adjPositions = getAdjacent(position);
       var canPlace = true;
 
-      adjPositions.forEach(function(adjPos) {
+      adjPositions.forEach(adjPos => {
         canPlace = canPlace && coding.confirm(adjPos, consts.confirmableFunctions.PLACE_ADJACENT);
       });
 
@@ -78,7 +78,7 @@ export default {
       return coding.confirm(position, consts.confirmableFunctions.EDIT);
     }
 
-    voxelEngine.onFire(function (target, state) {
+    voxelEngine.onFire((target, state) => {
       var placePosition = highlight.getPlacePosition();
       var editPosition = highlight.getEditPosition();
 

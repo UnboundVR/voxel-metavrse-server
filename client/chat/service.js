@@ -6,7 +6,7 @@ function ChatService() {
   this.init = function() {
     var self = this;
     this.socket = io.connect(location.host + '/chat');
-    this.socket.on('message', function(message) {
+    this.socket.on('message', message => {
       self.emit('message', message);
     });
   };

@@ -1,5 +1,5 @@
 export default {
-  init: function(engine) {
+  init(engine) {
     this.engine = engine;
 
     this.createBlock = engine.createBlock.bind(engine);
@@ -9,20 +9,20 @@ export default {
       engine.on('fire', handler);
     };
   },
-  appendToContainer: function() {
+  appendToContainer() {
     var engine = this.engine;
 
     if (engine.notCapable()) {
       throw new Error('Browser not capable');
     }
-    
+
     var container = document.getElementById('container');
     engine.appendTo(container);
   },
-  isOfType: function(pos, type) {
+  isOfType(pos, type) {
     return this.engine.getBlock(pos) == type;
   },
-  clearBlock: function(pos) {
+  clearBlock(pos) {
     this.engine.setBlock(pos, 0);
   }
 };

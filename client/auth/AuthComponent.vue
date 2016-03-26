@@ -1,9 +1,19 @@
 <template>
-  <div id="userInfo">
-    <h3>User info</h3>
-    <button v-if="loggedIn" v-on:click="logout">Logout</button>
-    <button v-else v-on:click="login">Login</button>
-    <span v-if="loggedIn">{{name}}</span>
+  <div id="auth-component">
+    <nav id="auth-component-menu" class="css_menu">
+      <ul v-if="loggedIn">
+        <li>
+          <img id="auth-component-avatar" :src="avatarUrl" alt="" />
+          <ul>
+            <li class="label"><a href="#">{{ name }}</a></li>
+            <li><a href="#" v-on:click="logout">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul v-else>
+        <li><a href="#" v-on:click="login">Login</a></li>
+      </ul>
+    </nav>
   </div>
 </template>
 
@@ -16,7 +26,8 @@ export default {
   data() {
     return {
       loggedIn: service.isLoggedIn(),
-      name: service.getName()
+      name: service.getName(),
+      avatarUrl: service.getAvatarUrl() + '&s=48',
     };
   },
   methods: {
@@ -26,10 +37,18 @@ export default {
 };
 </script>
 
-<style>
-#userInfo {
+<style lang='scss'>
+
+@import '../../assets/css/_cssmenu';
+
+#auth-component {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 10px;
+  left: 10px;
+
+  #auth-component-avatar {
+    border-radius: 25px;
+  }
 }
+
 </style>
