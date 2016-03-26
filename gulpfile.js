@@ -12,6 +12,7 @@ var buffer = require('vinyl-buffer');
 var gutil = require('gulp-util');
 var assign = require('lodash.assign');
 var del = require('del');
+var sass = require('gulp-sass');
 
 var tape = require('gulp-tape');
 var tapColorize = require('tap-colorize');
@@ -39,16 +40,26 @@ gulp.task('test', function () {
     }));
 });
 
-gulp.task('default', ['clean'], function() {
+gulp.task('watch-js', ['clean'], function() {
   var bundle = function() {
     return w.bundle()
       .on('error', gutil.log.bind(gutil, 'Browserify Error'))
       .pipe(source('metavrse.js'))
       .pipe(buffer())
       .pipe(gulp.dest('./build'));
-  }
+  };
 
   var w = watchify(b);
   w.on('update', bundle);
   return bundle();
+});
+
+gulp.task('sass', function () {
+  return gulp.src('./assets/css/**/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('./build'));
+});
+
+gulp.task('watch-css', function () {
+  return gulp.watch('assets/css/**/*.scss', ['sass']);
 });

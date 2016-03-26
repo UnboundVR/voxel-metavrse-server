@@ -9,7 +9,6 @@ import toolbar from './toolbar';
 import ide from './ide';
 import rootVue from './rootVue';
 
-
 export default function() {
   auth.init().then(function() {
     client.init().then(function() {

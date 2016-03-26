@@ -39,7 +39,6 @@
     "gulp-tape": "0.0.7",
     "gulp-util": "^3.0.7",
     "lodash.assign": "^4.0.3",
-    "node-sass": "^3.4.2",
     "nodemon": "^1.9.1",
     "proxyquire": "^1.7.4",
     "sinon": "^1.17.3",
@@ -56,7 +55,10 @@
   },
   "scripts": {
     "start": "node server-init",
-    "dev": "./node_modules/.bin/nodemon --watch server --watch shared",
-    "test": "gulp test"
+    "watch-server": "./node_modules/.bin/nodemon --watch server --watch shared",
+    "watch-js": "./node_modules/.bin/gulp watch-js",
+    "watch-css": "./node_modules/.bin/gulp watch-css",
+    "watch-client": "npm run watch-js & npm run watch-css",
+    "test": "./node_modules/.bin/gulp test"
   }
 }

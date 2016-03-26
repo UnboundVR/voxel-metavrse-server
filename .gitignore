@@ -5,5 +5,3 @@ storage
 .env
 build
 .idea/
-assets/css/*.min.css
-assets/css/*.min.css.map
