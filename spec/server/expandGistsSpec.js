@@ -1,5 +1,5 @@
 var test = require('tape');
-var expandGists = require('../../shared/coding/expandGists');
+var expandGists = require('../../server/coding/expandGists');
 var expandedGists = {
   'id1': {id: 'id1', code: 'asd'},
   'id2': {id: 'id2', code: 'wasd'}

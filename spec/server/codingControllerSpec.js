@@ -50,7 +50,7 @@ var setup = function(storageSuccess, githubSuccess, saveSuccess) {
   return proxyquire('../../server/coding/controller', {
     './github': mockGithub,
     './store': mockStorage,
-    '../../shared/coding/expandGists': mockExpandGists
+    './expandGists': mockExpandGists
   });
 };
 

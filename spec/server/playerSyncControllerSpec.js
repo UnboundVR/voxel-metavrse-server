@@ -1,6 +1,6 @@
 var test = require('tape');
 var sinon = require('sinon');
-var consts = require('../../shared/constants');
+var consts = require('../../server/constants');
 var playerSync = require('../../server/playerSync/controller');
 var THREE = require('three');
 
