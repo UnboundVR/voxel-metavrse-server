@@ -2,7 +2,7 @@ import github from './github';
 import executor from './scriptExecutor';
 import voxelEngine from '../voxelEngine';
 import blocks from '../../shared/blocks';
-import expandGists from '../../shared/coding/expandGists';
+import expandGists from './expandGists';
 import auth from '../auth';
 import io from 'socket.io-client';
 

@@ -1,6 +1,6 @@
 var storage = require('./store');
 var github = require('./github');
-var expandGists = require('../../shared/coding/expandGists');
+var expandGists = require('./expandGists');
 
 var gists = {};
 var dirty = false;
