@@ -1,11 +1,9 @@
 var githubAuth = require('./githubAuth');
-var consts = require('../constants');
 
 module.exports = {
   getGithubClientInfo: function() {
     return {
-      clientId: process.env.GITHUB_CLIENT_ID,
-      redirectUri: consts.github.REDIRECT_URI.replace('<port>', process.env.PORT)
+      clientId: process.env.GITHUB_CLIENT_ID
     };
   },
   getAccessToken: function(code) {
