@@ -30,8 +30,8 @@
     "three": "0.56.0"
   },
   "scripts": {
-    "start": "node server-init",
-    "watch": "./node_modules/.bin/nodemon --watch server --watch shared",
-    "test": "./node_modules/.bin/gulp test"
+    "start": "node src",
+    "watch": "nodemon --watch server --watch shared",
+    "test": "gulp test"
   }
 }
