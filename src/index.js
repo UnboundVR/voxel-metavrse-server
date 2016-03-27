@@ -1,9 +1,9 @@
 var restify = require('restify');
 var server = restify.createServer();
 
-var io = require('socket.io')(server);
-
 server.use(restify.CORS());
+var socketio = require('socket.io');
+var io = socketio.listen(server.server);
 
 // require('use-strict'); // TODO: uncomment after fixing strict issues with libraries
 require('dotenv').load();
