@@ -31,7 +31,7 @@
   },
   "scripts": {
     "start": "node src",
-    "watch": "nodemon --watch server --watch shared",
+    "watch": "nodemon --watch src",
     "test": "gulp test"
   }
 }
