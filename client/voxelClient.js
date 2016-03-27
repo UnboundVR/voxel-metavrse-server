@@ -1,6 +1,7 @@
 import rle from './rle';
 import engine from 'voxel-engine';
 import io from 'socket.io-client';
+import blocks from './blocks';
 
 export default {
   init() {
@@ -28,6 +29,7 @@ export default {
     this.socket.on('init', data => {
       var settings = data.settings;
       var chunks = data.chunks;
+      blocks.init(data.blockTypes);
       settings.generateChunks = false;
       self.engine = self.createEngine(settings);
       chunks.forEach(processChunk);

@@ -21,7 +21,7 @@ export default {
     };
   },
   ready() {
-    service.init();
+    service.hookSelection();
   }
 };
 </script>

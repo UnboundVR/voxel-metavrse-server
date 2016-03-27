@@ -2,6 +2,7 @@ var Promise = require('promise');
 var storage = require('./store');
 var engine = require('./voxelEngine');
 var compression = require('./chunkCompression');
+var blockTypes = require('./blockTypes.json');
 
 var dirtyChunks = {};
 
@@ -73,7 +74,8 @@ module.exports = {
   initClient: function() {
     return {
       settings: engine.getSettings(),
-      chunks: engine.getExistingChunkIds().map(getChunk)
+      chunks: engine.getExistingChunkIds().map(getChunk),
+      blockTypes: blockTypes
     };
   },
   requestChunk: function(chunkPos) {

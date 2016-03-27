@@ -1,5 +1,5 @@
 import highlight from './blockHighlight';
-import blocks from '../../shared/blocks';
+import blocks from '../blocks';
 import coding from '../coding';
 import toolbar from '../toolbar';
 import voxelEngine from '../voxelEngine';

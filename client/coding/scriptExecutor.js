@@ -1,5 +1,5 @@
 import voxelEngine from '../voxelEngine';
-import blocks from '../../shared/blocks';
+import blocks from '../blocks';
 import events from '../events';
 import EventEmitter2 from 'eventemitter2';
 import util from 'util';

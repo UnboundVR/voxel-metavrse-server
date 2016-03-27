@@ -1,11 +1,15 @@
 import toolbar from 'toolbar';
-import blocks from '../../shared/blocks';
+import blocks from '../blocks';
 
-var toolbarItems = blocks.getToolbarItems();
-var currentMaterial = toolbarItems[0].number;
+var toolbarItems;
+var currentMaterial;
 
 export default {
   init() {
+    toolbarItems = blocks.getToolbarItems();
+    currentMaterial = toolbarItems[0].number;
+  },
+  hookSelection() {
     var selector = toolbar();
     selector.on('select', function(item) {
       currentMaterial = parseInt(item);

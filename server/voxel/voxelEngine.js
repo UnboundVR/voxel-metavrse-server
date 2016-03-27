@@ -1,4 +1,4 @@
-var blocks = require('../../shared/blocks');
+var blocks = require('./blocks');
 var createEngine = require('voxel-engine');
 
 var engine;
