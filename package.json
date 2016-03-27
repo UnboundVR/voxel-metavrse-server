@@ -42,6 +42,7 @@
     "gulp-util": "^3.0.7",
     "lodash.assign": "^4.0.3",
     "nodemon": "^1.9.1",
+    "npm-run-all": "^1.6.0",
     "proxyquire": "^1.7.4",
     "sinon": "^1.17.3",
     "strictify": "^0.2.0",
@@ -60,7 +61,7 @@
     "watch-server": "./node_modules/.bin/nodemon --watch server --watch shared",
     "watch-js": "./node_modules/.bin/gulp watch-js",
     "watch-css": "./node_modules/.bin/gulp watch-css",
-    "watch-client": "npm run watch-js & npm run watch-css",
+    "watch-client": "npm-run-all --parallel watch-js watch-css",
     "test": "./node_modules/.bin/gulp test"
   }
 }
