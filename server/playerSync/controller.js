@@ -1,9 +1,15 @@
 var THREE = require('three');
-var consts = require('../../shared/constants');
+var consts = require('../constants');
 
 var clients = {};
 
 module.exports = {
+  getSettings: function() {
+    return {
+      initialPosition: consts.playerSync.AVATAR_INITIAL_POSITION,
+      lerpPercent: consts.playerSync.LERP_PERCENT
+    };
+  },
   sendUpdates: function(broadcast) {
     var clientKeys = Object.keys(clients);
     if (clientKeys.length === 0) {

@@ -1,5 +1,5 @@
 var controller = require('./controller');
-var consts = require('../../shared/constants');
+var consts = require('../constants');
 
 module.exports = function(io) {
   controller.init().then(function() {

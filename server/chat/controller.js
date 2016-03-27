@@ -1,4 +1,4 @@
-var consts = require('../../shared/constants');
+var consts = require('../constants');
 
 module.exports = {
   onMessage: function(message, broadcast) {

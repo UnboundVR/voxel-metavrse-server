@@ -1,6 +1,5 @@
 import setupAvatar from './avatar';
 import voxelEngine from '../voxelEngine';
-import consts from '../../shared/constants';
 import skin from 'minecraft-skin';
 import io from 'socket.io-client';
 
@@ -9,62 +8,67 @@ var socket;
 export default {
   init() {
     var self = this;
+
     socket = io.connect(location.host + '/playerSync');
     socket.on('connect', () => {
       self.playerId = socket.id;
     });
-    this.others = {};
 
-    function sendState() {
-      if (!socket.connected) {
-        return;
-      }
-      var player = voxelEngine.engine.controls.target();
-      var state = {
-        position: player.yaw.position,
-        rotation: {
-          y: player.yaw.rotation.y,
-          x: player.pitch.rotation.x
+    socket.on('settings', settings => {
+      self.settings = settings;
+      self.others = {};
+
+      function sendState() {
+        if (!socket.connected) {
+          return;
         }
-      };
-      socket.emit('state', state);
-    }
-
-    voxelEngine.engine.controls.on('data', state => {
-      var interacting = false;
-      Object.keys(state).map(control => {
-        if (state[control] > 0) {
-          interacting = true;
-        }
-      });
-
-      if (interacting) {
-        sendState();
-      }
-    });
-
-    // setTimeout is because three.js seems to throw errors if you add stuff too soon
-    setTimeout(() => {
-      socket.on('update', updates => {
-        Object.keys(updates.positions).map(player => {
-          var update = updates.positions[player];
-          if (player === self.playerId) {
-            return self.onServerUpdate(update); // local player
+        var player = voxelEngine.engine.controls.target();
+        var state = {
+          position: player.yaw.position,
+          rotation: {
+            y: player.yaw.rotation.y,
+            x: player.pitch.rotation.x
           }
-          self.updatePlayerPosition(player, update); // other players
-        });
-      });
-    }, 1000);
-
-    socket.on('leave', id => {
-      if (!self.others[id]) {
-        return;
+        };
+        socket.emit('state', state);
       }
-      voxelEngine.engine.scene.remove(self.others[id].mesh);
-      delete self.others[id];
-    });
 
-    setupAvatar();
+      voxelEngine.engine.controls.on('data', state => {
+        var interacting = false;
+        Object.keys(state).map(control => {
+          if (state[control] > 0) {
+            interacting = true;
+          }
+        });
+
+        if (interacting) {
+          sendState();
+        }
+      });
+
+      // setTimeout is because three.js seems to throw errors if you add stuff too soon
+      setTimeout(() => {
+        socket.on('update', updates => {
+          Object.keys(updates.positions).map(player => {
+            var update = updates.positions[player];
+            if (player === self.playerId) {
+              return self.onServerUpdate(update); // local player
+            }
+            self.updatePlayerPosition(player, update); // other players
+          });
+        });
+      }, 1000);
+
+      socket.on('leave', id => {
+        if (!self.others[id]) {
+          return;
+        }
+        voxelEngine.engine.scene.remove(self.others[id].mesh);
+        delete self.others[id];
+      });
+
+      setupAvatar(settings);
+    });
   },
   onServerUpdate(update) {
     // TODO use server sent location
@@ -88,7 +92,7 @@ export default {
 
     let playerSkin = this.others[id];
     let playerMesh = playerSkin.mesh;
-    playerMesh.position.copy(playerMesh.position.lerp(pos, consts.playerSync.LERP_PERCENT));
+    playerMesh.position.copy(playerMesh.position.lerp(pos, this.settings.lerpPercent));
 
     playerMesh.children[0].rotation.y = update.rotation.y + (Math.PI / 2);
     playerSkin.head.rotation.z = scale(update.rotation.x, -1.5, 1.5, -0.75, 0.75);

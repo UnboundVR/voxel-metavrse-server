@@ -1,4 +1,4 @@
-var consts = require('../../shared/constants');
+var consts = require('../constants');
 var request = require('request-promise');
 
 var SINGLE_FILENAME = 'single_file';

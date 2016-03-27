@@ -1,5 +1,5 @@
 import events from '../events';
-import consts from '../../shared/constants';
+import consts from '../constants';
 import EventEmitter2 from 'eventemitter2';
 import util from 'util';
 import pointerLock from '../pointerLock';

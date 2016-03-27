@@ -1,5 +1,5 @@
 var githubAuth = require('./githubAuth');
-var consts = require('../../shared/constants');
+var consts = require('../constants');
 
 module.exports = {
   getGithubClientInfo: function() {

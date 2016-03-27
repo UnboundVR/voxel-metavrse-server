@@ -1,5 +1,5 @@
 var controller = require('./controller');
-var consts = require('../../shared/constants');
+var consts = require('../constants');
 
 module.exports = function(io) {
   var broadcast = function(update) {
@@ -18,6 +18,8 @@ module.exports = function(io) {
     };
 
     controller.onJoin(id, broadcast);
+
+    socket.emit('settings', controller.getSettings());
 
     socket.on('disconnect', function() {
       var broadcast = function(id) {

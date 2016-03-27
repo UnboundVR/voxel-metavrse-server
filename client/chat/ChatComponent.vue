@@ -19,7 +19,7 @@ import auth from './../auth/';
 import service from './service';
 import events from '../events';
 import pointerLock from '../pointerLock';
-import consts from '../../shared/constants';
+import consts from '../constants';
 
 export default {
   name: 'ChatComponent',

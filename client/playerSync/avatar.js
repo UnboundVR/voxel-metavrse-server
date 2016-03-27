@@ -2,9 +2,8 @@ import player from 'voxel-player';
 import fly from 'voxel-fly';
 import walk from 'voxel-walk';
 import voxelEngine from '../voxelEngine';
-import consts from '../../shared/constants';
 
-export default function() {
+export default function(settings) {
   // TODO instead of doing this, we should probably show/hide the whole object, or place the camera further away (so we can use a mirror for example)
   function setAvatarVisibility(visible) {
     avatar.playerSkin.rightArm.visible = visible;
@@ -42,7 +41,7 @@ export default function() {
   var createPlayer = player(engine);
   var avatar = createPlayer('assets/avatars/player.png');
   avatar.possess();
-  var initialPos = consts.playerSync.AVATAR_INITIAL_POSITION;
+  var initialPos = settings.initialPosition;
   avatar.position.set(initialPos[0],initialPos[1],initialPos[2]);
 
   var makeFly = fly(voxelEngine.engine);

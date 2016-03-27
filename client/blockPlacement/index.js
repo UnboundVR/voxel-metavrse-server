@@ -3,7 +3,7 @@ import blocks from '../../shared/blocks';
 import coding from '../coding';
 import toolbar from '../toolbar';
 import voxelEngine from '../voxelEngine';
-import consts from '../../shared/constants';
+import consts from '../constants';
 import getAdjacent from './getAdjacentPositions';
 import voxelClient from '../voxelClient';
 

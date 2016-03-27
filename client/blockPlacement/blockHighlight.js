@@ -1,7 +1,7 @@
 import highlight from 'voxel-highlight';
 import voxelEngine from '../voxelEngine';
 import events from '../events';
-import consts from '../../shared/constants';
+import consts from '../constants';
 
 var blockPosPlace, blockPosEdit;
 

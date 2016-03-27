@@ -3,7 +3,7 @@ import blocks from '../../shared/blocks';
 import events from '../events';
 import EventEmitter2 from 'eventemitter2';
 import util from 'util';
-import consts from '../../shared/constants';
+import consts from '../constants';
 
 var blockObjs = {};
 var supportedEvents = [consts.events.HOVER, consts.events.LEAVE];

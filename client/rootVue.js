@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import events from './events';
-import consts from '../shared/constants';
+import consts from './constants';
 
 export default {
   init() {

@@ -1,4 +1,4 @@
-import consts from '../../shared/constants';
+import consts from '../constants';
 
 var SINGLE_FILENAME = 'single_file';
 
