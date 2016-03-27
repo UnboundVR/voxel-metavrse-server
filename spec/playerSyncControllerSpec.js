@@ -1,7 +1,7 @@
 var test = require('tape');
 var sinon = require('sinon');
-var consts = require('../../server/constants');
-var playerSync = require('../../server/playerSync/controller');
+var consts = require('../src/constants');
+var playerSync = require('../src/playerSync/controller');
 var THREE = require('three');
 
 var testId = 'id1';

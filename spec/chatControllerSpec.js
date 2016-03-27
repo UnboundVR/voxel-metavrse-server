@@ -1,7 +1,7 @@
 var test = require('tape');
 var sinon = require('sinon');
-var chat = require('../../server/chat/controller');
-var consts = require('../../server/constants');
+var chat = require('../src/chat/controller');
+var consts = require('../src/constants');
 
 test('ChatController::onMessage | empty messages should be ignored', function(t) {
   var msg = {text: ''};

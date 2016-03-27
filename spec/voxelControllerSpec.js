@@ -19,7 +19,7 @@ var setup = function() {
 
   };
 
-  return proxyquire('../../server/voxel/controller', {
+  return proxyquire('../src/voxel/controller', {
     './chunkCompression': mockCompression,
     './store': mockStorage,
     './voxelEngine': mockEngine,

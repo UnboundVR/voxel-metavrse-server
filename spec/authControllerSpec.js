@@ -14,7 +14,7 @@ var setup = function(authSuccess) {
     .returns(Promise.resolve(authSuccess ? {access_token: token} : {error: error}))
   };
 
-  return proxyquire('../../server/auth/controller', {
+  return proxyquire('../src/auth/controller', {
     './githubAuth': mockGithubAuth
   });
 };

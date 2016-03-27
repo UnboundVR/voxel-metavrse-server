@@ -47,7 +47,7 @@ var setup = function(storageSuccess, githubSuccess, saveSuccess) {
     githubSuccess ? Promise.resolve(expandedGists) : Promise.reject('error')
   );
 
-  return proxyquire('../../server/coding/controller', {
+  return proxyquire('../src/coding/controller', {
     './github': mockGithub,
     './store': mockStorage,
     './expandGists': mockExpandGists
