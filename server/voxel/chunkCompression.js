@@ -1,4 +1,4 @@
-var rle = require('../../shared/rle');
+var rle = require('../rle');
 var engine = require('./voxelEngine');
 var extend = require('extend');
 

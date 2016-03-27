@@ -1,4 +1,4 @@
-import rle from '../shared/rle';
+import rle from './rle';
 import engine from 'voxel-engine';
 import io from 'socket.io-client';
 
