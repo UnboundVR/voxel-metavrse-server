@@ -18,7 +18,7 @@ function markNotDirty(chunkId) {
 }
 
 function loadChunkFromStorage(chunkId) {
-  return storage.loadChunk(chunkId).then(function(chunk) {
+  return storage.loadChunk(chunkId.replace(/\|/g, '_')).then(function(chunk) {
     if(chunk) {
       compression.storeInCache(chunk);
       chunk = compression.decompress(chunk);
@@ -62,7 +62,7 @@ module.exports = {
     return Promise.all(engine.getExistingChunkIds().map(function(chunkId) {
       var chunk = getChunk(chunkId); // this is necessary to ensure all newly compressed chunks are marked dirty
       if(isDirty(chunkId)) {
-        return storage.saveChunk(chunkId, chunk).then(function() {
+        return storage.saveChunk(chunkId.replace(/\|/g, '_'), chunk).then(function() {
           markNotDirty(chunkId);
         });
       } else {
