@@ -1,4 +1,3 @@
-var storage = require('./store');
 var github = require('./github');
 var expandGists = require('./expandGists');
 
@@ -11,22 +10,6 @@ module.exports = {
   },
   isDirty: function() {
     return dirty;
-  },
-  init: function() {
-    return storage.loadGists().then(function(res) {
-      if(res) {
-        gists = res;
-      }
-    });
-  },
-  storeCode: function() {
-    if(dirty) {
-      return storage.saveGists(gists).then(function() {
-        dirty = false;
-      });
-    } else {
-      return Promise.resolve();
-    }
   },
   getAllCode: function(token) {
     if(token) {

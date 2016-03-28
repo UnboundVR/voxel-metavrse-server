@@ -4,6 +4,10 @@ var createEngine = require('voxel-engine');
 var engine;
 var settings;
 
+function getId(pos) {
+  return pos.join('|');
+}
+
 module.exports = {
   init: function() {
     settings = {
@@ -14,36 +18,31 @@ module.exports = {
       materials: blocks.getMaterials(),
       texturePath: 'assets/textures/',
       worldOrigin: [0, 0, 0],
-      controls: { discreteFire: true }
+      controls: {discreteFire: true}
     };
     engine = createEngine(settings);
+  },
+  getInitialChunks: function() {
+    // TODO return chunkDistance chunks in every direction
+    return engine.chunks;
   },
   getSettings: function() {
     return settings;
   },
-  getChunkId: function(chunkPos) {
-    return chunkPos.join('|');
-  },
-  getChunkIdAtPosition: function(pos) {
-    return this.getChunkId(engine.voxels.chunkAtPosition(pos));
-  },
-  getChunk: function(chunkId) {
-    return engine.voxels.chunks[chunkId];
-  },
-  setChunk: function(chunkId, chunk) {
-    engine.voxels.chunks[chunkId] = chunk;
-  },
-  chunkExists: function(chunkId) {
-    return !!engine.voxels.chunks[chunkId];
-  },
-  getExistingChunkIds: function() {
-    return Object.keys(engine.voxels.chunks);
+  getChunk: function(chunkPos) {
+    return engine.voxels.chunks[getId(chunkPos)];
   },
   setBlock: function(pos, val) {
     engine.setBlock(pos, val);
   },
-  generateChunk: function(chunkId) {
-    engine.pendingChunks.push(chunkId);
-    engine.loadPendingChunks(engine.pendingChunks.length);
+  chunkAtPosition: function(pos) {
+    return engine.voxels.chunkAtPosition(pos);
+  },
+  ensureChunkExists(chunkPos) {
+    var chunkId = getId(chunkPos);
+    if(!engine.voxels.chunks[chunkId]) {
+      engine.pendingChunks.push(chunkId);
+      engine.loadPendingChunks(engine.pendingChunks.length);
+    }
   }
 };

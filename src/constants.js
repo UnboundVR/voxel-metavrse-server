@@ -7,9 +7,6 @@ module.exports = {
   chat: {
     MAX_MSG_LENGTH: 1000 // 1s
   },
-  coding: {
-    AUTO_SAVE_INTERVAL: 1000 // 1s
-  },
   voxel: {
     AUTO_SAVE_INTERVAL: 1000 // 1s
   },
