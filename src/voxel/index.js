@@ -1,4 +1,4 @@
-var consts = require('../constants');
+// var consts = require('../constants');
 var controller = require('./controller');
 
 module.exports = function(io) {
