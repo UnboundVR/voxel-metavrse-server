@@ -1,4 +1,3 @@
-var blocks = require('./blocks');
 var createEngine = require('voxel-engine');
 
 var engine;
@@ -11,23 +10,20 @@ function getId(pos) {
 module.exports = {
   init: function() {
     settings = {
+      generateChunks: true,
       generate: function(x, y, z) {
         return y === 1 ? 1 : 0;
       },
       chunkDistance: 2,
-      materials: blocks.getMaterials(),
-      texturePath: 'assets/textures/',
-      worldOrigin: [0, 0, 0],
-      controls: {discreteFire: true}
+      worldOrigin: [0, 0, 0]
     };
     engine = createEngine(settings);
   },
-  getInitialChunks: function() {
-    // TODO return chunkDistance chunks in every direction
-    return engine.chunks;
-  },
   getSettings: function() {
     return settings;
+  },
+  getInitialChunks: function() {
+    return [this.getChunk(this.chunkAtPosition(settings.worldOrigin))]; // returns just the center chunk for now
   },
   getChunk: function(chunkPos) {
     return engine.voxels.chunks[getId(chunkPos)];

@@ -17,7 +17,7 @@ module.exports = {
     engine.ensureChunkExists(chunkPos);
 
     var chunk = engine.getChunk(chunkPos);
-    return compression.gzip(chunk);
+    return compression.compress(chunk);
   },
   set: function(pos, val, broadcast) {
     engine.setBlock(pos, val);
