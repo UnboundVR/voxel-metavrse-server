@@ -11,7 +11,7 @@ module.exports = {
   init: function() {
     settings = {
       generateChunks: true,
-      generate: function(x, y, z) {
+      generate: function(x, y) {
         return y === 1 ? 1 : 0;
       },
       chunkDistance: 2,
@@ -23,7 +23,15 @@ module.exports = {
     return settings;
   },
   getInitialChunks: function() {
-    return [this.getChunk(this.chunkAtPosition(settings.worldOrigin))]; // returns just the center chunk for now
+    var initialPositions = [];
+    for(var i = -1; i < 1; i++) {
+      for(var j = -1; j < 1; j++) {
+        for(var k = -1; k < 1; k++) {
+          initialPositions.push([i,j,k]);
+        }
+      }
+    }
+    return initialPositions.map(this.getChunk);
   },
   getChunk: function(chunkPos) {
     return engine.voxels.chunks[getId(chunkPos)];
