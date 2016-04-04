@@ -1,30 +1,30 @@
-var rle = require('./rle');
-var engine = require('./voxelEngine');
-var extend = require('extend');
+import rle from './rle';
+import engine from './voxelEngine';
+import extend from 'extend';
 
 var cache = {};
 
-module.exports = {
-  storeInCache: function(chunk) {
-    var chunkId = engine.getChunkId(chunk.position);
+export default {
+  storeInCache(chunk) {
+    let chunkId = engine.getChunkId(chunk.position);
     cache[chunkId] = chunk.voxels;
   },
-  invalidateCache: function(chunkId) {
+  invalidateCache(chunkId) {
     delete cache[chunkId];
   },
-  compress: function(chunk, markDirty) {
-    var chunkId = engine.getChunkId(chunk.position);
+  compress(chunk, markDirty) {
+    let chunkId = engine.getChunkId(chunk.position);
 
-    if(!cache[chunkId]) {
+    if (!cache[chunkId]) {
       cache[chunkId] = rle.encode(chunk.voxels);
       markDirty(chunkId);
     }
 
-    var voxels = cache[chunkId];
+    let voxels = cache[chunkId];
     return extend({}, chunk, {voxels: voxels});
   },
-  decompress: function(chunk) {
-    var voxels = rle.decode(chunk.voxels);
+  decompress(chunk) {
+    let voxels = rle.decode(chunk.voxels);
     return extend({}, chunk, {voxels: voxels});
   }
 };

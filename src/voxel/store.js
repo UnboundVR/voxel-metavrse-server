@@ -1,10 +1,10 @@
-var fileStorage = require('../fileStorage')('chunks');
+import fileStorage from '../fileStorage';
 
 module.exports = {
-  saveChunk: function(chunkId, chunk) {
-    return fileStorage.save(chunkId, chunk);
+  saveChunk(chunkId, chunk) {
+    return fileStorage('chunks').save(chunkId, chunk);
   },
-  loadChunk: function(chunkId) {
-    return fileStorage.load(chunkId);
+  loadChunk(chunkId) {
+    return fileStorage('chunks').load(chunkId);
   }
 };
