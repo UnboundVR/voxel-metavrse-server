@@ -1,44 +1,44 @@
-var controller = require('./controller');
-var consts = require('../constants');
+import controller from './controller';
+import consts from '../constants';
 
-module.exports = function(io) {
-  controller.init().then(function() {
-    setInterval(function() {
-      controller.storeCode().catch(function(err) {
+export default function(io) {
+  controller.init().then(() => {
+    setInterval(() => {
+      controller.storeCode().catch(err => {
         console.log('Error updating code', err);
       });
     }, consts.coding.AUTO_SAVE_INTERVAL);
 
-    io.of('coding').on('connection', function(socket) {
-      socket.on('requestAllCode', function(token, callback) {
-        controller.getAllCode(token).then(function(allCode) {
+    io.of('coding').on('connection', socket => {
+      socket.on('requestAllCode', (token, callback) => {
+        controller.getAllCode(token).then(allCode => {
           callback(null, allCode);
-        }).catch(function(err) {
+        }).catch(err => {
           callback(err);
         });
       });
 
-      socket.on('codeChanged', function(position, code, token, callback) {
-        var broadcast = function(position, codeObj) {
+      socket.on('codeChanged', (position, code, token, callback) => {
+        var broadcast = (position, codeObj) => {
           socket.broadcast.emit('codeChanged', position, codeObj);
         };
 
-        controller.onCodeChanged(position, code, token, broadcast).then(function(codeObj) {
+        controller.onCodeChanged(position, code, token, broadcast).then(codeObj => {
           callback(null, codeObj);
-        }).catch(function(err) {
+        }).catch(err => {
           callback(err);
         });
       });
 
-      socket.on('codeRemoved', function(position) {
-        var broadcast = function(position) {
+      socket.on('codeRemoved', position => {
+        var broadcast = position => {
           socket.broadcast.emit('codeRemoved', position);
         };
 
         controller.onCodeRemoved(position, broadcast);
       });
     });
-  }).catch(function(err) {
+  }).catch(err => {
     console.log('Cannot initialize coding.', err);
   });
-};
+}

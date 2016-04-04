@@ -1,19 +1,19 @@
-var controller = require('./controller');
-var consts = require('../constants');
+import controller from './controller';
+import consts from '../constants';
 
-module.exports = function(io) {
-  var broadcast = function(update) {
+export default function(io) {
+  let broadcast = update => {
     io.of('playerSync').emit('update', update);
   };
 
-  setInterval(function() {
+  setInterval(() => {
     controller.sendUpdates(broadcast);
   }, consts.playerSync.SEND_UPDATE_INTERVAL);
 
-  io.of('playerSync').on('connection', function(socket) {
-    var id = socket.id.split('#')[1];
+  io.of('playerSync').on('connection', socket => {
+    let id = socket.id.split('#')[1];
 
-    var broadcast = function(id) {
+    let broadcast = id => {
       socket.broadcast.emit('join', id);
     };
 
@@ -21,16 +21,16 @@ module.exports = function(io) {
 
     socket.emit('settings', controller.getSettings());
 
-    socket.on('disconnect', function() {
-      var broadcast = function(id) {
+    socket.on('disconnect', () => {
+      let broadcast = id => {
         socket.broadcast.emit('leave', id);
       };
 
       controller.onLeave(id, broadcast);
     });
 
-    socket.on('state', function(state) {
+    socket.on('state', state => {
       controller.onState(id, state);
     });
   });
-};
+}

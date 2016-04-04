@@ -1,11 +1,14 @@
-var files = require('../fileStorage')('coding');
+import files from '../fileStorage';
+
 var gistsPath = 'gists.json';
 
-module.exports = {
-  saveGists: function(gists) {
+files('coding');
+
+export default {
+  saveGists(gists) {
     return files.save(gistsPath, gists);
   },
-  loadGists: function() {
+  loadGists() {
     return files.load(gistsPath);
   }
 };

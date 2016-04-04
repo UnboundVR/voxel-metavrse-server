@@ -1,26 +1,27 @@
-var fs = require('fs');
-var Promise = require('promise');
+import fs from 'fs';
+import Promise from 'promise';
 
-module.exports = function(subPath) {
-  if(subPath && subPath.indexOf('/') != -1) {
+export default function(subPath) {
+  if (subPath && subPath.indexOf('/') != -1) {
     throw 'subPath must be exactly one folder deep';
   }
 
   var storageFolderPath = process.cwd() + '/storage';
   var basePath = new String(storageFolderPath);
-  if(subPath) {
+
+  if (subPath) {
     basePath += ('/' + subPath);
   }
 
   function ensureDirectoryExists(path) {
-    return new Promise(function(resolve) {
-      var createActualPath = function() {
-        fs.mkdir(path, function() {
+    return new Promise(resolve => {
+      let createActualPath = () => {
+        fs.mkdir(path, () => {
           resolve();
         });
       };
 
-      if(subPath && path != storageFolderPath) {
+      if (subPath && path != storageFolderPath) {
         ensureDirectoryExists(storageFolderPath).then(createActualPath);
       } else {
         createActualPath();
@@ -29,11 +30,11 @@ module.exports = function(subPath) {
   }
 
   return {
-    save: function(path, obj) {
-      return new Promise(function(resolve, reject) {
-        ensureDirectoryExists(basePath).then(function() {
-          fs.writeFile(basePath + '/' + path, JSON.stringify(obj), function(err) {
-            if(err) {
+    save(path, obj) {
+      return new Promise((resolve, reject) => {
+        ensureDirectoryExists(basePath).then(() => {
+          fs.writeFile(basePath + '/' + path, JSON.stringify(obj), err => {
+            if (err) {
               reject(err);
             } else {
               resolve();
@@ -42,11 +43,11 @@ module.exports = function(subPath) {
         });
       });
     },
-    load: function(path) {
-      return new Promise(function(resolve) {
-        ensureDirectoryExists(basePath).then(function() {
-          fs.readFile(basePath + '/' + path, function(err, data) {
-            if(err) {
+    load(path) {
+      return new Promise(resolve => {
+        ensureDirectoryExists(basePath).then(() => {
+          fs.readFile(basePath + '/' + path, (err, data) => {
+            if (err) {
               resolve(null);
             } else {
               resolve(JSON.parse(data));
@@ -56,4 +57,4 @@ module.exports = function(subPath) {
       });
     }
   };
-};
+}
