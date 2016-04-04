@@ -1,5 +1,7 @@
 var engine = require('./voxelEngine');
+var itemTypes = require('./itemTypes.json');
 var blockTypes = require('./blockTypes.json');
+var materials = require('./materials.json');
 var compression = require('./compression');
 
 module.exports = {
@@ -10,6 +12,8 @@ module.exports = {
     return {
       settings: engine.getSettings(),
       chunks: engine.getInitialChunks(),
+      materials: materials,
+      itemTypes: itemTypes,
       blockTypes: blockTypes
     };
   },

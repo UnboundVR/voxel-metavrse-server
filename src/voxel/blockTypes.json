@@ -1,60 +1,43 @@
 [
   {
-    "name": "Tile",
-    "material": "tile",
-    "visibleInToolbar": false
-  },
-  {
-    "name": "Code",
-    "material": "code",
-    "visibleInToolbar": false
-  },
-  {
     "name": "Grass",
-    "material": ["grass", "dirt", "grass_dirt"],
-    "icon": "grass",
-    "visibleInToolbar": true
+    "material": 3,
+    "icon": "grass"
   },
   {
     "name": "Obsidian",
-    "material": "obsidian",
-    "icon": "obsidian",
-    "visibleInToolbar": true
+    "material": 4,
+    "icon": "obsidian"
   },
   {
     "name": "Wood",
-    "material": "plank",
-    "icon": "plank",
-    "visibleInToolbar": true
+    "material": 5,
+    "icon": "plank"
   },
   {
     "name": "Cobblestone",
-    "material": "cobblestone",
-    "icon": "cobblestone",
-    "visibleInToolbar": true
+    "material": 6,
+    "icon": "cobblestone"
   },
   {
     "name": "Red Wool",
-    "material": "redwool",
-    "icon": "redwool",
-    "visibleInToolbar": true
+    "material": 7,
+    "icon": "redwool"
   },
   {
     "name": "Troll",
-    "material": "troll",
-    "icon": "troll",
-    "visibleInToolbar": true
+    "material": 8,
+    "icon": "troll"
   },
   {
     "name": "Doge",
-    "material": "doge",
+    "material": 9,
     "icon": "doge",
-    "visibleInToolbar": true
+    "code": "679b5b08e5c4d19dedff76f7e82da9b7"
   },
   {
     "name": "Glass",
-    "material": "glass",
-    "icon": "glass",
-    "visibleInToolbar": true
+    "material": 10,
+    "icon": "glass"
   }
 ]
