@@ -1,13 +1,13 @@
-var blockTypes = require('./blockTypes');
+import blockTypes from './blockTypes';
 
 var count = 1;
-blockTypes.forEach(function(blockType) {
+blockTypes.forEach(blockType => {
   blockType.number = count++;
 });
 
-module.exports = {
-  getMaterials: function() {
-    return Object.keys(blockTypes).map(function(blockType) {
+export default {
+  getMaterials() {
+    return Object.keys(blockTypes).map(blockType => {
       return blockTypes[blockType].material;
     });
   }

@@ -1,8 +1,11 @@
-module.exports = {
+export default {
   // Taken from http://www.rosettacode.org/wiki/Run-length_encoding#JavaScript
-  encode: function(input) {
-    var encoding = [];
-    var prev, count, i;
+  encode(input) {
+    let encoding = [];
+    let prev;
+    let count;
+    let i;
+
     for (count = 1, prev = input[0], i = 1; i < input.length; i++) {
       if (input[i] != prev) {
         encoding.push([count, prev]);
@@ -15,10 +18,10 @@ module.exports = {
     encoding.push([count, prev]);
     return encoding;
   },
-  decode: function(input) {
-    var output = [];
-    input.forEach(function(item) {
-      for(var i = 0; i < item[0]; i++) {
+  decode(input) {
+    let output = [];
+    input.forEach(item => {
+      for (var i = 0; i < item[0]; i++) {
         output.push(item[1]);
       }
     });

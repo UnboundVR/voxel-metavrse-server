@@ -1,8 +1,8 @@
-var Promise = require('promise');
-var storage = require('./store');
-var engine = require('./voxelEngine');
-var compression = require('./chunkCompression');
-var blockTypes = require('./blockTypes.json');
+import Promise from 'promise';
+import storage from './store';
+import engine from './voxelEngine';
+import compression from './chunkCompression';
+import blockTypes from './blockTypes.json';
 
 var dirtyChunks = {};
 
@@ -19,8 +19,8 @@ function markNotDirty(chunkId) {
 }
 
 function loadChunkFromStorage(chunkId) {
-  return storage.loadChunk(chunkId.replace(/\|/g, '_')).then(function(chunk) {
-    if(chunk) {
+  return storage.loadChunk(chunkId.replace(/\|/g, '_')).then(chunk => {
+    if (chunk) {
       compression.storeInCache(chunk);
       chunk = compression.decompress(chunk);
       engine.setChunk(chunkId, chunk);
@@ -30,40 +30,40 @@ function loadChunkFromStorage(chunkId) {
 }
 
 function loadInitialChunksFromStorage() {
-  var promises = [];
-  engine.getExistingChunkIds().forEach(function(chunkId) {
+  let promises = [];
+  engine.getExistingChunkIds().forEach(chunkId => {
     promises.push(loadChunkFromStorage(chunkId));
   });
   return Promise.all(promises);
 }
 
 function getChunk(chunkId) {
-  var chunk = engine.getChunk(chunkId);
+  let chunk = engine.getChunk(chunkId);
   return compression.compress(chunk, markDirty);
 }
 
 function ensureChunkExists(chunkId) {
-  if(engine.chunkExists(chunkId)) {
+  if (engine.chunkExists(chunkId)) {
     return Promise.resolve();
   } else {
-    return loadChunkFromStorage(chunkId).then(function(chunk) {
-      if(!chunk) {
+    return loadChunkFromStorage(chunkId).then(chunk => {
+      if (!chunk) {
         engine.generateChunk(chunkId);
       }
     });
   }
 }
 
-module.exports = {
-  init: function() {
+export default {
+  init() {
     engine.init();
     return loadInitialChunksFromStorage();
   },
-  saveChunks: function() {
-    return Promise.all(engine.getExistingChunkIds().map(function(chunkId) {
-      var chunk = getChunk(chunkId); // this is necessary to ensure all newly compressed chunks are marked dirty
-      if(isDirty(chunkId)) {
-        return storage.saveChunk(chunkId.replace(/\|/g, '_'), chunk).then(function() {
+  saveChunks() {
+    return Promise.all(engine.getExistingChunkIds().map(chunkId => {
+      let chunk = getChunk(chunkId); // this is necessary to ensure all newly compressed chunks are marked dirty
+      if (isDirty(chunkId)) {
+        return storage.saveChunk(chunkId.replace(/\|/g, '_'), chunk).then(() => {
           markNotDirty(chunkId);
         });
       } else {
@@ -71,22 +71,22 @@ module.exports = {
       }
     }));
   },
-  initClient: function() {
+  initClient() {
     return {
       settings: engine.getSettings(),
       chunks: engine.getExistingChunkIds().map(getChunk),
       blockTypes: blockTypes
     };
   },
-  requestChunk: function(chunkPos) {
-    var chunkId = engine.getChunkId(chunkPos);
-    return ensureChunkExists(chunkId).then(function() {
+  requestChunk(chunkPos) {
+    let chunkId = engine.getChunkId(chunkPos);
+    return ensureChunkExists(chunkId).then(() => {
       return getChunk(chunkId);
     });
   },
-  set: function(pos, val, broadcast) {
+  set(pos, val, broadcast) {
     engine.setBlock(pos, val);
-    var chunkId = engine.getChunkIdAtPosition(pos);
+    let chunkId = engine.getChunkIdAtPosition(pos);
     compression.invalidateCache(chunkId);
     broadcast(pos, val);
   }

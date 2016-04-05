@@ -1,7 +1,7 @@
-var consts = require('../constants');
+import consts from'../constants';
 
-module.exports = {
-  onMessage: function(message, broadcast) {
+export default {
+  onMessage(message, broadcast) {
     if (!message.text || message.text.length == 0) {
       return;
     }
