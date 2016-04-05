@@ -29,7 +29,7 @@ export default function(io) {
         controller.set(pos, val, broadcast);
       });
     });
-}).catch(err => {
+  }).catch(err => {
     console.log('Error initializing voxel module', err);
   });
-};
+}

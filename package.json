@@ -34,7 +34,7 @@
   "scripts": {
     "babel-node": "babel-node --presets=es2015",
     "start": "node src",
-    "watch": "nodemon --ignore storage/ --exec npm run babel-node -- src/index.js",
+    "watch": "nodemon --ignore storage/ --exec npm run babel-node -- src",
     "test": "gulp test"
   }
 }

@@ -14,7 +14,7 @@ export default {
     let clientKeys = Object.keys(clients);
     if (clientKeys.length === 0) {
       return;
-    };
+    }
 
     let update = {
       positions: {},
