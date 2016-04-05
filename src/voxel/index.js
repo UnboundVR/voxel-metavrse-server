@@ -1,7 +1,7 @@
-// var consts = require('../constants');
-var controller = require('./controller');
+// import consts from '../constants';
+import controller from './controller';
 
-module.exports = function(io) {
+export default function(io) {
   controller.init();
     // setInterval(function() {
     //   controller.saveChunks().catch(function(err) {
@@ -9,15 +9,15 @@ module.exports = function(io) {
     //   });
     // }, consts.voxel.AUTO_SAVE_INTERVAL);
 
-  io.of('voxel').on('connection', function(socket) {
+  io.of('voxel').on('connection', socket => {
     socket.emit('init', controller.initClient());
 
-    socket.on('requestChunk', function(chunkPosition, callback) {
+    socket.on('requestChunk', (chunkPosition, callback) => {
       callback(null, controller.requestChunk(chunkPosition));
     });
 
-    socket.on('set', function(pos, val) {
-      var broadcast = function(pos, val) {
+    socket.on('set', (pos, val) => {
+      let broadcast = (pos, val) => {
         socket.broadcast.emit('set', pos, val);
       };
 

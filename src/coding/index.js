@@ -1,33 +1,30 @@
-var controller = require('./controller');
+import controller from './controller';
 
-module.exports = function(io) {
-  io.of('coding').on('connection', function(socket) {
-    socket.on('requestAllCode', function(token, callback) {
-      controller.getAllCode(token).then(function(allCode) {
+export default function(io) {
+  io.of('coding').on('connection', socket => {
+
+    socket.on('requestAllCode', (token, callback) => {
+      controller.getAllCode(token).then(allCode => {
         callback(null, allCode);
-      }).catch(function(err) {
-        callback(err);
-      });
+      }).catch(callback);
     });
 
-    socket.on('codeChanged', function(position, code, token, callback) {
-      var broadcast = function(position, codeObj) {
+    socket.on('codeChanged', (position, code, token, callback) => {
+      let broadcast = (position, codeObj) => {
         socket.broadcast.emit('codeChanged', position, codeObj);
       };
 
-      controller.onCodeChanged(position, code, token, broadcast).then(function(codeObj) {
+      controller.onCodeChanged(position, code, token, broadcast).then(codeObj => {
         callback(null, codeObj);
-      }).catch(function(err) {
-        callback(err);
-      });
+      }).catch(callback);
     });
 
     socket.on('codeRemoved', function(position) {
-      var broadcast = function(position) {
+      let broadcast = position => {
         socket.broadcast.emit('codeRemoved', position);
       };
 
       controller.onCodeRemoved(position, broadcast);
     });
   });
-};
+}

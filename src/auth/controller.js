@@ -1,14 +1,14 @@
-var githubAuth = require('./githubAuth');
+import githubAuth from './githubAuth';
 
-module.exports = {
-  getGithubClientInfo: function() {
+export default {
+  getGithubClientInfo() {
     return {
       clientId: process.env.GITHUB_CLIENT_ID
     };
   },
-  getAccessToken: function(code) {
-    return githubAuth.getAccessToken(code).then(function(githubResponse) {
-      if(githubResponse.access_token) {
+  getAccessToken(code) {
+    return githubAuth.getAccessToken(code).then((githubResponse) => {
+      if (githubResponse.access_token) {
         return githubResponse.access_token;
       } else {
         return Promise.reject(githubResponse.error);

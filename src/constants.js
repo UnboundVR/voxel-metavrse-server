@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   github: {
     REDIRECT_URI: 'http://localhost:<port>',
     API_URL: 'https://api.github.com',

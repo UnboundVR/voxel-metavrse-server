@@ -1,9 +1,9 @@
-var consts = require('../constants');
-var request = require('request-promise');
+import consts from '../constants';
+import request from 'request-promise';
 
-module.exports = {
-  getAccessToken: function(code) {
-    var url = consts.github.OAUTH_URL + '/access_token';
+export default {
+  getAccessToken: (code) => {
+    let url = consts.github.OAUTH_URL + '/access_token';
 
     return request.post({
       uri: url,

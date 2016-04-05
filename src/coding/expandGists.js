@@ -1,12 +1,12 @@
-module.exports = function(gists, getGist) {
-  var result = {};
-  var promises = Object.keys(gists).map(function(position) {
-    return getGist(gists[position]).then(function(codeObj) {
+export default function(gists, getGist) {
+  let result = {};
+  let promises = Object.keys(gists).map(position => {
+    return getGist(gists[position]).then(codeObj => {
       result[position] = codeObj;
     });
   });
 
-  return Promise.all(promises).then(function() {
+  return Promise.all(promises).then(() => {
     return result;
   });
-};
+}

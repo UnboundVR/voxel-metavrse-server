@@ -1,12 +1,12 @@
-var controller = require('./controller');
+import controller from './controller';
 
-module.exports = function(app) {
-  app.get('/auth/github_client_info', function(req, res) {
+export default function(app) {
+  app.get('/auth/github_client_info', (req, res) => {
     res.send(controller.getGithubClientInfo());
   });
 
-  app.get('/auth/github_access_token/:code', function(req, res) {
-    controller.getAccessToken(req.params.code).then(function(accessToken) {
+  app.get('/auth/github_access_token/:code', (req, res) => {
+    controller.getAccessToken(req.params.code).then((accessToken) => {
       res.json({
         accessToken: accessToken
       });
@@ -14,4 +14,4 @@ module.exports = function(app) {
       res.status(401).send(err);
     });
   });
-};
+}

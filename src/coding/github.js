@@ -1,12 +1,12 @@
-var consts = require('../constants');
-var request = require('request-promise');
+import consts from '../constants';
+import request from 'request-promise';
 
 var SINGLE_FILENAME = 'single_file';
 var HARDCODED_DESC = 'created in metavrse.io';
 
-module.exports = {
-  createGist: function(content, token) {
-    var body = {
+export default {
+  createGist(content, token) {
+    let body = {
       description: HARDCODED_DESC,
       files: {}
     };
@@ -25,7 +25,7 @@ module.exports = {
       json: true
     });
   },
-  getGist: function(id, token) {
+  getGist(id, token) {
     return request.get({
       uri: consts.github.API_URL + '/gists/' + id,
       headers: {
@@ -33,15 +33,15 @@ module.exports = {
         'User-Agent': 'metavrse.io'
       },
       json: true
-    }).then(function(response) {
+    }).then(response => {
       return {
         id: response.id,
         code: response.files[SINGLE_FILENAME].content
       };
     });
   },
-  updateGist: function(id, code, token) {
-    var body = {
+  updateGist(id, code, token) {
+    let body = {
       files: {}
     };
 

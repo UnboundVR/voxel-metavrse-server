@@ -1,4 +1,4 @@
-var createEngine = require('voxel-engine');
+import createEngine from 'voxel-engine';
 
 var engine;
 var settings;
@@ -8,7 +8,7 @@ function getId(pos) {
 }
 
 module.exports = {
-  init: function() {
+  init() {
     settings = {
       generateChunks: true,
       generate: function(x, y) {
@@ -19,11 +19,11 @@ module.exports = {
     };
     engine = createEngine(settings);
   },
-  getSettings: function() {
+  getSettings() {
     return settings;
   },
-  getInitialChunks: function() {
-    var initialPositions = [];
+  getInitialChunks() {
+    let initialPositions = [];
     for(var i = -1; i < 1; i++) {
       for(var j = -1; j < 1; j++) {
         for(var k = -1; k < 1; k++) {
@@ -33,17 +33,17 @@ module.exports = {
     }
     return initialPositions.map(this.getChunk);
   },
-  getChunk: function(chunkPos) {
+  getChunk(chunkPos) {
     return engine.voxels.chunks[getId(chunkPos)];
   },
-  setBlock: function(pos, val) {
+  setBlock(pos, val) {
     engine.setBlock(pos, val);
   },
-  chunkAtPosition: function(pos) {
+  chunkAtPosition(pos) {
     return engine.voxels.chunkAtPosition(pos);
   },
   ensureChunkExists(chunkPos) {
-    var chunkId = getId(chunkPos);
+    let chunkId = getId(chunkPos);
     if(!engine.voxels.chunks[chunkId]) {
       engine.pendingChunks.push(chunkId);
       engine.loadPendingChunks(engine.pendingChunks.length);

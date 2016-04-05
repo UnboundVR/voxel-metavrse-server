@@ -1,32 +1,32 @@
-var engine = require('./voxelEngine');
-var itemTypes = require('./itemTypes.json');
-var blockTypes = require('./blockTypes.json');
-var materials = require('./materials.json');
-var compression = require('./compression');
+import engine from './voxelEngine';
+import itemTypes from './itemTypes.json';
+import blockTypes from './blockTypes.json';
+import materials from './materials.json';
+import compression from './compression';
 
-module.exports = {
-  init: function() {
+export default {
+  init() {
     engine.init();
   },
-  initClient: function() {
+  initClient() {
     return {
       settings: engine.getSettings(),
       chunks: engine.getInitialChunks(),
-      materials: materials,
-      itemTypes: itemTypes,
-      blockTypes: blockTypes
+      materials,
+      itemTypes,
+      blockTypes
     };
   },
-  requestChunk: function(chunkPos) {
+  requestChunk(chunkPos) {
     engine.ensureChunkExists(chunkPos);
 
-    var chunk = engine.getChunk(chunkPos);
+    let chunk = engine.getChunk(chunkPos);
     return compression.compress(chunk);
   },
-  set: function(pos, val, broadcast) {
+  set(pos, val, broadcast) {
     engine.setBlock(pos, val);
 
-    var chunkPos = engine.chunkAtPosition(pos);
+    let chunkPos = engine.chunkAtPosition(pos);
     compression.invalidateCache(chunkPos);
 
     broadcast(pos, val);
