@@ -17,12 +17,14 @@ import playerSync from './playerSync';
 import coding from './coding';
 import chat from './chat';
 import auth from './auth';
+import marketplace from './marketplace';
 
 voxel(io);
 playerSync(io);
 coding(io);
 chat(io);
 auth(server);
+marketplace(server);
 
 // Run the server
 let port = process.env.PORT;

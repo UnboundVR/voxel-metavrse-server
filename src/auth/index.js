@@ -1,11 +1,14 @@
 import controller from './controller';
+import restifyRouter from 'restify-router';
 
-export default function(app) {
-  app.get('/auth/github_client_info', (req, res) => {
+export default function(server) {
+  var router = new restifyRouter.Router();
+
+  router.get('/github_client_info', (req, res) => {
     res.send(controller.getGithubClientInfo());
   });
 
-  app.get('/auth/github_access_token/:code', (req, res) => {
+  router.get('/github_access_token/:code', (req, res) => {
     controller.getAccessToken(req.params.code).then((accessToken) => {
       res.json({
         accessToken: accessToken
@@ -14,4 +17,6 @@ export default function(app) {
       res.status(401).send(err);
     });
   });
+
+  router.applyRoutes(server, '/auth');
 }

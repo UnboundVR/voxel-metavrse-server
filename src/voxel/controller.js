@@ -1,7 +1,4 @@
 import engine from './voxelEngine';
-import itemTypes from './itemTypes.json';
-import blockTypes from './blockTypes.json';
-import materials from './materials.json';
 import compression from './compression';
 
 export default {
@@ -11,10 +8,7 @@ export default {
   initClient() {
     return {
       settings: engine.getSettings(),
-      chunks: engine.getInitialChunks(),
-      materials,
-      itemTypes,
-      blockTypes
+      chunks: engine.getInitialChunks()
     };
   },
   requestChunk(chunkPos) {
