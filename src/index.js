@@ -3,6 +3,7 @@ import socketio from 'socket.io';
 
 let server = restify.createServer();
 server.use(restify.CORS());
+server.use(restify.queryParser());
 
 let io = socketio.listen(server.server);
 
