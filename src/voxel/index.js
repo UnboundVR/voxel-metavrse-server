@@ -24,4 +24,4 @@ export default function(io) {
       controller.set(pos, val, broadcast);
     });
   });
-};
+}

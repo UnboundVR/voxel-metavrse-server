@@ -2,6 +2,7 @@ import restifyRouter from 'restify-router';
 import itemTypes from './itemTypes.json';
 import blockTypes from './blockTypes.json';
 import materials from './materials.json';
+import coding from '../coding';
 
 export default function(server) {
   var router = new restifyRouter.Router();
@@ -10,7 +11,10 @@ export default function(server) {
     res.json({
       materials,
       itemTypes,
-      blockTypes
+      blockTypes: blockTypes.map((type) => {
+        type.code = coding.resolve(req.params.token, type.code);
+        return type;
+      })
     });
   });
 

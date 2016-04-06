@@ -21,7 +21,7 @@ import marketplace from './marketplace';
 
 voxel(io);
 playerSync(io);
-coding(io);
+coding.init(io);
 chat(io);
 auth(server);
 marketplace(server);
