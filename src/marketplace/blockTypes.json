@@ -1,49 +1,49 @@
 [
   {
-    "id": "2",
+    "id": 2,
     "name": "Grass",
     "material": 3,
     "icon": "grass"
   },
   {
-    "id": "3",
+    "id": 3,
     "name": "Obsidian",
     "material": 4,
     "icon": "obsidian"
   },
   {
-    "id": "4",
+    "id": 4,
     "name": "Wood",
     "material": 5,
     "icon": "plank"
   },
   {
-    "id": "5",
+    "id": 5,
     "name": "Cobblestone",
     "material": 6,
     "icon": "cobblestone"
   },
   {
-    "id": "6",
+    "id": 6,
     "name": "Red Wool",
     "material": 7,
     "icon": "redwool"
   },
   {
-    "id": "7",
+    "id": 7,
     "name": "Troll",
     "material": 8,
     "icon": "troll"
   },
   {
-    "id": "8",
+    "id": 8,
     "name": "Doge",
     "material": 9,
     "icon": "doge",
     "code": "679b5b08e5c4d19dedff76f7e82da9b7"
   },
   {
-    "id": "9",
+    "id": 9,
     "name": "Glass",
     "material": 10,
     "icon": "glass"
