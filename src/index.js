@@ -15,14 +15,12 @@ dotenv.load();
 
 import voxel from './voxel';
 import playerSync from './playerSync';
-import coding from './coding';
 import chat from './chat';
 import auth from './auth';
 import marketplace from './marketplace';
 
 voxel(io);
 playerSync(io);
-coding.init(io);
 chat(io);
 auth(server);
 marketplace(server);
