@@ -5,9 +5,23 @@ export default function(server) {
   var router = new restifyRouter.Router();
 
   router.get('/init', (req, res) => {
-    controller.initUser(req.params.token).then(function(result) {
+    res.json(controller.initUser());
+  });
+
+  router.get('/blockTypes', (req, res) => {
+    controller.getBlockTypes(req.params.token, req.params.ids).then(result => {
       res.json(result);
     });
+  });
+
+  router.get('/itemTypes', (req, res) => {
+    controller.getItemTypes(req.params.token, req.params.ids).then(result => {
+      res.json(result);
+    });
+  });
+
+  router.get('/all', (req, res) => {
+    res.json(controller.getAll());
   });
 
   // TODO automatically notify users that the new blockType was created. We must ensure there is no race condition with the setBlock that we do after this...

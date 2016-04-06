@@ -1,6 +1,7 @@
 import itemTypes from './itemTypes.json';
 import blockTypes from './blockTypes.json';
 import materials from './materials.json';
+import toolbar from './toolbar.json';
 import Promise from 'promise';
 import extend from 'extend';
 import github from './github';
@@ -20,41 +21,40 @@ function resolve(token, code) {
   }
 }
 
-function resolveBlockTypes(token) {
-  let promises = blockTypes.map(blockType => {
-    if(blockType.code) {
-      return resolve(token, blockType.code).then(codeObj => {
-        let res = extend({}, blockType);
+function resolveTypes(token, types, ids) {
+  let promises = types.filter(type => ids.includes(type.id)).map(type => {
+    if(type.code) {
+      return resolve(token, type.code).then(codeObj => {
+        let res = extend({}, type);
         res.code = codeObj;
         return res;
       });
     } else {
-      return blockType;
+      return type;
     }
   });
 
   return Promise.all(promises);
 }
 
-// function getBlockTypeById(id) {
-//   let block = null;
-//   blockTypes.forEach(type => {
-//     if(type.id == id) {
-//       block = type;
-//     }
-//   });
-//   return block;
-// }
-
 export default {
-  initUser(token) {
-    return resolveBlockTypes(token).then(resolvedBlockTypes => {
-      return {
-        materials,
-        itemTypes,
-        blockTypes: resolvedBlockTypes
-      };
-    });
+  initUser() {
+    return {
+      materials,
+      toolbar
+    };
+  },
+  getAll() {
+    return {
+      itemTypes,
+      blockTypes
+    };
+  },
+  getItemTypes(token, ids) {
+    return resolveTypes(token, itemTypes, ids);
+  },
+  getBlockTypes(token, ids) {
+    return resolveTypes(token, blockTypes, ids);
   },
   addBlockType(token, code, material) {
     return github.createGist(code, token).then(githubResponse => {
