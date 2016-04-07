@@ -8,7 +8,7 @@ export default {
   initClient() {
     return {
       settings: engine.getSettings(),
-      chunks: engine.getInitialChunks()
+      chunks: engine.getInitialChunks().map(compression.compress)
     };
   },
   requestChunk(chunkPos) {

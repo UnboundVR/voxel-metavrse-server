@@ -16,9 +16,9 @@ export default function(io) {
       callback(null, controller.requestChunk(chunkPosition));
     });
 
-    socket.on('set', (pos, val) => {
+    socket.on('set', (pos, val, typeUpdated) => {
       let broadcast = (pos, val) => {
-        socket.broadcast.emit('set', pos, val);
+        socket.broadcast.emit('set', pos, val, typeUpdated);
       };
 
       controller.set(pos, val, broadcast);
