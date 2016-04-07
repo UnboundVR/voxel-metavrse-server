@@ -33,7 +33,8 @@
     "id": 7,
     "name": "Troll",
     "material": 8,
-    "icon": "troll"
+    "icon": "troll",
+    "code": "fb88c0c3cdc17101cc764afc8afda526"
   },
   {
     "id": 8,

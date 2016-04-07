@@ -31,5 +31,19 @@ export default function(server) {
     });
   });
 
+  router.post('/blockType/:id/fork', (req, res) => {
+    var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+    controller.forkBlockType(req.params.token, req.params.id, body.code, body.material, body.name).then(function(blockType) {
+      res.json(blockType);
+    });
+  });
+
+  router.put('/blockType/:id', (req, res) => {
+    var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+    controller.updateBlockType(req.params.token, req.params.id, body.code).then(function(blockType) {
+      res.json(blockType);
+    });
+  });
+
   router.applyRoutes(server, '/marketplace');
 }
