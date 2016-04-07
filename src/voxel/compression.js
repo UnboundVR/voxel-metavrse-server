@@ -1,5 +1,3 @@
-import extend from 'extend';
-
 // Taken from http://www.rosettacode.org/wiki/Run-length_encoding#JavaScript
 function rlEncode(input) {
   let encoding = [];
@@ -20,13 +18,17 @@ function rlEncode(input) {
   return encoding;
 }
 
+var cache = {};
+
 export default {
-  compress(chunk) {
-    var result = extend({}, chunk);
-    result.voxels = rlEncode(chunk.voxels);
-    return result;
+  compress(position, voxels) {
+    if(!cache[position]) {
+      cache[position] = rlEncode(voxels);
+    }
+
+    return cache[position];
   },
-  invalidateCache(chunkPosition) {
-    // TODO implement
+  invalidateCache(position) {
+    delete cache[position];
   }
 };

@@ -1,5 +1,12 @@
 import engine from './voxelEngine';
 import compression from './compression';
+import extend from 'extend';
+
+function compress(chunk) {
+  let compressedChunk = extend({}, chunk);
+  compressedChunk.voxels = compression.compress(chunk.position, chunk.voxels);
+  return compressedChunk;
+}
 
 export default {
   init() {
@@ -8,14 +15,14 @@ export default {
   initClient() {
     return {
       settings: engine.getSettings(),
-      chunks: engine.getInitialChunks().map(compression.compress)
+      chunks: engine.getInitialChunks().map(compress)
     };
   },
   requestChunk(chunkPos) {
     engine.ensureChunkExists(chunkPos);
 
     let chunk = engine.getChunk(chunkPos);
-    return compression.compress(chunk);
+    return compress(chunk);
   },
   set(pos, val, broadcast) {
     engine.setBlock(pos, val);
