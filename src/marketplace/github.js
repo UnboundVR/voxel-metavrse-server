@@ -36,7 +36,13 @@ export default {
     }).then(response => {
       return {
         id: response.id,
-        code: response.files[SINGLE_FILENAME].content
+        code: response.files[SINGLE_FILENAME].content,
+        author: {
+          id: response.owner.id,
+          avatar: response.owner.avatar_url,
+          login: response.owner.login
+        },
+        url: response.html_url
       };
     });
   },
