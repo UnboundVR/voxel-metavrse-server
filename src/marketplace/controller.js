@@ -56,13 +56,13 @@ export default {
   getBlockTypes(token, ids) {
     return resolveTypes(token, blockTypes, ids);
   },
-  addBlockType(token, code, material) {
+  addBlockType(token, code, material, name) {
     return github.createGist(code, token).then(githubResponse => {
       var newType = {};
       newType.code = githubResponse.id;
       newType.id = ++lastBlockId;
       newType.material = material;
-      newType.name = 'coded stuff';
+      newType.name = name;
       newType.icon = 'code';
       blockTypes.push(newType);
 
