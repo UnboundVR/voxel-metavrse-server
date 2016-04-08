@@ -15,8 +15,7 @@ export default {
   },
   initClient() {
     return {
-      materials,
-      settings: engine.getSettings(),
+      settings: extend({}, engine.getSettings(), {materials}),
       chunks: engine.getInitialChunks().map(compress)
     };
   },
