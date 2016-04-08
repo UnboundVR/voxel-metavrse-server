@@ -1,6 +1,7 @@
 import engine from './voxelEngine';
 import compression from './compression';
 import extend from 'extend';
+import materials from './data/materials.json';
 
 function compress(chunk) {
   let compressedChunk = extend({}, chunk);
@@ -14,6 +15,7 @@ export default {
   },
   initClient() {
     return {
+      materials,
       settings: engine.getSettings(),
       chunks: engine.getInitialChunks().map(compress)
     };

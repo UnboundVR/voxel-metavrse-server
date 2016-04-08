@@ -1,7 +1,6 @@
-import itemTypes from './itemTypes.json';
-import blockTypes from './blockTypes.json';
-import materials from './materials.json';
-import toolbar from './toolbar.json';
+import itemTypes from './data/itemTypes.json';
+import blockTypes from './data/blockTypes.json';
+import toolbar from './data/toolbar.json';
 import Promise from 'promise';
 import extend from 'extend';
 import github from './github';
@@ -61,11 +60,8 @@ function processGist(response) {
 }
 
 export default {
-  initUser() {
-    return {
-      materials,
-      toolbar
-    };
+  getToolbar() {
+    return toolbar;
   },
   getAll() {
     return {

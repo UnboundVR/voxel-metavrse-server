@@ -4,8 +4,8 @@ import controller from './controller';
 export default function(server) {
   var router = new restifyRouter.Router();
 
-  router.get('/init', (req, res) => {
-    res.json(controller.initUser());
+  router.get('/toolbar', (req, res) => {
+    res.json(controller.getToolbar(req.header('Authorization')));
   });
 
   router.get('/blockTypes', (req, res) => {
