@@ -9,13 +9,13 @@ export default function(server) {
   });
 
   router.get('/blockTypes', (req, res) => {
-    controller.getBlockTypes(req.params.token, req.params.ids).then(result => {
+    controller.getBlockTypes(req.header('Authorization'), req.params.ids).then(result => {
       res.json(result);
     });
   });
 
   router.get('/itemTypes', (req, res) => {
-    controller.getItemTypes(req.params.token, req.params.ids).then(result => {
+    controller.getItemTypes(req.header('Authorization'), req.params.ids).then(result => {
       res.json(result);
     });
   });
@@ -26,21 +26,21 @@ export default function(server) {
 
   router.post('/blockType', (req, res) => {
     var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-    controller.addBlockType(req.params.token, body.code, body.material, body.name).then(function(blockType) {
+    controller.addBlockType(req.header('Authorization'), body.code, body.material, body.name).then(function(blockType) {
       res.json(blockType);
     });
   });
 
   router.post('/blockType/:id/fork', (req, res) => {
     var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-    controller.forkBlockType(req.params.token, req.params.id, body.code, body.material, body.name).then(function(blockType) {
+    controller.forkBlockType(req.header('Authorization'), req.params.id, body.code, body.material, body.name).then(function(blockType) {
       res.json(blockType);
     });
   });
 
   router.put('/blockType/:id', (req, res) => {
     var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-    controller.updateBlockType(req.params.token, req.params.id, body.code).then(function(blockType) {
+    controller.updateBlockType(req.header('Authorization'), req.params.id, body.code).then(function(blockType) {
       res.json(blockType);
     });
   });

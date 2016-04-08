@@ -33,7 +33,7 @@ export default {
         'User-Agent': 'metavrse.io'
       },
       json: true
-    }).catch(err => console.log(err));
+    });
   },
   updateGist(id, code, token) {
     let body = {

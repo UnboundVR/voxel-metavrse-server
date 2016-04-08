@@ -2,7 +2,10 @@ import restify from 'restify';
 import socketio from 'socket.io';
 
 let server = restify.createServer();
+
+restify.CORS.ALLOW_HEADERS.push('authorization');
 server.use(restify.CORS());
+
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
