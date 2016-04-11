@@ -26,7 +26,7 @@ import inventory from './inventory';
 voxel(io);
 playerSync(io);
 chat(io);
-auth(server);
+auth.init(server);
 inventory(server);
 
 // Run the server

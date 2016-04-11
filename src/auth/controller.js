@@ -1,5 +1,7 @@
 import githubAuth from './githubAuth';
 
+var users = {};
+
 export default {
   getGithubClientInfo() {
     return {
@@ -14,5 +16,15 @@ export default {
         return Promise.reject(githubResponse.error);
       }
     });
+  },
+  getLoggedUser(token) {
+    if(!users[token]) {
+      return githubAuth.getLoggedUser(token).then(user => {
+        users[token] = user;
+        return user;
+      });
+    } else {
+      return Promise.resolve(users[token]);
+    }
   }
 };

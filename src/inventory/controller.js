@@ -1,11 +1,13 @@
 import itemTypes from './data/itemTypes.json';
 import blockTypes from './data/blockTypes.json';
-import toolbar from './data/toolbar.json';
+import defaultToolbar from './data/toolbar.json';
 import Promise from 'promise';
 import extend from 'extend';
 import github from './github';
+import auth from '../auth';
 
 const SINGLE_FILENAME = 'single_file';
+var toolbars = {};
 
 var lastBlockId = 0;
 blockTypes.forEach(blockType => {
@@ -60,14 +62,26 @@ function processGist(response) {
 }
 
 export default {
-  getToolbar(token) { // TODO manage toolbar per user
-    return toolbar;
+  getToolbar(token) {
+    return auth.getUser(token).then(user => {
+      if(!toolbars[user.id]) {
+        toolbars[user.id] = defaultToolbar;
+      }
+
+      return toolbars[user.id];
+    });
   },
-  setToolbarItem(token, position, type, id) { // TODO manage toolbar per user
-    toolbar[position] = {type, id};
+  setToolbarItem(token, position, type, id) {
+    return auth.getUser(token).then(user => {
+      var toolbar = toolbars[user.id];
+      toolbar[position] = {type, id};
+    });
   },
-  removeToolbarItem(token, position) { // TODO manage toolbar per user
-    toolbar[position] = null;
+  removeToolbarItem(token, position) {
+    return auth.getUser(token).then(user => {
+      var toolbar = toolbars[user.id];
+      toolbar[position] = null;
+    });
   },
   getAll() {
     return {

@@ -5,16 +5,22 @@ export default function(server) {
   var router = new restifyRouter.Router();
 
   router.get('/toolbar', (req, res) => {
-    res.json(controller.getToolbar(req.header('Authorization')));
+    controller.getToolbar(req.header('Authorization')).then(toolbar => {
+      res.json(toolbar);
+    });
   });
 
   router.del('/toolbar/:position', (req, res) => {
-    res.json(controller.removeToolbarItem(req.header('Authorization'), req.params.position));
+    controller.removeToolbarItem(req.header('Authorization'), req.params.position).then(() => {
+      res.json({});
+    });
   });
 
   router.put('/toolbar/:position', (req, res) => {
     var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-    res.json(controller.setToolbarItem(req.header('Authorization'), req.params.position, body.type, body.id));
+    controller.setToolbarItem(req.header('Authorization'), req.params.position, body.type, body.id).then(() => {
+      res.json({});
+    });
   });
 
   router.get('/blockTypes', (req, res) => {
