@@ -19,10 +19,7 @@
     "type": "block",
     "id": 5
   },
-  {
-    "type": "block",
-    "id": 6
-  },
+  null,
   {
     "type": "block",
     "id": 7
@@ -30,9 +27,5 @@
   {
     "type": "block",
     "id": 8
-  },
-  {
-    "type": "block",
-    "id": 9
   }
 ]

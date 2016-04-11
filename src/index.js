@@ -21,13 +21,13 @@ import voxel from './voxel';
 import playerSync from './playerSync';
 import chat from './chat';
 import auth from './auth';
-import marketplace from './marketplace';
+import inventory from './inventory';
 
 voxel(io);
 playerSync(io);
 chat(io);
 auth(server);
-marketplace(server);
+inventory(server);
 
 // Run the server
 let port = process.env.PORT;

@@ -60,8 +60,14 @@ function processGist(response) {
 }
 
 export default {
-  getToolbar() {
+  getToolbar(token) { // TODO manage toolbar per user
     return toolbar;
+  },
+  setToolbarItem(token, position, type, id) { // TODO manage toolbar per user
+    toolbar[position] = {type, id};
+  },
+  removeToolbarItem(token, position) { // TODO manage toolbar per user
+    toolbar[position] = null;
   },
   getAll() {
     return {

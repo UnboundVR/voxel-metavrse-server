@@ -8,6 +8,15 @@ export default function(server) {
     res.json(controller.getToolbar(req.header('Authorization')));
   });
 
+  router.del('/toolbar/:position', (req, res) => {
+    res.json(controller.removeToolbarItem(req.header('Authorization'), req.params.position));
+  });
+
+  router.put('/toolbar/:position', (req, res) => {
+    var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+    res.json(controller.setToolbarItem(req.header('Authorization'), req.params.position, body.type, body.id));
+  });
+
   router.get('/blockTypes', (req, res) => {
     controller.getBlockTypes(req.header('Authorization'), req.params.ids).then(result => {
       res.json(result);
@@ -45,5 +54,5 @@ export default function(server) {
     });
   });
 
-  router.applyRoutes(server, '/marketplace');
+  router.applyRoutes(server, '/inventory');
 }
