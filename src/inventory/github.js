@@ -25,9 +25,9 @@ export default {
       json: true
     });
   },
-  getGist(id, token) {
+  getGist(id, revision, token) {
     return request.get({
-      uri: consts.github.API_URL + '/gists/' + id,
+      uri: consts.github.API_URL + '/gists/' + id + '/' + revision,
       headers: {
         'Authorization': 'token ' + token,
         'User-Agent': 'metavrse.io'

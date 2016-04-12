@@ -16,9 +16,9 @@ blockTypes.forEach(blockType => {
   }
 });
 
-function resolve(token, code) {
+function resolveCode(token, code) {
   if(token) {
-    return github.getGist(code, token).then(processGist);
+    return github.getGist(code.id, code.revision, token).then(processGist);
   } else {
     return Promise.resolve(code);
   }
@@ -26,24 +26,33 @@ function resolve(token, code) {
 
 function resolveTypes(token, types, ids) {
   let promises = types.filter(type => ids.includes(type.id)).map(type => {
-    if(type.code) {
-      return resolve(token, type.code).then(codeObj => {
-        let res = extend({}, type);
-        res.code = codeObj;
-        return res;
-      });
-    } else {
-      return type;
-    }
+    return resolveType(token, type);
   });
 
   return Promise.all(promises);
+}
+
+function resolveType(token, type) {
+  if(type.code) {
+    return resolveCode(token, type.code).then(codeObj => {
+      let resolvedType = extend({}, type);
+      resolvedType.code = codeObj;
+      return resolvedType;
+    });
+  } else {
+    return Promise.resolve(type);
+  }
 }
 
 function processGist(response) {
   try {
     return {
       id: response.id,
+      revision: {
+        id: response.history[0].version,
+        date: response.history[0].committed_at
+      },
+      lastUpdateDate: response.updated_at,
       code: response.files[SINGLE_FILENAME].content,
       author: response.owner ? {
         id: response.owner.id,
@@ -58,6 +67,15 @@ function processGist(response) {
     };
   } catch(e) {
     console.log(e);
+  }
+}
+
+function getById(types, id) {
+  for(let i = 0; i < types.length; i++) {
+    let type = types[i];
+    if(type.id == id) {
+      return type;
+    }
   }
 }
 
@@ -98,21 +116,22 @@ export default {
   addBlockType(token, code, material, name) {
     return github.createGist(code, token).then(githubResponse => {
       var newType = {};
-      newType.code = githubResponse.id;
+      newType.code = {
+        id: githubResponse.id,
+        revision: githubResponse.history[0].version
+      };
       newType.id = ++lastBlockId;
       newType.material = material;
       newType.name = name;
       newType.icon = 'code';
       blockTypes.push(newType);
 
-      var resultType = extend({}, newType);
-      resultType.code = processGist(githubResponse);
-      return resultType;
+      return resolveType(token, newType);
     });
   },
-  forkBlockType(token, id, code, material, name) {
-    function forkOrCreate() {
-      return github.forkGist(id, token).then(forkResponse => {
+  forkBlockType(token, id, code, name) {
+    function forkOrCreate(codeId) {
+      return github.forkGist(codeId, token).then(forkResponse => {
         return github.updateGist(forkResponse.id, code, token);
       }).catch(err => {
         if(err.statusCode == 422) {
@@ -123,22 +142,37 @@ export default {
       });
     }
 
+    var oldType = getById(blockTypes, id);
+    var newType = extend({}, oldType);
 
-    return forkOrCreate().then((githubResponse) => {
-      var newType = {};
-      newType.code = githubResponse.id;
+    return forkOrCreate(oldType.code.id).then((githubResponse) => {
+      newType.code = {
+        id: githubResponse.id,
+        revision: githubResponse.history[0].version
+      };
       newType.id = ++lastBlockId;
-      newType.material = material;
       newType.name = name;
       newType.icon = 'code';
       blockTypes.push(newType);
 
-      var resultType = extend({}, newType);
-      resultType.code = processGist(githubResponse);
-      return resultType;
+      return resolveType(token, newType);
     });
   },
   updateBlockType(token, id, code) {
-    return github.updateGist(id, code, token);
+    var oldType = getById(blockTypes, id);
+    var newType = extend({}, oldType);
+
+    return github.updateGist(oldType.code.id, code, token).then(githubResponse => {
+      newType.code = {
+        id: githubResponse.id,
+        revision: githubResponse.history[0].version
+      };
+      newType.id = ++lastBlockId;
+      newType.icon = 'code';
+      newType.name = oldType.name + ' bis';
+      blockTypes.push(newType);
+
+      return resolveType(token, newType);
+    });
   }
 };

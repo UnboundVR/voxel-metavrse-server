@@ -48,7 +48,7 @@ export default function(server) {
 
   router.post('/blockType/:id/fork', (req, res) => {
     var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-    controller.forkBlockType(req.header('Authorization'), req.params.id, body.code, body.material, body.name).then(function(blockType) {
+    controller.forkBlockType(req.header('Authorization'), req.params.id, body.code, body.name).then(function(blockType) {
       res.json(blockType);
     });
   });
