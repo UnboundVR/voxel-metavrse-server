@@ -1,9 +1,6 @@
 import consts from '../constants';
 import request from 'request-promise';
 
-var githubClientId;
-var githubSecret;
-
 export default {
   getAccessToken(code) {
     return request.post({
@@ -12,15 +9,15 @@ export default {
         'Accept': 'application/json'
       },
       body: {
-        client_id: process.env.GITHUB_CLIENT_ID || githubClientId,
-        client_secret: process.env.GITHUB_SECRET || githubSecret,
+        client_id: process.env.GITHUB_CLIENT_ID,
+        client_secret: process.env.GITHUB_SECRET,
         code: code
       },
       json: true
     });
   },
   getClientId() {
-    return process.env.GITHUB_CLIENT_ID || githubClientId;
+    return process.env.GITHUB_CLIENT_ID;
   },
   getLoggedUser(token) {
     return request.get({
@@ -34,14 +31,10 @@ export default {
   },
   setGithubApp(clientId, secret) {
     if(process.env.GITHUB_CLIENT_ID || process.env.GITHUB_SECRET) {
-      throw new Error('Already using info from env variables');
-    }
-
-    if(githubClientId || githubSecret) {
       throw new Error('Github app already set');
     }
 
-    githubClientId = clientId;
-    githubSecret = secret;
+    process.env.GITHUB_CLIENT_ID = clientId;
+    process.env.GITHUB_SECRET = secret;
   }
 };
