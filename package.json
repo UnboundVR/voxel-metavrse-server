@@ -33,9 +33,8 @@
     "use-strict": "^1.0.1"
   },
   "scripts": {
-    "babel-node": "babel-node --presets=es2015",
-    "start": "node src",
-    "watch": "nodemon --ignore storage/ --exec npm run babel-node -- src",
+    "start": "babel-node --presets=es2015 src",
+    "watch": "nodemon --ignore storage/",
     "test": "gulp test"
   }
 }
