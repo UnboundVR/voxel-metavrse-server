@@ -12,7 +12,6 @@ server.use(restify.bodyParser());
 let io = socketio.listen(server.server);
 
 // require('use-strict'); // TODO: uncomment after fixing strict issues with libraries
-require('dotenv').load();
 
 import dotenv from 'dotenv';
 dotenv.load();
@@ -30,7 +29,7 @@ auth.init(server);
 inventory(server);
 
 // Run the server
-let port = process.env.PORT;
+let port = process.env.PORT || 1338;
 server.listen(port, function() {
   console.log('Listening at port ' + port + '!');
 });

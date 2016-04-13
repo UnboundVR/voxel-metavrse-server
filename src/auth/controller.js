@@ -5,7 +5,7 @@ var users = {};
 export default {
   getGithubClientInfo() {
     return {
-      clientId: process.env.GITHUB_CLIENT_ID
+      clientId: githubAuth.getClientId()
     };
   },
   getAccessToken(code) {
