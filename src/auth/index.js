@@ -1,8 +1,6 @@
 import controller from './controller';
 import restifyRouter from 'restify-router';
 
-
-
 export default {
   init(server) {
     var router = new restifyRouter.Router();
