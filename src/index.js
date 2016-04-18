@@ -1,5 +1,6 @@
 import restify from 'restify';
 import socketio from 'socket.io';
+import db from './db';
 
 let server = restify.createServer();
 
@@ -22,11 +23,14 @@ import chat from './chat';
 import auth from './auth';
 import inventory from './inventory';
 
-voxel(io);
-playerSync(io);
-chat(io);
-auth.init(server);
-inventory(server);
+db.init()
+  .then(function(dbConn) {
+    voxel(io, dbConn);
+    playerSync(io);
+    chat(io);
+    auth.init(server);
+    inventory(server);
+  });
 
 // Run the server
 let port = process.env.PORT || 1338;

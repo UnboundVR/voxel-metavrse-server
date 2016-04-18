@@ -1,4 +1,6 @@
 import createEngine from 'voxel-engine';
+import storage from './storage';
+import helper from './helper';
 
 var engine;
 var settings;
@@ -8,9 +10,10 @@ function getId(pos) {
 }
 
 module.exports = {
-  init() {
+  init(dbConn, emptyChunkTable) {
     settings = {
-      generateChunks: true,
+      // Empty table means we don't generate new chunks, we use them from the db.
+      generateChunks: emptyChunkTable ? true : false,
       generate: function(x, y) {
         return y === 1 ? 1 : 0;
       },
@@ -18,6 +21,10 @@ module.exports = {
       worldOrigin: [0, 0, 0]
     };
     engine = createEngine(settings);
+
+    if (emptyChunkTable) {
+      storage.saveChunks(dbConn, this.getCompressedChunks());
+    }
   },
   getSettings() {
     return settings;
@@ -35,6 +42,16 @@ module.exports = {
   },
   getChunk(chunkPos) {
     return engine.voxels.chunks[getId(chunkPos)];
+  },
+  getCompressedChunks() {
+    let compressedChunks = [];
+    for (let chunk in engine.voxels.chunks) {
+      if (engine.voxels.chunks.hasOwnProperty(chunk)) {
+        compressedChunks.push(helper.compress(engine.voxels.chunks[chunk]));
+      }
+    }
+
+    return compressedChunks;
   },
   setBlock(pos, val) {
     engine.setBlock(pos, val);

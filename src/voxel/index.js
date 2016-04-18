@@ -1,8 +1,8 @@
 // import consts from '../constants';
 import controller from './controller';
 
-export default function(io) {
-  controller.init();
+export default function(io, dbConn) {
+  controller.init(dbConn);
     // setInterval(function() {
     //   controller.saveChunks().catch(function(err) {
     //     console.log('Error auto saving chunks', err);
