@@ -4,36 +4,43 @@ import compression from './compression';
 import extend from 'extend';
 import materials from './data/materials.json';
 import storage from './storage';
-import helper from './helper';
-import util from 'util';
+
+function compress(chunk) {
+  let compressedChunk = extend({}, chunk);
+  compressedChunk.voxels = compression.compress(chunk.position, chunk.voxels);
+  return compressedChunk;
+}
 
 export default {
-  init(dbConn) {
-    return new Promise(async (resolve, reject) => {
-      let emptyChunkTable;
+  init: async function(dbConn) {
+    let emptyChunkTable = await storage.getEmptyChunkTable(dbConn);
+    await engine.init(dbConn, emptyChunkTable);
 
-      try {
-        emptyChunkTable = await storage.getEmptyChunkTable(dbConn);
-        engine.init(dbConn, emptyChunkTable).then(data => {
-          resolve();
-        });
-      } catch (e) {
-        reject(e);
+    if (emptyChunkTable) {
+      return storage.saveChunks(dbConn, engine.getAllChunks());
+
+      console.log('initializing db from in-memory chunks')
+    } else {
+      let chunks = await storage.getChunks(dbConn);
+
+      for (let chunk of chunks) {
+        engine.setChunk(chunk.position, chunk);
       }
-    });
+
+      console.log(`loaded ${chunks.length} chunks from DB`);
+    }
   },
   initClient() {
-    //console.log(util.inspect(engine.getInitialChunks().map(helper.compress), false, null));
     return {
       settings: extend({}, engine.getSettings(), { materials }),
-      chunks: engine.getInitialChunks().map(helper.compress)
+      chunks: engine.getInitialChunks().map(compress)
     };
   },
   requestChunk(chunkPos) {
     engine.ensureChunkExists(chunkPos);
 
     let chunk = engine.getChunk(chunkPos);
-    return helper.compress(chunk);
+    return compress(chunk);
   },
   set(pos, val, broadcast) {
     engine.setBlock(pos, val);

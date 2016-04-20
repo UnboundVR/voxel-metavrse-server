@@ -1,7 +1,4 @@
-import Promise from 'bluebird';
 import createEngine from 'voxel-engine';
-import storage from './storage';
-import helper from './helper';
 
 var engine;
 var settings;
@@ -16,7 +13,6 @@ function generateWorld(x, y) {
 
 module.exports = {
   init(dbConn, emptyChunkTable) {
-    let self = this;
     settings = {
       // Empty table means we generate new chunks, otherwise we'll get them from the db.
       generateChunks: emptyChunkTable ? true : false,
@@ -26,22 +22,6 @@ module.exports = {
     };
 
     engine = createEngine(settings);
-
-    return new Promise(async (resolve, reject) => {
-      if (emptyChunkTable) {
-        try {
-          storage.saveChunks(dbConn, self.getAllChunks()).then(data => {
-            resolve();
-          });
-        } catch (e) {
-          reject(e);
-        }
-      } else {
-        self.loadVoxelsInMemory(dbConn).then(() => {
-          resolve();
-        });
-      }
-    })
   },
   getSettings() {
     return settings;
@@ -59,16 +39,6 @@ module.exports = {
   },
   getChunk(chunkPos) {
     return engine.voxels.chunks[getId(chunkPos)];
-  },
-  getCompressedChunks() {
-    let compressedChunks = [];
-    for (let chunk in engine.voxels.chunks) {
-      if (engine.voxels.chunks.hasOwnProperty(chunk)) {
-        compressedChunks.push(helper.compress(engine.voxels.chunks[chunk]));
-      }
-    }
-
-    return compressedChunks;
   },
   getAllChunks() {
     let chunks = [];
@@ -91,25 +61,7 @@ module.exports = {
       engine.loadPendingChunks(engine.pendingChunks.length);
     }
   },
-  setChunk(chunkId, chunk) {
-    engine.voxels.chunks[chunkId] = chunk;
-  },
-  loadVoxelsInMemory(dbConn) {
-    let chunks;
-    let self = this;
-
-    return new Promise(async (resolve, reject) => {
-      try {
-        chunks = await storage.getChunks(dbConn);
-
-        for (let chunk in chunks) {
-          self.setChunk(getId(chunks[chunk].position), chunks[chunk]);
-        }
-
-        resolve();
-      } catch (e) {
-        reject(e);
-      }
-    })
+  setChunk(chunkPos, chunk) {
+    engine.voxels.chunks[getId(chunkPos)] = chunk;
   }
 };
