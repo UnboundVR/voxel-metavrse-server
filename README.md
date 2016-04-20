@@ -36,7 +36,3 @@ We use tape for unit testing - in order to run our test, just do:
 ```
 npm test
 ```
-
-## License
-
-BSD
