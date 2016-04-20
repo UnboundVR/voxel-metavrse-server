@@ -1,3 +1,4 @@
+import Promise from 'bluebird';
 import createEngine from 'voxel-engine';
 import storage from './storage';
 import helper from './helper';
@@ -9,22 +10,38 @@ function getId(pos) {
   return pos.join('|');
 }
 
+function generateWorld(x, y) {
+  return y === 1 ? 1 : 0;
+}
+
 module.exports = {
   init(dbConn, emptyChunkTable) {
+    let self = this;
     settings = {
-      // Empty table means we don't generate new chunks, we use them from the db.
+      // Empty table means we generate new chunks, otherwise we'll get them from the db.
       generateChunks: emptyChunkTable ? true : false,
-      generate: function(x, y) {
-        return y === 1 ? 1 : 0;
-      },
+      generate: generateWorld,
       chunkDistance: 2,
       worldOrigin: [0, 0, 0]
     };
+
     engine = createEngine(settings);
 
-    if (emptyChunkTable) {
-      storage.saveChunks(dbConn, this.getCompressedChunks());
-    }
+    return new Promise(async (resolve, reject) => {
+      if (emptyChunkTable) {
+        try {
+          storage.saveChunks(dbConn, self.getAllChunks()).then(data => {
+            resolve();
+          });
+        } catch (e) {
+          reject(e);
+        }
+      } else {
+        self.loadVoxelsInMemory(dbConn).then(() => {
+          resolve();
+        });
+      }
+    })
   },
   getSettings() {
     return settings;
@@ -53,6 +70,14 @@ module.exports = {
 
     return compressedChunks;
   },
+  getAllChunks() {
+    let chunks = [];
+    for (let chunk in engine.voxels.chunks) {
+      chunks.push(engine.voxels.chunks[chunk]);
+    }
+
+    return chunks;
+  },
   setBlock(pos, val) {
     engine.setBlock(pos, val);
   },
@@ -65,5 +90,26 @@ module.exports = {
       engine.pendingChunks.push(chunkId);
       engine.loadPendingChunks(engine.pendingChunks.length);
     }
+  },
+  setChunk(chunkId, chunk) {
+    engine.voxels.chunks[chunkId] = chunk;
+  },
+  loadVoxelsInMemory(dbConn) {
+    let chunks;
+    let self = this;
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        chunks = await storage.getChunks(dbConn);
+
+        for (let chunk in chunks) {
+          self.setChunk(getId(chunks[chunk].position), chunks[chunk]);
+        }
+
+        resolve();
+      } catch (e) {
+        reject(e);
+      }
+    })
   }
 };
