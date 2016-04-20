@@ -40,7 +40,7 @@
   },
   "scripts": {
     "start": "babel-node src",
-    "watch": "nodemon --ignore storage/",
+    "watch": "nodemon --watch src",
     "scaffold-db": "babel-node scaffold/db",
     "test": "gulp test"
   }
