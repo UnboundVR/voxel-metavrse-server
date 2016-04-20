@@ -17,9 +17,9 @@ export default {
     engine.init(dbConn, emptyChunkTable);
 
     if (emptyChunkTable) {
-      return storage.saveChunks(dbConn, engine.getAllChunks());
+      console.log('initializing db from in-memory chunks');
 
-      console.log('initializing db from in-memory chunks')
+      return storage.saveChunks(dbConn, engine.getAllChunks());
     } else {
       let chunks = await storage.getChunks(dbConn);
 
