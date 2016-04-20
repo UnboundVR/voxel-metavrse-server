@@ -1,12 +1,22 @@
-import constants from '../constants';
 import controller from './controller';
-import routes from './routes';
-import events from '../events';
 
 export default function(io, dbConn) {
-  routes.init(io);
-  controller.init(dbConn).then(() => {
-    //events.emit(constants.SERVER_INITIALIZED, 'blas');
+  return controller.init(dbConn).then(() => {
+    io.of('voxel').on('connection', socket => {
+      socket.emit('init', controller.initClient());
+      
+      socket.on('requestChunk', (chunkPosition, callback) => {
+        callback(null, controller.requestChunk(chunkPosition));
+      });
+
+      socket.on('set', (pos, val) => {
+        let broadcast = (pos, val) => {
+          socket.broadcast.emit('set', pos, val);
+        };
+
+        controller.set(pos, val, broadcast);
+      });
+    });
   });
 
   // setInterval(function() {

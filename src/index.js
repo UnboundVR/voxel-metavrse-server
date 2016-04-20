@@ -23,17 +23,18 @@ import chat from './chat';
 import auth from './auth';
 import inventory from './inventory';
 
-db.init()
-  .then(function(dbConn) {
-    voxel(io, dbConn);
-    playerSync(io);
-    chat(io);
-    auth.init(server);
-    inventory(server);
+db.init().then(function(dbConn) {
+  return Promise.all([
+    voxel(io, dbConn),
+    playerSync(io),
+    chat(io),
+    auth.init(server),
+    inventory(server)
+  ]);
+}).then(() => {
+  // Run the server
+  let port = process.env.PORT || 1338;
+  server.listen(port, function() {
+    console.log('Listening at port ' + port + '!');
   });
-
-// Run the server
-let port = process.env.PORT || 1338;
-server.listen(port, function() {
-  console.log('Listening at port ' + port + '!');
 });
