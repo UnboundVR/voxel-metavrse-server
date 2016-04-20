@@ -5,3 +5,4 @@ storage
 .env
 build
 .idea/
+rethinkdb_data
