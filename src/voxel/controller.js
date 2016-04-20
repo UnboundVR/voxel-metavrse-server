@@ -7,7 +7,7 @@ import storage from './storage';
 
 function compress(chunk) {
   let compressedChunk = extend({}, chunk);
-  compressedChunk.voxels = compression.compress(chunk.position, Object.values(chunk.voxels));
+  compressedChunk.voxels = compression.compress(chunk.position, Object.values(chunk.voxels)); // This Obejct.values thing is a TEMPRARY HACK/FIX
   return compressedChunk;
 }
 
