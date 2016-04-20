@@ -1,7 +1,7 @@
 import r from 'rethinkdb';
 
 export default {
-  getEmptyChunkTable(dbConn) {
+  isChunkTableEmpty(dbConn) {
     return r.table('chunk').isEmpty().run(dbConn);
   },
   saveChunks(dbConn, chunks) {
