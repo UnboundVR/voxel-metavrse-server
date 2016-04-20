@@ -8,9 +8,10 @@ let connection = r.connect({
 //FIXME: this is ugly
 connection
   .then(function(conn) {
-    r.dbDrop('metavrse').run(conn, function(error, a) {
-      r.dbCreate('metavrse').run(conn, function(error, data) {
-        r.db('metavrse').tableCreate('chunk').run(conn, function(error, databis) {
+    r.dbDrop('metavrse').run(conn, function() {
+      r.dbCreate('metavrse').run(conn, function() {
+        r.db('metavrse').tableCreate('chunk').run(conn, function() {
+          console.log('success');
           process.exit();
         });
       });
