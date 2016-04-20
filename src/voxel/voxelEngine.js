@@ -1,49 +1,52 @@
-import blocks from './blocks';
 import createEngine from 'voxel-engine';
 
 var engine;
 var settings;
 
-export default {
+function getId(pos) {
+  return pos.join('|');
+}
+
+module.exports = {
   init() {
     settings = {
-      generate(x, y, z) {
+      generateChunks: true,
+      generate: function(x, y) {
         return y === 1 ? 1 : 0;
       },
       chunkDistance: 2,
-      materials: blocks.getMaterials(),
-      texturePath: 'assets/textures/',
-      worldOrigin: [0, 0, 0],
-      controls: { discreteFire: true }
+      worldOrigin: [0, 0, 0]
     };
     engine = createEngine(settings);
   },
   getSettings() {
     return settings;
   },
-  getChunkId(chunkPos) {
-    return chunkPos.join('|');
+  getInitialChunks() {
+    let initialPositions = [];
+    for(var i = -1; i < 1; i++) {
+      for(var j = -1; j < 1; j++) {
+        for(var k = -1; k < 1; k++) {
+          initialPositions.push([i,j,k]);
+        }
+      }
+    }
+    return initialPositions.map(this.getChunk);
   },
-  getChunkIdAtPosition(pos) {
-    return this.getChunkId(engine.voxels.chunkAtPosition(pos));
-  },
-  getChunk(chunkId) {
-    return engine.voxels.chunks[chunkId];
-  },
-  setChunk(chunkId, chunk) {
-    engine.voxels.chunks[chunkId] = chunk;
-  },
-  chunkExists(chunkId) {
-    return !!engine.voxels.chunks[chunkId];
-  },
-  getExistingChunkIds() {
-    return Object.keys(engine.voxels.chunks);
+  getChunk(chunkPos) {
+    return engine.voxels.chunks[getId(chunkPos)];
   },
   setBlock(pos, val) {
     engine.setBlock(pos, val);
   },
-  generateChunk(chunkId) {
-    engine.pendingChunks.push(chunkId);
-    engine.loadPendingChunks(engine.pendingChunks.length);
+  chunkAtPosition(pos) {
+    return engine.voxels.chunkAtPosition(pos);
+  },
+  ensureChunkExists(chunkPos) {
+    let chunkId = getId(chunkPos);
+    if(!engine.voxels.chunks[chunkId]) {
+      engine.pendingChunks.push(chunkId);
+      engine.loadPendingChunks(engine.pendingChunks.length);
+    }
   }
 };

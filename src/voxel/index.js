@@ -1,35 +1,27 @@
-import consts from '../constants';
+// import consts from '../constants';
 import controller from './controller';
 
 export default function(io) {
-  controller.init().then(() => {
-    setInterval(() => {
-      controller.saveChunks().catch(err => {
-        console.log('Error auto saving chunks', err);
-      });
-    }, consts.voxel.AUTO_SAVE_INTERVAL);
+  controller.init();
+    // setInterval(function() {
+    //   controller.saveChunks().catch(function(err) {
+    //     console.log('Error auto saving chunks', err);
+    //   });
+    // }, consts.voxel.AUTO_SAVE_INTERVAL);
 
-    io.of('voxel').on('connection', socket => {
-      socket.emit('init', controller.initClient());
+  io.of('voxel').on('connection', socket => {
+    socket.emit('init', controller.initClient());
 
-      socket.on('requestChunk', (chunkPosition, callback) => {
-        controller.requestChunk(chunkPosition).then(chunk => {
-          callback(null, chunk);
-        }).catch(err => {
-          callback(err);
-          console.log('Error getting chunk', err);
-        });
-      });
-
-      socket.on('set', (pos, val) => {
-        let broadcast = (pos, val) => {
-          socket.broadcast.emit('set', pos, val);
-        };
-
-        controller.set(pos, val, broadcast);
-      });
+    socket.on('requestChunk', (chunkPosition, callback) => {
+      callback(null, controller.requestChunk(chunkPosition));
     });
-  }).catch(err => {
-    console.log('Error initializing voxel module', err);
+
+    socket.on('set', (pos, val) => {
+      let broadcast = (pos, val) => {
+        socket.broadcast.emit('set', pos, val);
+      };
+
+      controller.set(pos, val, broadcast);
+    });
   });
 }
