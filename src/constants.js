@@ -14,5 +14,8 @@ export default {
     SEND_UPDATE_INTERVAL: 1000/22,  // 45ms
     LERP_PERCENT: 0.1,
     ROUGH_MOVEMENT_THRESHOLD: 20
+  },
+  events: {
+    SERVER_INITIALIZED: 'ServerInitialized'
   }
 };
