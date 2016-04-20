@@ -14,7 +14,7 @@ function compress(chunk) {
 export default {
   init: async function(dbConn) {
     let emptyChunkTable = await storage.getEmptyChunkTable(dbConn);
-    await engine.init(dbConn, emptyChunkTable);
+    engine.init(dbConn, emptyChunkTable);
 
     if (emptyChunkTable) {
       return storage.saveChunks(dbConn, engine.getAllChunks());
