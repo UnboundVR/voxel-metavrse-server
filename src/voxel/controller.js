@@ -7,15 +7,15 @@ import storage from './storage';
 
 function compress(chunk) {
   let compressedChunk = extend({}, chunk);
-  compressedChunk.voxels = compression.compress(chunk.position, Object.values(chunk.voxels)); // This Obejct.values thing is a TEMPRARY HACK/FIX
+  compressedChunk.voxels = compression.compress(chunk.position, chunk.voxels);
   return compressedChunk;
 }
 
 export default {
   init: async function(dbConn) {
-    let emptyChunkTable = await storage.isChunkTableEmpty(dbConn);
-    engine.init(dbConn, emptyChunkTable);
+    engine.init();
 
+    let emptyChunkTable = await storage.isChunkTableEmpty(dbConn);
     if (emptyChunkTable) {
       console.log('initializing db from in-memory chunks');
 

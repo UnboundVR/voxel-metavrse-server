@@ -1,4 +1,5 @@
 import createEngine from 'voxel-engine';
+import extend from 'extend';
 
 var engine;
 var settings;
@@ -12,10 +13,9 @@ function generateWorld(x, y) {
 }
 
 module.exports = {
-  init(dbConn, emptyChunkTable) {
+  init() {
     settings = {
-      // Empty table means we generate new chunks, otherwise we'll get them from the db.
-      generateChunks: emptyChunkTable ? true : false,
+      generateChunks: true,
       generate: generateWorld,
       chunkDistance: 2,
       worldOrigin: [0, 0, 0]
@@ -38,12 +38,16 @@ module.exports = {
     return initialPositions.map(this.getChunk);
   },
   getChunk(chunkPos) {
-    return engine.voxels.chunks[getId(chunkPos)];
+    // Convert from the dictionary-based array to a true array (this assumes the keys in the dict are ordered, which seems to be the case)
+    let chunk = extend({}, engine.voxels.chunks[getId(chunkPos)]);
+    chunk.voxels = Object.values(chunk.voxels);
+    return chunk;
   },
   getAllChunks() {
     let chunks = [];
     for (let chunk in engine.voxels.chunks) {
-      chunks.push(engine.voxels.chunks[chunk]);
+      let position = engine.voxels.chunks[chunk].position;
+      chunks.push(this.getChunk(position));
     }
 
     return chunks;
@@ -62,6 +66,13 @@ module.exports = {
     }
   },
   setChunk(chunkPos, chunk) {
+    // Convert to the format that voxel-engine internally uses to represent chunks (i.e. a dictionary where the keys are the number of the position)
+    let voxels = chunk.voxels;
+    chunk.voxels = {};
+    for(let i = 0; i < voxels.length; i++) {
+      chunk.voxels[i] = voxels[i];
+    }
+
     engine.voxels.chunks[getId(chunkPos)] = chunk;
   }
 };
