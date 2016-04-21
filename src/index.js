@@ -25,7 +25,7 @@ import inventory from './inventory';
 
 db.init().then(function(dbConn) {
   return Promise.all([
-    voxel(io, dbConn),
+    voxel.init(io, dbConn),
     playerSync(io),
     chat(io),
     auth.init(server),

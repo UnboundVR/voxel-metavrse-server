@@ -52,6 +52,11 @@ module.exports = {
 
     return chunks;
   },
+  setManyChunks(chunks) {
+    for (let chunk of chunks) {
+      this.setChunk(chunk.position, chunk);
+    }
+  },
   setBlock(pos, val) {
     engine.setBlock(pos, val);
   },

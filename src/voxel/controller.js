@@ -15,20 +15,10 @@ export default {
   init: async function(dbConn) {
     engine.init();
 
-    let emptyChunkTable = await storage.isChunkTableEmpty(dbConn);
-    if (emptyChunkTable) {
-      console.log('initializing db from in-memory chunks');
-
-      return storage.saveChunks(dbConn, engine.getAllChunks());
-    } else {
-      let chunks = await storage.getChunks(dbConn);
-
-      for (let chunk of chunks) {
-        engine.setChunk(chunk.position, chunk);
-      }
-
-      console.log(`loaded ${chunks.length} chunks from DB`);
-    }
+    let chunks = await storage.getChunks(dbConn);
+    engine.setManyChunks(chunks);
+    
+    return chunks.length;
   },
   initClient() {
     return {

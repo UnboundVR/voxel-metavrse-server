@@ -41,7 +41,7 @@
   "scripts": {
     "start": "babel-node src",
     "watch": "nodemon --watch src",
-    "scaffold-db": "babel-node scaffold/db",
+    "scaffold-db": "babel-node scaffold",
     "test": "gulp test"
   }
 }
