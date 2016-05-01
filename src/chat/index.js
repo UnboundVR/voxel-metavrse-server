@@ -1,13 +1,5 @@
-import controller from './controller';
+import routes from './routes';
 
 export default function(io) {
-  io.of('chat').on('connection', (socket) => {
-    socket.on('message', (message) => {
-      let broadcast = (message) => {
-        socket.broadcast.emit('message', message);
-      };
-
-      controller.onMessage(message, broadcast);
-    });
-  });
+  routes.init(io);
 }
