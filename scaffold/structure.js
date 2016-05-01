@@ -13,4 +13,7 @@ export default async function createStructure(conn) {
 
   await r.db('metavrse').tableCreate('chunk').run(conn);
   console.log('created chunk table');
+
+  await r.db('metavrse').tableCreate('material').run(conn);
+  console.log('created materials table');
 }
