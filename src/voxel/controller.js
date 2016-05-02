@@ -11,19 +11,19 @@ function compress(chunk) {
 }
 
 export default {
-  init: async function(dbConn) {
+  async init(dbConn) {
     engine.init();
 
     let chunks = await storage.getChunks(dbConn);
     engine.setManyChunks(chunks);
-    
+
     return chunks.length;
   },
-  initClient() {
-    let materials = await.storage.getMaterials(dbConn);
+  async initClient(dbConn) {
+    let materials = await storage.getMaterials(dbConn);
 
     return {
-      settings: extend({}, engine.getSettings(), { materials.materials }),
+      settings: extend({}, engine.getSettings(), {materials: materials[0].materials}),
       chunks: engine.getInitialChunks().map(compress)
     };
   },
