@@ -1,5 +1,4 @@
 import controller from './controller';
-import githubAuth from './githubAuth';
 import routes from './routes';
 
 export default {

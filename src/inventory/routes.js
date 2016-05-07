@@ -63,4 +63,4 @@ export default {
 
     router.applyRoutes(server, '/inventory');
   }
-}
+};
