@@ -1,12 +1,10 @@
 import itemTypes from './data/itemTypes.json';
 import blockTypes from './data/blockTypes.json';
 import defaultToolbar from './data/toolbar.json';
-import Promise from 'promise';
-import extend from 'extend';
-import github from './github';
+import clone from 'clone';
+import coding from '../coding';
 import auth from '../auth';
 
-const SINGLE_FILENAME = 'single_file';
 var toolbars = {};
 
 var lastBlockId = 0;
@@ -15,60 +13,6 @@ blockTypes.forEach(blockType => {
     lastBlockId = blockType.id;
   }
 });
-
-function resolveCode(token, code) {
-  if(token) {
-    return github.getGist(code.id, code.revision, token).then(processGist);
-  } else {
-    return Promise.resolve(code);
-  }
-}
-
-function resolveTypes(token, types, ids) {
-  let promises = types.filter(type => ids.includes(type.id)).map(type => {
-    return resolveType(token, type);
-  });
-
-  return Promise.all(promises);
-}
-
-function resolveType(token, type) {
-  if(type.code) {
-    return resolveCode(token, type.code).then(codeObj => {
-      let resolvedType = extend({}, type);
-      resolvedType.code = codeObj;
-      return resolvedType;
-    });
-  } else {
-    return Promise.resolve(type);
-  }
-}
-
-function processGist(response) {
-  try {
-    return {
-      id: response.id,
-      revision: {
-        id: response.history[0].version,
-        date: response.history[0].committed_at
-      },
-      lastUpdateDate: response.updated_at,
-      code: response.files[SINGLE_FILENAME].content,
-      author: response.owner ? {
-        id: response.owner.id,
-        avatar: response.owner.avatar_url,
-        login: response.owner.login
-      } : {
-        id: null,
-        avatar: 'https://avatars.githubusercontent.com/u/148100?v=3',
-        login: 'anonymous'
-      },
-      url: response.html_url
-    };
-  } catch(e) {
-    console.log(e);
-  }
-}
 
 function getById(types, id) {
   for(let i = 0; i < types.length; i++) {
@@ -108,71 +52,58 @@ export default {
     };
   },
   getItemTypes(token, ids) {
-    return resolveTypes(token, itemTypes, ids);
+    if(typeof ids == 'string') {
+      ids = ids.split(',');
+    }
+
+    return itemTypes.filter(type => ids.includes(type.id.toString()));
   },
   getBlockTypes(token, ids) {
-    return resolveTypes(token, blockTypes, ids);
+    if(typeof ids == 'string') {
+      ids = ids.split(',');
+    }
+
+    return blockTypes.filter(type => ids.includes(type.id.toString()));
   },
   addBlockType(token, code, material, name) {
-    return github.createGist(code, token).then(githubResponse => {
+    return coding.createGist(token, code).then(gistId => {
       var newType = {};
-      newType.code = {
-        id: githubResponse.id,
-        revision: githubResponse.history[0].version
-      };
+      newType.code = gistId;
       newType.id = ++lastBlockId;
       newType.material = material;
       newType.name = name;
       newType.icon = 'code';
       blockTypes.push(newType);
 
-      return resolveType(token, newType);
+      return newType;
     });
   },
   forkBlockType(token, id, code, name) {
-    function forkOrCreate(codeId) {
-      return github.forkGist(codeId, token).then(forkResponse => {
-        return github.updateGist(forkResponse.id, code, token);
-      }).catch(err => {
-        if(err.statusCode == 422) {
-          return github.createGist(code, token);
-        } else {
-          throw err;
-        }
-      });
-    }
-
     var oldType = getById(blockTypes, id);
-    var newType = extend({}, oldType);
+    var newType = clone(oldType);
 
-    return forkOrCreate(oldType.code.id).then((githubResponse) => {
-      newType.code = {
-        id: githubResponse.id,
-        revision: githubResponse.history[0].version
-      };
+    return coding.forkOrCreate(token, oldType.code.id, code).then((gistId) => {
+      newType.code = gistId;
       newType.id = ++lastBlockId;
       newType.name = name;
       newType.icon = 'code';
       blockTypes.push(newType);
 
-      return resolveType(token, newType);
+      return newType;
     });
   },
   updateBlockType(token, id, code) {
     var oldType = getById(blockTypes, id);
-    var newType = extend({}, oldType);
+    var newType = clone(oldType);
 
-    return github.updateGist(oldType.code.id, code, token).then(githubResponse => {
-      newType.code = {
-        id: githubResponse.id,
-        revision: githubResponse.history[0].version
-      };
+    return coding.updateGist(token, oldType.code.id, code).then(gistId => {
+      newType.code = gistId;
       newType.id = ++lastBlockId;
       newType.icon = 'code';
       newType.name = oldType.name + ' bis';
       blockTypes.push(newType);
 
-      return resolveType(token, newType);
+      return newType;
     });
   }
 };

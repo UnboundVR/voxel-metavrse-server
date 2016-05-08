@@ -21,11 +21,13 @@ import playerSync from './playerSync';
 import chat from './chat';
 import auth from './auth';
 import inventory from './inventory';
+import coding from './coding';
 
 voxel(io);
 playerSync(io);
 chat(io);
 auth.init(server);
+coding.init(server);
 inventory(server);
 
 // Run the server

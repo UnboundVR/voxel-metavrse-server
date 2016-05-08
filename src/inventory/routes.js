@@ -25,15 +25,11 @@ export default {
     });
 
     router.get('/blockTypes', (req, res) => {
-      controller.getBlockTypes(req.header('Authorization'), req.params.ids).then(result => {
-        res.json(result);
-      });
+      res.json(controller.getBlockTypes(req.header('Authorization'), req.params.ids));
     });
 
     router.get('/itemTypes', (req, res) => {
-      controller.getItemTypes(req.header('Authorization'), req.params.ids).then(result => {
-        res.json(result);
-      });
+      res.json(controller.getItemTypes(req.header('Authorization'), req.params.ids));
     });
 
     router.get('/all', (req, res) => {
