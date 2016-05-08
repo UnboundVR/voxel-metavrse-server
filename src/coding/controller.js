@@ -36,7 +36,12 @@ export default {
       return github.updateGist(token, forkResponse.id, code);
     } catch(err) {
       if(err.statusCode == 422) {
-        return github.createGist(token, code);
+        let createResponse = await github.createGist(token, code);
+
+        return {
+          id: createResponse.id,
+          revision: createResponse.history[0].version
+        };
       } else {
         throw err;
       }

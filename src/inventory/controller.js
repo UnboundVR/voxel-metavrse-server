@@ -82,7 +82,7 @@ export default {
     var oldType = getById(blockTypes, id);
     var newType = clone(oldType);
 
-    return coding.forkOrCreate(token, oldType.code.id, code).then((gistId) => {
+    return coding.forkOrCreateGist(token, oldType.code.id, code).then((gistId) => {
       newType.code = gistId;
       newType.id = ++lastBlockId;
       newType.name = name;
