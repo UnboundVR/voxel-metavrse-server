@@ -87,7 +87,7 @@ export default {
     newType.id = ++lastItemId;
     newType.name = name;
     newType.icon = 'code';
-    blockTypes.push(newType);
+    itemTypes.push(newType);
 
     return newType;
   }
