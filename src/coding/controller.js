@@ -24,6 +24,13 @@ function processGist(response) {
   };
 }
 
+function extractUpdateResponse(response) {
+  return {
+    id: response.id,
+    revision: response.history[0].version
+  };
+}
+
 export default {
   async getGist(token, id, revision) {
     let response = await github.getGist(token, id, revision);
@@ -34,19 +41,11 @@ export default {
     try {
       let forkResponse = await github.forkGist(token, id);
       let response = await github.updateGist(token, forkResponse.id, code);
-
-      return {
-        id: response.id,
-        revision: response.history[0].version
-      };
+      return extractUpdateResponse(response);
     } catch(err) {
       if(err.statusCode == 422) {
-        let createResponse = await github.createGist(token, code);
-
-        return {
-          id: createResponse.id,
-          revision: createResponse.history[0].version
-        };
+        let response = await github.createGist(token, code);
+        return extractUpdateResponse(response);
       } else {
         throw err;
       }
@@ -54,18 +53,10 @@ export default {
   },
   async updateGist(token, id, code) {
     let response = await github.updateGist(token, id, code);
-
-    return {
-      id: response.id,
-      revision: response.history[0].version
-    };
+    return extractUpdateResponse(response);
   },
   async createGist(token, code) {
     let response = await github.createGist(token, code);
-
-    return {
-      id: response.id,
-      revision: response.history[0].version
-    };
+    return extractUpdateResponse(response);
   }
 };
