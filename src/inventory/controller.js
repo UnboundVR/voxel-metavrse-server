@@ -1,8 +1,6 @@
 import itemTypes from './data/itemTypes.json';
 import blockTypes from './data/blockTypes.json';
 import defaultToolbar from './data/toolbar.json';
-import clone from 'clone';
-import coding from '../coding';
 import auth from '../auth';
 
 var toolbars = {};
@@ -14,14 +12,14 @@ blockTypes.forEach(blockType => {
   }
 });
 
-function getById(types, id) {
-  for(let i = 0; i < types.length; i++) {
-    let type = types[i];
-    if(type.id == id) {
-      return type;
-    }
-  }
-}
+// function getById(types, id) {
+//   for(let i = 0; i < types.length; i++) {
+//     let type = types[i];
+//     if(type.id == id) {
+//       return type;
+//     }
+//   }
+// }
 
 export default {
   getToolbar(token) {
@@ -65,45 +63,15 @@ export default {
 
     return blockTypes.filter(type => ids.includes(type.id.toString()));
   },
-  addBlockType(token, code, material, name) {
-    return coding.createGist(token, code).then(gistId => {
-      var newType = {};
-      newType.code = gistId;
-      newType.id = ++lastBlockId;
-      newType.material = material;
-      newType.name = name;
-      newType.icon = 'code';
-      blockTypes.push(newType);
+  addBlockType(token, codeObj, material, name) {
+    var newType = {};
+    newType.code = codeObj;
+    newType.id = ++lastBlockId;
+    newType.material = material;
+    newType.name = name;
+    newType.icon = 'code';
+    blockTypes.push(newType);
 
-      return newType;
-    });
-  },
-  forkBlockType(token, id, code, name) {
-    var oldType = getById(blockTypes, id);
-    var newType = clone(oldType);
-
-    return coding.forkOrCreateGist(token, oldType.code.id, code).then((gistId) => {
-      newType.code = gistId;
-      newType.id = ++lastBlockId;
-      newType.name = name;
-      newType.icon = 'code';
-      blockTypes.push(newType);
-
-      return newType;
-    });
-  },
-  updateBlockType(token, id, code) {
-    var oldType = getById(blockTypes, id);
-    var newType = clone(oldType);
-
-    return coding.updateGist(token, oldType.code.id, code).then(gistId => {
-      newType.code = gistId;
-      newType.id = ++lastBlockId;
-      newType.icon = 'code';
-      newType.name = oldType.name + ' bis';
-      blockTypes.push(newType);
-
-      return newType;
-    });
+    return newType;
   }
 };

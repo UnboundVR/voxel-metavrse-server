@@ -38,29 +38,8 @@ export default {
 
     router.post('/blockType', (req, res) => {
       var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-      controller.addBlockType(req.header('Authorization'), body.code, body.material, body.name).then(function(blockType) {
-        res.json(blockType);
-      }), err => {
-        console.log(err);
-      };
-    });
-
-    router.post('/blockType/:id/fork', (req, res) => {
-      var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-      controller.forkBlockType(req.header('Authorization'), req.params.id, body.code, body.name).then(function(blockType) {
-        res.json(blockType);
-      }, err => {
-        console.log(err);
-      });
-    });
-
-    router.put('/blockType/:id', (req, res) => {
-      var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-      controller.updateBlockType(req.header('Authorization'), req.params.id, body.code).then(function(blockType) {
-        res.json(blockType);
-      }, err => {
-        console.log(err);
-      });
+      let blockType = controller.addBlockType(req.header('Authorization'), body.code, body.material, body.name);
+      res.json(blockType);
     });
 
     router.applyRoutes(server, '/inventory');

@@ -33,7 +33,12 @@ export default {
   async forkOrCreateGist(token, id, code) {
     try {
       let forkResponse = await github.forkGist(token, id);
-      return github.updateGist(token, forkResponse.id, code);
+      let response = await github.updateGist(token, forkResponse.id, code);
+
+      return {
+        id: response.id,
+        revision: response.history[0].version
+      };
     } catch(err) {
       if(err.statusCode == 422) {
         let createResponse = await github.createGist(token, code);
