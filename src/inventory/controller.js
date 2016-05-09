@@ -81,11 +81,13 @@ export default {
 
     return newType;
   },
-  addItemType(token, codeObj, name) {
+  addItemType(token, codeObj, props) {
     var newType = {};
     newType.code = codeObj;
     newType.id = ++lastItemId;
-    newType.name = name;
+    newType.name = props.name;
+    newType.crosshairIcon = props.crosshairIcon;
+    newType.adjacentActive = props.adjacentActive;
     newType.icon = 'code';
     itemTypes.push(newType);
 

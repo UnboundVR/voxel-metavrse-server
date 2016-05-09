@@ -44,7 +44,14 @@ export default {
 
     router.post('/itemType', (req, res) => {
       var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-      let itemType = controller.addItemType(req.header('Authorization'), body.code, body.name);
+
+      let props = {
+        name: body.name,
+        adjacentActive: body.adjacentActive,
+        crosshairIcon: body.crosshairIcon
+      };
+
+      let itemType = controller.addItemType(req.header('Authorization'), body.code, props);
       res.json(itemType);
     });
 
