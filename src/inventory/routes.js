@@ -42,6 +42,12 @@ export default {
       res.json(blockType);
     });
 
+    router.post('/itemType', (req, res) => {
+      var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+      let itemType = controller.addItemType(req.header('Authorization'), body.code, body.name);
+      res.json(itemType);
+    });
+
     router.applyRoutes(server, '/inventory');
   }
 };

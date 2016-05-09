@@ -12,6 +12,13 @@ blockTypes.forEach(blockType => {
   }
 });
 
+var lastItemId = 0;
+itemTypes.forEach(itemType => {
+  if(itemType.id > lastItemId) {
+    lastItemId = itemType.id;
+  }
+});
+
 // function getById(types, id) {
 //   for(let i = 0; i < types.length; i++) {
 //     let type = types[i];
@@ -68,6 +75,16 @@ export default {
     newType.code = codeObj;
     newType.id = ++lastBlockId;
     newType.material = material;
+    newType.name = name;
+    newType.icon = 'code';
+    blockTypes.push(newType);
+
+    return newType;
+  },
+  addItemType(token, codeObj, name) {
+    var newType = {};
+    newType.code = codeObj;
+    newType.id = ++lastItemId;
     newType.name = name;
     newType.icon = 'code';
     blockTypes.push(newType);
