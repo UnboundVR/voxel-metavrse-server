@@ -25,15 +25,11 @@ export default {
     });
 
     router.get('/blockTypes', (req, res) => {
-      controller.getBlockTypes(req.header('Authorization'), req.params.ids).then(result => {
-        res.json(result);
-      });
+      res.json(controller.getBlockTypes(req.header('Authorization'), req.params.ids));
     });
 
     router.get('/itemTypes', (req, res) => {
-      controller.getItemTypes(req.header('Authorization'), req.params.ids).then(result => {
-        res.json(result);
-      });
+      res.json(controller.getItemTypes(req.header('Authorization'), req.params.ids));
     });
 
     router.get('/all', (req, res) => {
@@ -42,25 +38,23 @@ export default {
 
     router.post('/blockType', (req, res) => {
       var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-      controller.addBlockType(req.header('Authorization'), body.code, body.material, body.name).then(function(blockType) {
-        res.json(blockType);
-      });
+      let blockType = controller.addBlockType(req.header('Authorization'), body.code, body.material, body.name);
+      res.json(blockType);
     });
 
-    router.post('/blockType/:id/fork', (req, res) => {
+    router.post('/itemType', (req, res) => {
       var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-      controller.forkBlockType(req.header('Authorization'), req.params.id, body.code, body.name).then(function(blockType) {
-        res.json(blockType);
-      });
-    });
 
-    router.put('/blockType/:id', (req, res) => {
-      var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-      controller.updateBlockType(req.header('Authorization'), req.params.id, body.code).then(function(blockType) {
-        res.json(blockType);
-      });
+      let props = {
+        name: body.name,
+        adjacentActive: body.adjacentActive,
+        crosshairIcon: body.crosshairIcon
+      };
+
+      let itemType = controller.addItemType(req.header('Authorization'), body.code, props);
+      res.json(itemType);
     });
 
     router.applyRoutes(server, '/inventory');
   }
-}
+};

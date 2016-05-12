@@ -22,6 +22,7 @@ import playerSync from './playerSync';
 import chat from './chat';
 import auth from './auth';
 import inventory from './inventory';
+import coding from './coding';
 
 db.init().then(function(dbConn) {
   return Promise.all([

@@ -1,5 +1,6 @@
 import controller from './controller';
 import restifyRouter from 'restify-router';
+import githubAuth from './githubAuth';
 
 export default {
   init(server) {
@@ -32,4 +33,4 @@ export default {
 
     router.applyRoutes(server, '/auth');
   }
-}
+};
