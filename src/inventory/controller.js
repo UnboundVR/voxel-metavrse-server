@@ -99,6 +99,7 @@ export default {
     newType.id = ++lastBlockId;
     newType.material = material;
     newType.name = name;
+    newType.icon = 'code';
     blockTypes.push(newType);
 
     return newType;
@@ -110,6 +111,7 @@ export default {
     newType.name = props.name;
     newType.crosshairIcon = props.crosshairIcon;
     newType.adjacentActive = props.adjacentActive;
+    newType.icon = 'code';
     itemTypes.push(newType);
 
     return newType;
