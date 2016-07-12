@@ -77,6 +77,7 @@ export default {
     let updated = clone(original);
     updated.code = codeObj;
     updated.id = ++lastBlockId;
+    delete updated.newerVersion;
     blockTypes.push(updated);
 
     original.newerVersion = updated.id;
@@ -88,6 +89,7 @@ export default {
     let updated = clone(original);
     updated.code = codeObj;
     updated.id = ++lastItemId;
+    delete updated.newerVersion;
     itemTypes.push(updated);
 
     original.newerVersion = updated.id;
