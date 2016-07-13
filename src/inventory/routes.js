@@ -36,6 +36,18 @@ export default {
       res.json(controller.getAll());
     });
 
+    router.patch('/blockType/:id', (req, res) => {
+      var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+      let blockType = controller.updateBlockCode(req.header('Authorization'), req.params.id, body.code);
+      res.json(blockType);
+    });
+
+    router.patch('/itemType/:id', (req, res) => {
+      var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+      let blockType = controller.updateItemCode(req.header('Authorization'), req.params.id, body.code);
+      res.json(blockType);
+    });
+
     router.post('/blockType', (req, res) => {
       var body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
       let blockType = controller.addBlockType(req.header('Authorization'), body.code, body.material, body.name);
