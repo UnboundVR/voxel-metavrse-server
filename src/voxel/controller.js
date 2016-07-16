@@ -49,12 +49,14 @@ export default {
     return compress(chunk);
   },
   set(pos, val, broadcast) {
-    pendingChanges.push({pos, val});
 
     engine.setBlock(pos, val);
 
     let chunkPos = engine.chunkAtPosition(pos);
     compression.invalidateCache(chunkPos);
+
+    let chunk = engine.getChunk(chunkPos);
+    pendingChanges.push({pos, val, chunkDims: chunk.dims, chunkPos});
 
     broadcast(pos, val);
   },
@@ -64,9 +66,8 @@ export default {
     console.log(`Saving ${changes.length} chunk changes...`);
 
     for(let change of changes) {
-      let chunkPos = engine.chunkAtPosition(change.pos);
       try {
-        await storage.saveChunkChange(this._dbConn, chunkPos, change.pos, change.val);
+        await storage.saveChunkChange(this._dbConn, change.chunkPos, change.chunkDims, change.pos, change.val);
       } catch(err) {
         pendingChanges.unshift(change);
       }
