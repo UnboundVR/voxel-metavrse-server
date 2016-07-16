@@ -69,6 +69,7 @@ export default {
       try {
         await storage.saveChunkChange(this._dbConn, change.chunkPos, change.chunkDims, change.pos, change.val);
       } catch(err) {
+        console.log('Error saving chunk change', err);
         pendingChanges.unshift(change);
       }
     }

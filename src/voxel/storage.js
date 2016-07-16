@@ -16,7 +16,11 @@ export default {
         pos[2] - chunkPos[2] * d
       ];
 
-      return localCoords[0] + localCoords[1] * d + localCoords[2] * d * d;
+      let flatLocalPosition = localCoords[0] + localCoords[1] * d + localCoords[2] * d * d;
+
+      // console.log(`Converted ${pos} to ${flatLocalPosition}`);
+
+      return flatLocalPosition;
     }
 
     return r.table('chunk').filter({position: chunkPos}).update({
