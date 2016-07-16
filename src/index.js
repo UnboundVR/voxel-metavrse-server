@@ -22,6 +22,7 @@ import playerSync from './playerSync';
 import chat from './chat';
 import auth from './auth';
 import inventory from './inventory';
+import coding from './coding';
 
 db.init().then(function(dbConn) {
   return Promise.all([
@@ -29,6 +30,7 @@ db.init().then(function(dbConn) {
     playerSync(io),
     chat(io),
     auth.init(server),
+    coding.init(server),
     inventory(server)
   ]);
 }).then(() => {

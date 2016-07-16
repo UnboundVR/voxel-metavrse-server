@@ -5,7 +5,7 @@ const SINGLE_FILENAME = 'single_file';
 const HARDCODED_DESC = 'created in metavrse.io';
 
 export default {
-  createGist(content, token) {
+  createGist(token, content) {
     let body = {
       description: HARDCODED_DESC,
       files: {}
@@ -25,7 +25,7 @@ export default {
       json: true
     });
   },
-  getGist(id, revision, token) {
+  getGist(token, id, revision) {
     return request.get({
       uri: consts.github.API_URL + '/gists/' + id + '/' + revision,
       headers: {
@@ -35,7 +35,7 @@ export default {
       json: true
     });
   },
-  updateGist(id, code, token) {
+  updateGist(token, id, code) {
     let body = {
       files: {}
     };
@@ -55,7 +55,7 @@ export default {
       json: true
     });
   },
-  forkGist(id, token) {
+  forkGist(token, id) {
     return request({
       method: 'POST',
       uri: consts.github.API_URL + '/gists/' + id + '/forks',
