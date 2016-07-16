@@ -45,6 +45,7 @@
     "test": "gulp test",
     "clean": "rm -rf build && mkdir build",
     "build-server": "babel -d ./build ./src -s --copy-files --ignore node_modules",
-    "build": "npm run clean && npm run build-server"
+    "build": "npm run clean && npm run build-server",
+    "scaffold-db": "babel-node scaffold"
   }
 }
