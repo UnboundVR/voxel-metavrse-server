@@ -30,6 +30,7 @@ db.init().then(function(dbConn) {
     playerSync(io),
     chat(io),
     auth.init(server),
+    coding.init(server),
     inventory(server)
   ]);
 }).then(() => {

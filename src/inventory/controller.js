@@ -2,6 +2,7 @@ import itemTypes from './data/itemTypes.json';
 import blockTypes from './data/blockTypes.json';
 import defaultToolbar from './data/toolbar.json';
 import auth from '../auth';
+import clone from 'clone';
 
 var toolbars = {};
 
@@ -69,6 +70,30 @@ export default {
     }
 
     return blockTypes.filter(type => ids.includes(type.id.toString()));
+  },
+  updateBlockCode(token, id, codeObj) {
+    let original = this.getBlockTypes(token, [id])[0];
+
+    let updated = clone(original);
+    updated.code = codeObj;
+    updated.id = ++lastBlockId;
+    delete updated.newerVersion;
+    blockTypes.push(updated);
+
+    original.newerVersion = updated.id;
+    return updated;
+  },
+  updateItemCode(token, id, codeObj) {
+    let original = this.getItemTypes(token, [id])[0];
+
+    let updated = clone(original);
+    updated.code = codeObj;
+    updated.id = ++lastItemId;
+    delete updated.newerVersion;
+    itemTypes.push(updated);
+
+    original.newerVersion = updated.id;
+    return updated;
   },
   addBlockType(token, codeObj, material, name) {
     var newType = {};
