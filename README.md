@@ -27,10 +27,6 @@ Then start the server (with a watch):
 npm run watch
 ```
 
-Then point your browser to `http://localhost:<the port you chose above>` and have fun!
-
-*Note: If you're using the Unbound VR Github App, you must use the port `1337`.*
-
 ## Tests
 We use tape for unit testing - in order to run our test, just do:
 ```
