@@ -2,12 +2,12 @@ import restifyRouter from 'restify-router';
 import controller from './controller';
 
 export default {
-  init(server) {
+  init(server, dbConn) {
     var router = new restifyRouter.Router();
 
     router.get('/toolbar', async (req, res) => {
       try {
-        let toolbar = await controller.getToolbar(req.header('Authorization'));
+        let toolbar = await controller.getToolbar(dbConn, req.header('Authorization'));
         res.json(toolbar);
       } catch(err) {
         console.log('Error getting toolbar', err);
@@ -17,7 +17,7 @@ export default {
 
     router.del('/toolbar/:position', async (req, res) => {
       try {
-        await controller.removeToolbarItem(req.header('Authorization'), req.params.position);
+        await controller.removeToolbarItem(dbConn, req.header('Authorization'), req.params.position);
         res.send(200);
       } catch(err) {
         console.log(`Error removing toolbar item at position ${req.params.position}`, err);
@@ -28,7 +28,7 @@ export default {
     router.put('/toolbar/:position', async (req, res) => {
       try {
         let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-        await controller.setToolbarItem(req.header('Authorization'), req.params.position, body.type, body.id);
+        await controller.setToolbarItem(dbConn, req.header('Authorization'), req.params.position, body.type, body.id);
         res.send(200);
       } catch(err) {
         console.log(`Error setting toolbar item at position ${req.params.position}`, err);
@@ -38,7 +38,7 @@ export default {
 
     router.get('/blockTypes', async (req, res) => {
       try {
-        let blockTypes = await controller.getBlockTypes(req.header('Authorization'), req.params.ids.split(','));
+        let blockTypes = await controller.getBlockTypes(dbConn, req.header('Authorization'), req.params.ids.split(',').map(id => parseInt(id)));
         res.json(blockTypes);
       } catch(err) {
         console.log('Error getting block types', err);
@@ -48,7 +48,7 @@ export default {
 
     router.get('/itemTypes', async (req, res) => {
       try {
-        let itemTypes = await controller.getItemTypes(req.header('Authorization'), req.params.ids.split(','));
+        let itemTypes = await controller.getItemTypes(dbConn, req.header('Authorization'), req.params.ids.split(',').map(id => parseInt(id)));
         res.json(itemTypes);
       } catch(err) {
         console.log('Error getting item types', err);
@@ -58,7 +58,7 @@ export default {
 
     router.get('/all', async (req, res) => {
       try {
-        let data = await controller.getAll();
+        let data = await controller.getAll(dbConn);
         res.json(data);
       } catch(err) {
         console.log('Error getting items and blocks', err);
@@ -69,7 +69,7 @@ export default {
     router.patch('/blockType/:id', async (req, res) => {
       try {
         let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-        let blockType = await controller.updateBlockCode(req.header('Authorization'), req.params.id, body.code);
+        let blockType = await controller.updateBlockCode(dbConn, req.header('Authorization'), req.params.id, body.code);
         res.json(blockType);
       } catch(err) {
         console.log('Error updating block code', err);
@@ -80,7 +80,7 @@ export default {
     router.patch('/itemType/:id', async (req, res) => {
       try {
         let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-        let blockType = await controller.updateItemCode(req.header('Authorization'), req.params.id, body.code);
+        let blockType = await controller.updateItemCode(dbConn, req.header('Authorization'), req.params.id, body.code);
         res.json(blockType);
       } catch(err) {
         console.log('Error updating item code', err);
@@ -97,7 +97,7 @@ export default {
           material: body.material
         };
 
-        let blockType = await controller.addBlockType(req.header('Authorization'), body.code, props);
+        let blockType = await controller.addBlockType(dbConn, req.header('Authorization'), body.code, props);
         res.json(blockType);
       } catch(err) {
         console.log('Error creating block', err);
@@ -115,7 +115,7 @@ export default {
           crosshairIcon: body.crosshairIcon
         };
 
-        let itemType = await controller.addItemType(req.header('Authorization'), body.code, props);
+        let itemType = await controller.addItemType(dbConn, req.header('Authorization'), body.code, props);
         res.json(itemType);
       } catch(err) {
         console.log('Error creating item', err);

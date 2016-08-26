@@ -7,33 +7,30 @@ export default {
   getAllBlockTypes(dbConn) {
     return r.table('blockType').run(dbConn).then(data => data.toArray());
   },
-  getBlockTypes() {
-    throw new Error('not implemented');
+  getBlockTypes(dbConn, ids) {
+    return r.table('blockType').getAll(r.args(ids)).run(dbConn).then(data => data.toArray());
   },
-  getItemTypes() {
-    throw new Error('not implemented');
-
+  getItemTypes(dbConn, ids) {
+    return r.table('itemType').getAll(r.args(ids)).run(dbConn).then(data => data.toArray());
   },
-  getBlockType() {
-    throw new Error('not implemented');
-
+  getBlockType(dbConn, id) {
+    return r.table('blockType').get(id).run(dbConn);
   },
-  getItemType() {
-    throw new Error('not implemented');
-
+  getItemType(dbConn, id) {
+    return r.table('itemType').get(id).run(dbConn);
   },
-  addBlockType() {
+  addBlockType(dbConn, item) {
     // TODO increment sequential id, then do the magic
     throw new Error('not implemented');
   },
-  updateBlockType() {
+  updateBlockType(dbConn, item) {
     throw new Error('not implemented');
   },
-  addItemType() {
+  addItemType(dbConn, item) {
     // TODO increment sequential id, then do the magic
     throw new Error('not implemented');
   },
-  updateItemType() {
+  updateItemType(dbConn, item) {
     throw new Error('not implemented');
   }
 };

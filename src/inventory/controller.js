@@ -5,7 +5,7 @@ import storage from './storage';
 
 let toolbars = {};
 
-async function addBlockOrItem(token, codeObj, props, type) {
+async function addBlockOrItem(dbConn, token, codeObj, props, type) {
   let user = await auth.getUser(token);
   console.log(`Adding new ${type} for user ${user.id}`);
 
@@ -27,12 +27,12 @@ async function addBlockOrItem(token, codeObj, props, type) {
     newType.material = props.material;
   }
 
-  await add(newType);
+  await add(dbConn, newType);
 
   return newType;
 }
 
-async function updateBlockOrItemCode(token, id, codeObj, type) {
+async function updateBlockOrItemCode(dbConn, token, id, codeObj, type) {
   let user = await auth.getUser(token);
   console.log(`Updating ${type} ${id} for user ${user.id}`);
 
@@ -48,7 +48,7 @@ async function updateBlockOrItemCode(token, id, codeObj, type) {
     update = storage.updateBlockType;
   }
 
-  let original = await get(id);
+  let original = await get(dbConn, id);
   if(original.owner != user.id) {
     throw new Error(`${type} ${id} belongs to ${original.owner} - ${user.id} doesn't have access.`);
   }
@@ -56,16 +56,16 @@ async function updateBlockOrItemCode(token, id, codeObj, type) {
   let updated = clone(original);
   updated.code = codeObj;
   delete updated.newerVersion;
-  await add(updated);
+  await add(dbConn, updated);
 
   original.newerVersion = updated.id;
-  await update(original);
+  await update(dbConn, original);
 
   return updated;
 }
 
 export default {
-  async getToolbar(token) {
+  async getToolbar(dbConn, token) {
     let user = await auth.getUser(token);
 
     if(!toolbars[user.id]) {
@@ -74,43 +74,43 @@ export default {
 
     return toolbars[user.id];
   },
-  async setToolbarItem(token, position, type, id) {
+  async setToolbarItem(dbConn, token, position, type, id) {
     let user = await auth.getUser(token);
 
     let toolbar = toolbars[user.id];
     toolbar[position] = {type, id};
   },
-  async removeToolbarItem(token, position) {
+  async removeToolbarItem(dbConn, token, position) {
     let user = await auth.getUser(token);
 
     let toolbar = toolbars[user.id];
     toolbar[position] = null;
   },
-  async getAll() {
-    let itemTypes = await storage.getAllItemTypes();
-    let blockTypes = await storage.getAllBlockTypes();
+  async getAll(dbConn) {
+    let itemTypes = await storage.getAllItemTypes(dbConn);
+    let blockTypes = await storage.getAllBlockTypes(dbConn);
 
     return {
       itemTypes,
       blockTypes
     };
   },
-  async getItemTypes(token, ids) {
-    return await storage.getItemTypes(ids);
+  async getItemTypes(dbConn, token, ids) {
+    return await storage.getItemTypes(dbConn, ids);
   },
-  async getBlockTypes(token, ids) {
-    return await storage.getBlockTypes(ids);
+  async getBlockTypes(dbConn, token, ids) {
+    return await storage.getBlockTypes(dbConn, ids);
   },
-  async updateBlockCode(token, id, codeObj) {
-    return await updateBlockOrItemCode(token, id, codeObj, 'block');
+  async updateBlockCode(dbConn, token, id, codeObj) {
+    return await updateBlockOrItemCode(dbConn, token, id, codeObj, 'block');
   },
-  async updateItemCode(token, id, codeObj) {
-    return await updateBlockOrItemCode(token, id, codeObj, 'item');
+  async updateItemCode(dbConn, token, id, codeObj) {
+    return await updateBlockOrItemCode(dbConn, token, id, codeObj, 'item');
   },
-  async addBlockType(token, codeObj, props) {
-    return await addBlockOrItem(token, codeObj, props, 'block');
+  async addBlockType(dbConn, token, codeObj, props) {
+    return await addBlockOrItem(dbConn, token, codeObj, props, 'block');
   },
-  async addItemType(token, codeObj, props) {
-    return await addBlockOrItem(token, codeObj, props, 'item');
+  async addItemType(dbConn, token, codeObj, props) {
+    return await addBlockOrItem(dbConn, token, codeObj, props, 'item');
   }
 };

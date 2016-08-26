@@ -31,12 +31,12 @@ db.init().then(function(dbConn) {
     chat(io),
     auth.init(server),
     coding.init(server),
-    inventory(server)
+    inventory(server, dbConn)
   ]);
 }).then(() => {
   // Run the server
   let port = process.env.PORT || 1338;
-  server.listen(port, function() {
+  server.listen(port, () => {
     console.log('Listening at port ' + port + '!');
   });
 });
