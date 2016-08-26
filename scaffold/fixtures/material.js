@@ -5,7 +5,7 @@ export default async function(conn) {
   let count = 1;
   for(let material of materials) {
     let materialObj = {
-      number: count++,
+      id: count++,
       textures: material
     };
     await r.db('metavrse').table('material').insert(materialObj).run(conn);

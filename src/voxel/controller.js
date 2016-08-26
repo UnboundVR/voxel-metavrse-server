@@ -35,7 +35,7 @@ export default {
     return chunks.length;
   },
   async initClient(dbConn) {
-    let materials = (await storage.getMaterials(dbConn)).sort((m1, m2) => m1.number > m2.number).map(m => m.textures);
+    let materials = (await storage.getMaterials(dbConn)).sort((m1, m2) => m1.id > m2.id).map(m => m.textures);
     return {
       settings: extend({}, engine.getSettings(), {materials: materials}),
       chunks: engine.getInitialChunks().map(compress)

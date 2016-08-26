@@ -38,7 +38,7 @@ export default {
 
     router.get('/blockTypes', async (req, res) => {
       try {
-        let blockTypes = await controller.getBlockTypes(req.header('Authorization'), req.params.ids);
+        let blockTypes = await controller.getBlockTypes(req.header('Authorization'), req.params.ids.split(','));
         res.json(blockTypes);
       } catch(err) {
         console.log('Error getting block types', err);
@@ -48,7 +48,7 @@ export default {
 
     router.get('/itemTypes', async (req, res) => {
       try {
-        let itemTypes = await controller.getItemTypes(req.header('Authorization'), req.params.ids);
+        let itemTypes = await controller.getItemTypes(req.header('Authorization'), req.params.ids.split(','));
         res.json(itemTypes);
       } catch(err) {
         console.log('Error getting item types', err);
@@ -91,7 +91,13 @@ export default {
     router.post('/blockType', async (req, res) => {
       try {
         let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-        let blockType = await controller.addBlockType(req.header('Authorization'), body.code, body.material, body.name);
+
+        let props = {
+          name: body.name,
+          material: body.material
+        };
+
+        let blockType = await controller.addBlockType(req.header('Authorization'), body.code, props);
         res.json(blockType);
       } catch(err) {
         console.log('Error creating block', err);
