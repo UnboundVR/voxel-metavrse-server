@@ -8,7 +8,11 @@ export default{
           socket.broadcast.emit('message', message);
         };
 
-        controller.onMessage(message, broadcast);
+        try {
+          controller.onMessage(message, broadcast);
+        } catch(err) {
+          console.log('Error broadcasting chat message', err);
+        }
       });
     });
   }

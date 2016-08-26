@@ -48,7 +48,6 @@ export default {
     return compress(chunk);
   },
   set(pos, val, broadcast) {
-
     engine.setBlock(pos, val);
 
     let chunkPos = engine.chunkAtPosition(pos);

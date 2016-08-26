@@ -11,7 +11,11 @@ export default {
       }
 
       socket.on('requestChunk', (chunkPosition, callback) => {
-        callback(null, controller.requestChunk(chunkPosition));
+        try {
+          callback(null, controller.requestChunk(chunkPosition));
+        } catch(err) {
+          console.log(`Error requesting chunk at ${chunkPosition}`, err);
+        }
       });
 
       socket.on('set', (pos, val) => {
@@ -19,7 +23,11 @@ export default {
           socket.broadcast.emit('set', pos, val);
         };
 
-        controller.set(pos, val, broadcast);
+        try {
+          controller.set(pos, val, broadcast);
+        } catch(err) {
+          console.log(`Error setting ${val} block at ${pos}`);
+        }
       });
     });
   }
