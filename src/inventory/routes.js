@@ -69,7 +69,7 @@ export default {
     router.patch('/blockType/:id', async (req, res) => {
       try {
         let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-        let blockType = await controller.updateBlockCode(dbConn, req.header('Authorization'), req.params.id, body.code);
+        let blockType = await controller.updateBlockCode(dbConn, req.header('Authorization'), parseInt(req.params.id), body.code);
         res.json(blockType);
       } catch(err) {
         console.log('Error updating block code', err);
@@ -80,7 +80,7 @@ export default {
     router.patch('/itemType/:id', async (req, res) => {
       try {
         let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
-        let blockType = await controller.updateItemCode(dbConn, req.header('Authorization'), req.params.id, body.code);
+        let blockType = await controller.updateItemCode(dbConn, req.header('Authorization'), parseInt(req.params.id), body.code);
         res.json(blockType);
       } catch(err) {
         console.log('Error updating item code', err);
