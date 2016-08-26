@@ -46,7 +46,10 @@ export default {
     let toolbar = await r.table('toolbar').get(userId).run(dbConn);
 
     if(!toolbar) {
-      toolbar = {id: userId, items: [null, null, null, null, null, null, null, null, null]};
+      toolbar = {
+        id: userId,
+        items: [null, null, null, null, null, null, null, null, null]
+      };
       await r.table('toolbar').insert(toolbar).run(dbConn);
     }
 
