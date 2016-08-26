@@ -35,10 +35,9 @@ export default {
     return chunks.length;
   },
   async initClient(dbConn) {
-    let materials = await storage.getMaterials(dbConn);
-
+    let materials = (await storage.getMaterials(dbConn)).sort((m1, m2) => m1.number > m2.number).map(m => m.textures);
     return {
-      settings: extend({}, engine.getSettings(), {materials: materials[0].materials}),
+      settings: extend({}, engine.getSettings(), {materials: materials}),
       chunks: engine.getInitialChunks().map(compress)
     };
   },
@@ -63,7 +62,9 @@ export default {
   async saveChunks() {
     let changes = pendingChanges.splice(0, pendingChanges.length);
 
-    console.log(`Saving ${changes.length} chunk changes...`);
+    if(changes.length) {
+      console.log(`Saving ${changes.length} chunk changes...`);
+    }
 
     for(let change of changes) {
       try {

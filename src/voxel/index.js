@@ -5,7 +5,7 @@ import voxelEngine from './voxelEngine';
 export default {
   init(io, dbConn) {
     return controller.init(dbConn).then((loadedChunksAmount) => {
-      console.log(`loaded ${loadedChunksAmount} chunks from DB`);
+      console.log(`Loaded ${loadedChunksAmount} chunks from DB`);
 
       return routes.init(io, dbConn);
     });

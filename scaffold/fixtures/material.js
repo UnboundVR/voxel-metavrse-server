@@ -1,21 +1,14 @@
 import r from 'rethinkdb';
+import materials from '../data/materials.json';
 
 export default async function(conn) {
-  let materials = {
-    materials: [
-      "tile",
-      "code",
-      ["grass", "dirt", "grass_dirt"],
-      "obsidian",
-      "plank",
-      "cobblestone",
-      "redwool",
-      "troll",
-      "doge",
-      "glass"
-    ]
-  };
-
-  await r.db('metavrse').table('material').insert(materials).run(conn);
-  console.log(`loaded ${materials.materials.length} materials into the db`);
+  let count = 1;
+  for(let material of materials) {
+    let materialObj = {
+      number: count++,
+      textures: material
+    };
+    await r.db('metavrse').table('material').insert(materialObj).run(conn);
+  }
+  console.log(`Loaded ${materials.length} materials into the db`);
 }

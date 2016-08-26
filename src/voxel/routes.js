@@ -3,8 +3,12 @@ import controller from './controller';
 export default {
   init(io, dbConn) {
     io.of('voxel').on('connection', async (socket) => {
-      let data = await controller.initClient(dbConn);
-      socket.emit('init', data);
+      try {
+        let data = await controller.initClient(dbConn);
+        socket.emit('init', data);
+      } catch(err) {
+        console.log('Error initializing client', err);
+      }
 
       socket.on('requestChunk', (chunkPosition, callback) => {
         callback(null, controller.requestChunk(chunkPosition));
