@@ -13,7 +13,7 @@ async function scaffold() {
   try {
     let conn = await connect();
     await structure(conn);
-    await fixtures(conn); // TODO at this point we should select the metavrse db (the name should come from .env)
+    await fixtures(conn, parseInt(process.argv[2]) || 0); // TODO at this point we should select the metavrse db (the name should come from .env)
 
     console.log('Successfuly created and populated db');
   } catch(err) {

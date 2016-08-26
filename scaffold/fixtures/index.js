@@ -4,10 +4,10 @@ import item from './itemType';
 import block from './blockType';
 import sequential from './sequentialId';
 
-export default async function(conn) {
-  let materialsCreated = await material(conn);
-  let itemsCreated = await item(conn);
-  let blocksCreated = await block(conn);
+export default async function(conn, ownerUserId) {
+  let materialsCreated = await material(conn, ownerUserId);
+  let itemsCreated = await item(conn, ownerUserId);
+  let blocksCreated = await block(conn, ownerUserId);
 
   await sequential(conn, {
     material: materialsCreated + 1,

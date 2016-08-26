@@ -34,12 +34,12 @@ export default {
     return r.table('blockType').replace(item).run(dbConn);
   },
   async addItemType(dbConn, item) {
-    let id = await getNextId(dbConn, 'blockType');
+    let id = await getNextId(dbConn, 'itemType');
     item.id = id;
 
     return r.table('itemType').insert(item).run(dbConn);
   },
   updateItemType(dbConn, item) {
-    return r.table('blockType').replace(item).run(dbConn);
+    return r.table('itemType').replace(item).run(dbConn);
   }
 };
