@@ -18,7 +18,7 @@ export default {
     router.del('/toolbar/:position', async (req, res) => {
       try {
         await controller.removeToolbarItem(dbConn, req.header('Authorization'), req.params.position);
-        res.send(200);
+        res.json({});
       } catch(err) {
         console.log(`Error removing toolbar item at position ${req.params.position}`, err);
         res.send(500, err);
@@ -29,7 +29,7 @@ export default {
       try {
         let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
         await controller.setToolbarItem(dbConn, req.header('Authorization'), req.params.position, body.type, body.id);
-        res.send(200);
+        res.json({});
       } catch(err) {
         console.log(`Error setting toolbar item at position ${req.params.position}`, err);
         res.send(500, err);
