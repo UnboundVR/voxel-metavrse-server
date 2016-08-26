@@ -17,7 +17,7 @@ export default {
 
     router.get('/github_access_token/:code', async (req, res) => {
       try {
-        let accessToken = controller.getAccessToken(req.params.code);
+        let accessToken = await controller.getAccessToken(req.params.code);
         res.json({
           accessToken
         });
