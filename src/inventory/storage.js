@@ -1,5 +1,10 @@
 import r from 'rethinkdb';
 
+async function getNextId(dbConn, name) {
+  let result = await r.table('sequentialId').get('blockType').update({number: r.row('number').add(1)}, {return_vals: true});
+  return result.new_val.number;
+}
+
 export default {
   getAllItemTypes(dbConn) {
     return r.table('itemType').run(dbConn).then(data => data.toArray());
@@ -19,18 +24,22 @@ export default {
   getItemType(dbConn, id) {
     return r.table('itemType').get(id).run(dbConn);
   },
-  addBlockType(dbConn, item) {
-    // TODO increment sequential id, then do the magic
-    throw new Error('not implemented');
+  async addBlockType(dbConn, item) {
+    let id = await getNextId(dbConn, 'blockType');
+    item.id = id;
+
+    return r.table('blockType').insert(item).run(dbConn);
   },
   updateBlockType(dbConn, item) {
-    throw new Error('not implemented');
+    return r.table('blockType').replace(item).run(dbConn);
   },
-  addItemType(dbConn, item) {
-    // TODO increment sequential id, then do the magic
-    throw new Error('not implemented');
+  async addItemType(dbConn, item) {
+    let id = await getNextId(dbConn, 'blockType');
+    item.id = id;
+
+    return r.table('itemType').insert(item).run(dbConn);
   },
   updateItemType(dbConn, item) {
-    throw new Error('not implemented');
+    return r.table('blockType').replace(item).run(dbConn);
   }
 };

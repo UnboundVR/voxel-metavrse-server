@@ -2,17 +2,17 @@ import r from 'rethinkdb';
 
 export default async function(conn) {
   await r.db('metavrse').table('sequentialId').insert({
-    name: 'material',
+    id: 'material',
     number: 1
   }).run(conn);
 
   await r.db('metavrse').table('sequentialId').insert({
-    name: 'itemType',
+    id: 'itemType',
     number: 1
   }).run(conn);
 
   await r.db('metavrse').table('sequentialId').insert({
-    name: 'blockType',
+    id: 'blockType',
     number: 1
   }).run(conn);
 
