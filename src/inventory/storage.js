@@ -1,8 +1,8 @@
 import r from 'rethinkdb';
 
 async function getNextId(dbConn, name) {
-  let result = await r.table('sequentialId').get(name).update({number: r.row('number').add(1)}, {return_vals: true});
-  return result.old_val.number;
+  let result = await r.table('sequentialId').get(name).update({number: r.row('number').add(1)}, {return_changes: true}).run(dbConn);
+  return result.changes[0].old_val.number;
 }
 
 export default {
