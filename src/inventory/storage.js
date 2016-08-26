@@ -41,5 +41,20 @@ export default {
   },
   updateItemType(dbConn, item) {
     return r.table('itemType').replace(item).run(dbConn);
+  },
+  async getToolbar(dbConn, userId) {
+    let toolbar = await r.table('toolbar').get(userId).run(dbConn);
+
+    if(!toolbar) {
+      toolbar = {id: userId, items: [null, null, null, null, null, null, null, null, null]};
+      await r.table('toolbar').insert(toolbar).run(dbConn);
+    }
+
+    return toolbar.items;
+  },
+  updateToolbarItem(dbConn, userId, position, value) {
+    return r.table('toolbar').filter({id: userId}).update({
+      items: r.row('items').changeAt(position, value)
+    }).run(dbConn);
   }
 };

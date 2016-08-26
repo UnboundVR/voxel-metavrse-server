@@ -1,9 +1,6 @@
-import defaultToolbar from './data/toolbar.json';
 import auth from '../auth';
 import clone from 'clone';
 import storage from './storage';
-
-let toolbars = {};
 
 async function addBlockOrItem(dbConn, token, codeObj, props, type) {
   let user = await auth.getUser(token);
@@ -68,23 +65,17 @@ export default {
   async getToolbar(dbConn, token) {
     let user = await auth.getUser(token);
 
-    if(!toolbars[user.id]) {
-      toolbars[user.id] = defaultToolbar;
-    }
-
-    return toolbars[user.id];
+    return await storage.getToolbar(dbConn, user.id);
   },
   async setToolbarItem(dbConn, token, position, type, id) {
     let user = await auth.getUser(token);
 
-    let toolbar = toolbars[user.id];
-    toolbar[position] = {type, id};
+    await storage.updateToolbarItem(dbConn, user.id, position, {type, id});
   },
   async removeToolbarItem(dbConn, token, position) {
     let user = await auth.getUser(token);
 
-    let toolbar = toolbars[user.id];
-    toolbar[position] = null;
+    await storage.updateToolbarItem(dbConn, user.id, position, null);
   },
   async getAll(dbConn) {
     let itemTypes = await storage.getAllItemTypes(dbConn);

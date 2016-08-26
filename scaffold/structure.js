@@ -23,6 +23,9 @@ export default async function createStructure(conn) {
   await r.db('metavrse').tableCreate('itemType').run(conn);
   console.log('Created itemType table');
 
+  await r.db('metavrse').tableCreate('toolbar').run(conn);
+  console.log('Created toolbar table');
+
   await r.db('metavrse').tableCreate('sequentialId').run(conn);
   console.log('Created sequentialIds table');
 }
