@@ -10,5 +10,8 @@ export default async function(conn) {
     };
     await r.db('metavrse').table('material').insert(materialObj).run(conn);
   }
+
   console.log(`Loaded ${materials.length} materials into the db`);
+
+  return materials.length;
 }

@@ -7,4 +7,6 @@ export default async function(conn) {
     await r.db('metavrse').table('blockType').insert(item).run(conn);
   }
   console.log(`Loaded ${blockTypes.length} block types into the db`);
+
+  return blockTypes.length;
 }

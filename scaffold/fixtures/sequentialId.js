@@ -1,20 +1,20 @@
 import r from 'rethinkdb';
 
-export default async function(conn) {
+export default async function(conn, numbers) {
   await r.db('metavrse').table('sequentialId').insert({
     id: 'material',
-    number: 1
+    number: numbers.material
   }).run(conn);
 
   await r.db('metavrse').table('sequentialId').insert({
     id: 'itemType',
-    number: 1
+    number: numbers.item
   }).run(conn);
 
   await r.db('metavrse').table('sequentialId').insert({
     id: 'blockType',
-    number: 1
+    number: numbers.block
   }).run(conn);
 
-  console.log('Initialized all sequential IDs to to 1');
+  console.log('Initialized all sequential IDs');
 }
