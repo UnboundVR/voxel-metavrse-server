@@ -1,0 +1,31 @@
+[
+  {
+    "type": "item",
+    "id": 1
+  },
+  {
+    "type": "block",
+    "id": 2
+  },
+  {
+    "type": "block",
+    "id": 3
+  },
+  {
+    "type": "block",
+    "id": 4
+  },
+  {
+    "type": "block",
+    "id": 5
+  },
+  null,
+  {
+    "type": "block",
+    "id": 7
+  },
+  {
+    "type": "block",
+    "id": 8
+  }
+]

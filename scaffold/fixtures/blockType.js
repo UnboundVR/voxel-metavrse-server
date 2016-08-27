@@ -9,7 +9,7 @@ export default async function(conn, ownerUserId) {
     };
     await r.db('metavrse').table('blockType').insert(item).run(conn);
   }
-  console.log(`Loaded ${blockTypes.length} block types into the db`);
+  console.log(`Loaded ${blockTypes.length} block types into the db owned by ${ownerUserId}`);
 
   return blockTypes.length;
 }

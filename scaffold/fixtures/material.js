@@ -15,7 +15,7 @@ export default async function(conn, ownerUserId) {
     await r.db('metavrse').table('material').insert(materialObj).run(conn);
   }
 
-  console.log(`Loaded ${materials.length} materials into the db`);
+  console.log(`Loaded ${materials.length} materials into the db owned by ${ownerUserId}`);
 
   return materials.length;
 }
