@@ -6,13 +6,15 @@ Using https://github.com/maxogden/voxel-engine (awesome stuff!).
 
 ## Get it running on your machine
 
-The first time you set up, you should install the required npm packages:
+The first time you set up, you should:
+
+1. Install the required npm packages:
 
 ```
 npm install
 ```
 
-You should also create a .env file with the following fields:
+2. Create a .env file with the following fields:
 ```
 PORT = <the port you'd like to run the server>
 GITHUB_CLIENT_ID = <the client_id of your Github OAuth app>
@@ -21,12 +23,12 @@ GITHUB_SECRET = <the client_secret of your Github OAuth app>
 
 *Note: If you're an Unbound VR member, you can use our Github App.*
 
-Then, you should initialize the database by running the following command:
+3. Initialize the database by running the following command:
 ```
 npm run scaffold-db [github user id, optional]
 ```
 
-Then start the server (with a watch):
+Then you can start the server (with a watch):
 
 ```
 npm run watch
