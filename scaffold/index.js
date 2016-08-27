@@ -1,6 +1,7 @@
 import structure from './structure';
 import fixtures from './fixtures';
 import r from 'rethinkdb';
+import dotenv from 'dotenv';
 
 function connect() {
   return r.connect({ // TODO place db config in .env (& update .env.template)
@@ -11,9 +12,10 @@ function connect() {
 
 async function scaffold() {
   try {
+    dotenv.load();
     let conn = await connect();
     await structure(conn);
-    let ownerUserId = parseInt(process.argv[2]) || 0;
+    let ownerUserId = parseInt(process.env.ADMIN_USER_ID) || 0;
     await fixtures(conn, ownerUserId); // TODO at this point we should select the metavrse db (the name should come from .env)
 
     console.log('Successfuly created and populated db');

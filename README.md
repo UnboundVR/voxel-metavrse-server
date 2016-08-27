@@ -19,13 +19,17 @@ npm install
 PORT = <the port you'd like to run the server>
 GITHUB_CLIENT_ID = <the client_id of your Github OAuth app>
 GITHUB_SECRET = <the client_secret of your Github OAuth app>
+DATABASE_HOST = <self explanatory>
+DATABASE_PORT = <self explanatory>
+DATABASE = <the name of your database - can be just 'metavrse'>
+ADMIN_USER_ID = <the Github user ID that will own the base items, terrain, etc.>
 ```
 
 *Note: If you're an Unbound VR member, you can use our Github App.*
 
 3 - Initialize the database by running the following command:
 ```
-npm run scaffold-db [github user id, optional]
+npm run scaffold-db
 ```
 
 Then you can start the server (with a watch):
