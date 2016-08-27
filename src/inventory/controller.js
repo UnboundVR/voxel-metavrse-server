@@ -12,7 +12,10 @@ async function addBlockOrItem(dbConn, token, codeObj, props, type) {
     code: codeObj,
     name: props.name,
     icon: 'code',
-    owner: user.id
+    owner: {
+      id: user.id,
+      name: user.login
+    }
   };
 
   if(type == 'item') {
@@ -46,7 +49,7 @@ async function updateBlockOrItemCode(dbConn, token, id, codeObj, type) {
   }
 
   let original = await get(dbConn, id);
-  if(original.owner != user.id) {
+  if(original.owner.id != user.id) {
     throw new Error(`${type} ${id} belongs to ${original.owner} - ${user.id} doesn't have access.`);
   }
 
