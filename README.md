@@ -21,6 +21,11 @@ GITHUB_SECRET = <the client_secret of your Github OAuth app>
 
 *Note: If you're an Unbound VR member, you can use our Github App.*
 
+Then, you should initialize the database by running the following command:
+```
+npm run scaffold-db [github user id, optional]
+```
+
 Then start the server (with a watch):
 
 ```
