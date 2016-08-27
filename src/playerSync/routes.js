@@ -8,7 +8,11 @@ export default {
     };
 
     setInterval(() => {
-      controller.sendUpdates(broadcast);
+      try {
+        controller.sendUpdates(broadcast);
+      } catch(err) {
+        console.log('Error sending updates', err);
+      }
     }, consts.playerSync.SEND_UPDATE_INTERVAL);
 
     io.of('playerSync').on('connection', socket => {
@@ -18,7 +22,11 @@ export default {
         socket.broadcast.emit('join', id);
       };
 
-      controller.onJoin(id, broadcast);
+      try {
+        controller.onJoin(id, broadcast);
+      } catch(err) {
+        console.log('Error joining user');
+      }
 
       socket.emit('settings', controller.getSettings());
 
@@ -27,12 +35,20 @@ export default {
           socket.broadcast.emit('leave', id);
         };
 
-        controller.onLeave(id, broadcast);
+        try {
+          controller.onLeave(id, broadcast);
+        } catch(err) {
+          console.log('Error with user leaving', err);
+        }
       });
 
       socket.on('state', state => {
-        controller.onState(id, state);
+        try {
+          controller.onState(id, state);
+        } catch(err) {
+          console.log('Error updating state', err);
+        }
       });
     });
   }
-}
+};

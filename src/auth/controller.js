@@ -8,23 +8,21 @@ export default {
       clientId: githubAuth.getClientId()
     };
   },
-  getAccessToken(code) {
-    return githubAuth.getAccessToken(code).then((githubResponse) => {
-      if (githubResponse.access_token) {
-        return githubResponse.access_token;
-      } else {
-        return Promise.reject(githubResponse.error);
-      }
-    });
-  },
-  getLoggedUser(token) {
-    if(!users[token]) {
-      return githubAuth.getLoggedUser(token).then(user => {
-        users[token] = user;
-        return user;
-      });
+  async getAccessToken(code) {
+    let githubResponse = await githubAuth.getAccessToken(code);
+
+    if (githubResponse.access_token) {
+      return githubResponse.access_token;
     } else {
-      return Promise.resolve(users[token]);
+      throw new Error(githubResponse.error);
     }
+  },
+  async getLoggedUser(token) {
+    if(!users[token]) {
+      let user = await githubAuth.getLoggedUser(token);
+      users[token] = user;
+    }
+    
+    return users[token];
   }
 };

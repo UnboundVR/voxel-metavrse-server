@@ -1,121 +1,110 @@
-import itemTypes from './data/itemTypes.json';
-import blockTypes from './data/blockTypes.json';
-import defaultToolbar from './data/toolbar.json';
 import auth from '../auth';
 import clone from 'clone';
+import storage from './storage';
 
-var toolbars = {};
+async function addBlockOrItem(dbConn, token, codeObj, props, type) {
+  let user = await auth.getUser(token);
+  console.log(`Adding new ${type} for user ${user.id}`);
 
-var lastBlockId = 0;
-blockTypes.forEach(blockType => {
-  if(blockType.id > lastBlockId) {
-    lastBlockId = blockType.id;
+  let add;
+
+  let newType = {
+    code: codeObj,
+    name: props.name,
+    icon: 'code',
+    owner: {
+      id: user.id,
+      name: user.login
+    }
+  };
+
+  if(type == 'item') {
+    add = storage.addItemType;
+    newType.crosshairIcon = props.crosshairIcon;
+    newType.adjacentActive = props.adjacentActive;
+  } else {
+    add = storage.addBlockType;
+    newType.material = props.material;
   }
-});
 
-var lastItemId = 0;
-itemTypes.forEach(itemType => {
-  if(itemType.id > lastItemId) {
-    lastItemId = itemType.id;
+  await add(dbConn, newType);
+
+  return newType;
+}
+
+async function updateBlockOrItemCode(dbConn, token, id, codeObj, type) {
+  let user = await auth.getUser(token);
+  console.log(`Updating ${type} ${id} for user ${user.id}`);
+
+  let get, add, update;
+
+  if(type == 'item') {
+    get = storage.getItemType;
+    add = storage.addItemType;
+    update = storage.updateItemType;
+  } else {
+    get = storage.getBlockType;
+    add = storage.addBlockType;
+    update = storage.updateBlockType;
   }
-});
 
-// function getById(types, id) {
-//   for(let i = 0; i < types.length; i++) {
-//     let type = types[i];
-//     if(type.id == id) {
-//       return type;
-//     }
-//   }
-// }
+  let original = await get(dbConn, id);
+  if(original.owner.id != user.id) {
+    throw new Error(`${type} ${id} belongs to ${original.owner} - ${user.id} doesn't have access.`);
+  }
+
+  let updated = clone(original);
+  updated.code = codeObj;
+  delete updated.newerVersion;
+  await add(dbConn, updated);
+
+  original.newerVersion = updated.id;
+  await update(dbConn, original);
+
+  return updated;
+}
 
 export default {
-  getToolbar(token) {
-    return auth.getUser(token).then(user => {
-      if(!toolbars[user.id]) {
-        toolbars[user.id] = defaultToolbar;
-      }
+  async getToolbar(dbConn, token) {
+    let user = await auth.getUser(token);
 
-      return toolbars[user.id];
-    });
+    return await storage.getToolbar(dbConn, user.id);
   },
-  setToolbarItem(token, position, type, id) {
-    return auth.getUser(token).then(user => {
-      var toolbar = toolbars[user.id];
-      toolbar[position] = {type, id};
-    });
+  async setToolbarItem(dbConn, token, position, type, id) {
+    let user = await auth.getUser(token);
+
+    await storage.updateToolbarItem(dbConn, user.id, position, {type, id});
   },
-  removeToolbarItem(token, position) {
-    return auth.getUser(token).then(user => {
-      var toolbar = toolbars[user.id];
-      toolbar[position] = null;
-    });
+  async removeToolbarItem(dbConn, token, position) {
+    let user = await auth.getUser(token);
+
+    await storage.updateToolbarItem(dbConn, user.id, position, null);
   },
-  getAll() {
+  async getAll(dbConn) {
+    let itemTypes = await storage.getAllItemTypes(dbConn);
+    let blockTypes = await storage.getAllBlockTypes(dbConn);
+
     return {
       itemTypes,
       blockTypes
     };
   },
-  getItemTypes(token, ids) {
-    if(typeof ids == 'string') {
-      ids = ids.split(',');
-    }
-
-    return itemTypes.filter(type => ids.includes(type.id.toString()));
+  async getItemTypes(dbConn, token, ids) {
+    return await storage.getItemTypes(dbConn, ids);
   },
-  getBlockTypes(token, ids) {
-    if(typeof ids == 'string') {
-      ids = ids.split(',');
-    }
-
-    return blockTypes.filter(type => ids.includes(type.id.toString()));
+  async getBlockTypes(dbConn, token, ids) {
+    return await storage.getBlockTypes(dbConn, ids);
   },
-  updateBlockCode(token, id, codeObj) {
-    let original = this.getBlockTypes(token, [id])[0];
-
-    let updated = clone(original);
-    updated.code = codeObj;
-    updated.id = ++lastBlockId;
-    delete updated.newerVersion;
-    blockTypes.push(updated);
-
-    original.newerVersion = updated.id;
-    return updated;
+  async updateBlockCode(dbConn, token, id, codeObj) {
+    return await updateBlockOrItemCode(dbConn, token, id, codeObj, 'block');
   },
-  updateItemCode(token, id, codeObj) {
-    let original = this.getItemTypes(token, [id])[0];
-
-    let updated = clone(original);
-    updated.code = codeObj;
-    updated.id = ++lastItemId;
-    delete updated.newerVersion;
-    itemTypes.push(updated);
-
-    original.newerVersion = updated.id;
-    return updated;
+  async updateItemCode(dbConn, token, id, codeObj) {
+    return await updateBlockOrItemCode(dbConn, token, id, codeObj, 'item');
   },
-  addBlockType(token, codeObj, material, name) {
-    var newType = {};
-    newType.code = codeObj;
-    newType.id = ++lastBlockId;
-    newType.material = material;
-    newType.name = name;
-    newType.icon = 'code';
-    blockTypes.push(newType);
-
-    return newType;
+  async addBlockType(dbConn, token, codeObj, props) {
+    return await addBlockOrItem(dbConn, token, codeObj, props, 'block');
   },
-  addItemType(token, codeObj, props) {
-    var newType = {};
-    newType.code = codeObj;
-    newType.id = ++lastItemId;
-    newType.name = props.name;
-    newType.crosshairIcon = props.crosshairIcon;
-    newType.adjacentActive = props.adjacentActive;
-    newType.icon = 'code';
-    itemTypes.push(newType);
-
-    return newType;
+  async addItemType(dbConn, token, codeObj, props) {
+    return await addBlockOrItem(dbConn, token, codeObj, props, 'item');
   }
 };

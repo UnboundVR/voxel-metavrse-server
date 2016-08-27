@@ -1,5 +1,6 @@
 import restify from 'restify';
 import socketio from 'socket.io';
+import db from './db';
 
 let server = restify.createServer();
 
@@ -23,15 +24,19 @@ import auth from './auth';
 import inventory from './inventory';
 import coding from './coding';
 
-voxel(io);
-playerSync(io);
-chat(io);
-auth.init(server);
-coding.init(server);
-inventory(server);
-
-// Run the server
-let port = process.env.PORT || 1338;
-server.listen(port, function() {
-  console.log('Listening at port ' + port + '!');
+db.init().then(function(dbConn) {
+  return Promise.all([
+    voxel.init(io, dbConn),
+    playerSync(io),
+    chat(io),
+    auth.init(server),
+    coding.init(server),
+    inventory(server, dbConn)
+  ]);
+}).then(() => {
+  // Run the server
+  let port = process.env.PORT || 1338;
+  server.listen(port, () => {
+    console.log('Listening at port ' + port + '!');
+  });
 });

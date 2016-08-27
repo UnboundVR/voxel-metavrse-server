@@ -7,27 +7,34 @@ export default {
     var router = new restifyRouter.Router();
 
     router.get('/github_client_info', (req, res) => {
-      res.send(controller.getGithubClientInfo());
+      try {
+        res.send(controller.getGithubClientInfo());
+      } catch(err) {
+        console.log('Error getting Github client info', err);
+        res.send(500, err);
+      }
     });
 
-    router.get('/github_access_token/:code', (req, res) => {
-      controller.getAccessToken(req.params.code).then((accessToken) => {
+    router.get('/github_access_token/:code', async (req, res) => {
+      try {
+        let accessToken = await controller.getAccessToken(req.params.code);
         res.json({
-          accessToken: accessToken
+          accessToken
         });
-      }).catch(function(err) {
-        res.status(401).send(err);
-      });
+      } catch(err) {
+        console.log('Error getting Github access token', err);
+        res.send(401, err);
+      }
     });
 
+    // FIXME this one will likely be deprecated when we move to a microservice
     router.put('/github_app/:clientId/:secret', (req, res) => {
       try {
         githubAuth.setGithubApp(req.params.clientId, req.params.secret);
-        res.status(200);
-        res.send('Yay');
-      } catch(e) {
-        res.status(500);
-        res.send(e);
+        res.send(200, 'Yay');
+      } catch(err) {
+        console.log('Error setting github client ID and secret', err);
+        res.send(500, err);
       }
     });
 
