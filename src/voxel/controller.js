@@ -3,6 +3,7 @@ import compression from './compression';
 import extend from 'extend';
 import storage from './storage';
 import consts from '../constants';
+import auth from '../auth';
 
 function compress(chunk) {
   let compressedChunk = extend({}, chunk);
@@ -52,16 +53,23 @@ export default {
     let chunk = engine.getChunk(chunkPos);
     return compress(chunk);
   },
-  set(pos, val, broadcast) {
-    engine.setBlock(pos, val);
-
+  async set(token, pos, val, broadcast) {
     let chunkPos = engine.chunkAtPosition(pos);
-    compression.invalidateCache(chunkPos);
-
     let chunk = engine.getChunk(chunkPos);
-    pendingChanges.push({pos, val, chunkDims: chunk.dims, chunkPos});
 
-    broadcast(pos, val);
+    let user = await auth.getUser(token);
+    let userId = user ? user.id : null;
+
+    if(userId == chunk.owner) {
+      console.log('saving')
+      engine.setBlock(pos, val);
+      compression.invalidateCache(chunkPos);
+      pendingChanges.push({pos, val, chunkDims: chunk.dims, chunkPos});
+      broadcast(pos, val);
+      console.log('ok')
+    } else {
+      throw new Error(`User ${userId} does not have access to chunk at ${chunkPos}`);
+    }
   },
   async saveChunks() {
     let changes = pendingChanges.splice(0, pendingChanges.length);
@@ -76,6 +84,7 @@ export default {
       try {
         if(!engine.existsInDatabase(change.chunkPos)) {
           let chunk = engine.getChunk(change.chunkPos);
+          console.log('chunk', chunk.owner)
           await storage.saveChunk(this._dbConn, chunk);
           engine.markAsExistingInDatabase(change.chunkPos);
           addedChunks.push(change.chunkPos);

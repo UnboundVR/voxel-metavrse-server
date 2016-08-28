@@ -18,13 +18,13 @@ export default {
         }
       });
 
-      socket.on('set', (pos, val) => {
+      socket.on('set', async (token, pos, val) => {
         let broadcast = (pos, val) => {
           socket.broadcast.emit('set', pos, val);
         };
 
         try {
-          controller.set(pos, val, broadcast);
+          await controller.set(token, pos, val, broadcast);
         } catch(err) {
           console.log(`Error setting block of type ${val} at ${pos}`, err);
         }
