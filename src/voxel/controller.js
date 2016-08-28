@@ -11,6 +11,11 @@ function compress(chunk) {
   return compressedChunk;
 }
 
+async function hasAccess(chunk, token) {
+  let user = await auth.getUser(token);
+  return user && chunk.owners.includes(user.id);
+}
+
 let pendingChanges = [];
 
 export default {
@@ -57,16 +62,13 @@ export default {
     let chunkPos = engine.chunkAtPosition(pos);
     let chunk = engine.getChunk(chunkPos);
 
-    let user = await auth.getUser(token);
-    let userId = user ? user.id : null;
-
-    if(userId == chunk.owner) {
+    if(await hasAccess(chunk, token)) {
       engine.setBlock(pos, val);
       compression.invalidateCache(chunkPos);
       pendingChanges.push({pos, val, chunkDims: chunk.dims, chunkPos});
       broadcast(pos, val);
     } else {
-      throw new Error(`User ${userId} does not have access to chunk at ${chunkPos}`);
+      throw new Error(`User does not have access to chunk at ${chunkPos}`);
     }
   },
   async saveChunks() {

@@ -33,8 +33,8 @@ module.exports = {
     if(!chunk.id) {
       chunk.id = chunk.position.join('|');
     }
-    if(!chunk.owner) {
-      chunk.owner = process.env.ADMIN_USER_ID;
+    if(!chunk.owners) {
+      chunk.owners = [parseInt(process.env.ADMIN_USER_ID)];
     }
     return chunk;
   },
