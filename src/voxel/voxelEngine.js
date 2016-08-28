@@ -26,22 +26,20 @@ module.exports = {
   getSettings() {
     return settings;
   },
-  getInitialChunks() {
-    let initialPositions = [];
-    for(var i = -1; i < 1; i++) {
-      for(var j = -1; j < 1; j++) {
-        for(var k = -1; k < 1; k++) {
-          initialPositions.push([i,j,k]);
-        }
-      }
-    }
-    return initialPositions.map(this.getChunk);
-  },
   getChunk(chunkPos) {
     // Convert from the dictionary-based array to a true array (this assumes the keys in the dict are ordered, which seems to be the case)
     let chunk = extend({}, engine.voxels.chunks[getId(chunkPos)]);
     chunk.voxels = Object.values(chunk.voxels);
+    chunk.id = chunk.position.join('|');
     return chunk;
+  },
+  markAsExistingInDatabase(chunkPos) {
+    let chunk = engine.voxels.chunks[getId(chunkPos)];
+    chunk.existsInDatabase = true;
+  },
+  existsInDatabase(chunkPos) {
+    let chunk = engine.voxels.chunks[getId(chunkPos)];
+    return chunk.existsInDatabase;
   },
   getAllChunks() {
     let chunks = [];

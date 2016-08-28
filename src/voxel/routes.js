@@ -26,7 +26,7 @@ export default {
         try {
           controller.set(pos, val, broadcast);
         } catch(err) {
-          console.log(`Error setting ${val} block at ${pos}`);
+          console.log(`Error setting block of type ${val} at ${pos}`, err);
         }
       });
     });

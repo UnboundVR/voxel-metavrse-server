@@ -28,6 +28,9 @@ export default {
     engine.init();
 
     let chunks = await storage.getChunks(this._dbConn);
+    for(let chunk of chunks) {
+      chunk.existsInDatabase = true;
+    }
     engine.setManyChunks(chunks);
 
     this._scheduleDatabaseSave();
@@ -37,8 +40,10 @@ export default {
   async initClient(dbConn) {
     let materials = (await storage.getMaterials(dbConn)).sort((m1, m2) => m1.id > m2.id).map(m => m.textures);
     return {
-      settings: extend({}, engine.getSettings(), {materials: materials}),
-      chunks: engine.getInitialChunks().map(compress)
+      settings: extend({}, engine.getSettings(), {
+        materials,
+        initialPosition: consts.playerSync.AVATAR_INITIAL_POSITION
+      })
     };
   },
   requestChunk(chunkPos) {
@@ -65,9 +70,22 @@ export default {
       console.log(`Saving ${changes.length} chunk changes...`);
     }
 
+    let addedChunks = [];
+
     for(let change of changes) {
       try {
-        await storage.saveChunkChange(this._dbConn, change.chunkPos, change.chunkDims, change.pos, change.val);
+        if(!engine.existsInDatabase(change.chunkPos)) {
+          let chunk = engine.getChunk(change.chunkPos);
+          await storage.saveChunk(this._dbConn, chunk);
+          engine.markAsExistingInDatabase(change.chunkPos);
+          addedChunks.push(change.chunkPos);
+          console.log(`Chunk at ${chunk.id} didn't exist in database, so we're adding it`);
+        } else {
+          // We're not sending the delta if we just sent the whole chunk
+          if(!addedChunks.includes(change.chunkPos)) {
+            await storage.saveChunkChange(this._dbConn, change.chunkPos, change.chunkDims, change.pos, change.val);
+          }
+        }
       } catch(err) {
         console.log('Error saving chunk change', err);
         pendingChanges.unshift(change);

@@ -7,6 +7,9 @@ export default {
   getMaterials(dbConn) {
     return r.table('material').run(dbConn).then(data => data.toArray());
   },
+  async saveChunk(dbConn, chunk) {
+    await r.table('chunk').insert(chunk).run(dbConn);
+  },
   saveChunkChange(dbConn, chunkPos, chunkDims, pos, val) {
     function getFlatLocalCoord() { // FIXME this only works for cubic chunks (i.e. all dims are the same)
       let d = chunkDims[0];
