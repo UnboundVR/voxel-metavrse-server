@@ -1,6 +1,5 @@
 import controller from './controller';
 import routes from './routes';
-import voxelEngine from './voxelEngine';
 
 export default {
   init(io, dbConn) {
@@ -9,9 +8,5 @@ export default {
 
       return routes.init(io, dbConn);
     });
-  },
-  getChunkSeedData() {
-    voxelEngine.init();
-    return voxelEngine.getAllChunks();
   }
 };

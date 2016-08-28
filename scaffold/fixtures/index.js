@@ -1,4 +1,3 @@
-import chunk from './chunk';
 import material from './material';
 import item from './itemType';
 import block from './blockType';
@@ -19,6 +18,4 @@ export default async function(conn, userId) {
   if(userId != 0) {
     await toolbar(conn, userId);
   }
-
-  await chunk(conn);
 }

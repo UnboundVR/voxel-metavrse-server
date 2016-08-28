@@ -41,15 +41,15 @@ module.exports = {
     let chunk = engine.voxels.chunks[getId(chunkPos)];
     return chunk.existsInDatabase;
   },
-  getAllChunks() {
-    let chunks = [];
-    for (let chunk in engine.voxels.chunks) {
-      let position = engine.voxels.chunks[chunk].position;
-      chunks.push(this.getChunk(position));
-    }
-
-    return chunks;
-  },
+  // getAllChunks() {
+  //   let chunks = [];
+  //   for (let chunk in engine.voxels.chunks) {
+  //     let position = engine.voxels.chunks[chunk].position;
+  //     chunks.push(this.getChunk(position));
+  //   }
+  //
+  //   return chunks;
+  // },
   setManyChunks(chunks) {
     for (let chunk of chunks) {
       this.setChunk(chunk.position, chunk);
