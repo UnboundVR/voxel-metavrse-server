@@ -61,12 +61,10 @@ export default {
     let userId = user ? user.id : null;
 
     if(userId == chunk.owner) {
-      console.log('saving')
       engine.setBlock(pos, val);
       compression.invalidateCache(chunkPos);
       pendingChanges.push({pos, val, chunkDims: chunk.dims, chunkPos});
       broadcast(pos, val);
-      console.log('ok')
     } else {
       throw new Error(`User ${userId} does not have access to chunk at ${chunkPos}`);
     }
@@ -84,7 +82,6 @@ export default {
       try {
         if(!engine.existsInDatabase(change.chunkPos)) {
           let chunk = engine.getChunk(change.chunkPos);
-          console.log('chunk', chunk.owner)
           await storage.saveChunk(this._dbConn, chunk);
           engine.markAsExistingInDatabase(change.chunkPos);
           addedChunks.push(change.chunkPos);
