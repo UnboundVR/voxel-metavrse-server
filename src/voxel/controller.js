@@ -19,7 +19,7 @@ async function checkAccess(chunk, token) {
   }
 
   if(!chunk.owners.includes(user.login)) {
-    throw new Error(`User ${user.login} not have access to chunk at ${chunk.pos.join('|')}`);
+    throw new Error(`User ${user.login} not have access to chunk at ${chunk.position.join('|')}`);
   }
 }
 
