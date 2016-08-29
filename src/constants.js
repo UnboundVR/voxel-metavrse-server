@@ -1,7 +1,8 @@
 export default {
   github: {
     API_URL: 'https://api.github.com',
-    OAUTH_URL: 'https://github.com/login/oauth'
+    OAUTH_URL: 'https://github.com/login/oauth',
+    ANONYMOUS_AVATAR: 'https://avatars.githubusercontent.com/u/148100?v=3'
   },
   chat: {
     MAX_MSG_LENGTH: 1000 // 1s
