@@ -9,7 +9,7 @@ export default async function(conn, ownerUserId) {
       textures: material,
       owner: ownerUserId
     };
-    await r.db('metavrse').table('material').insert(materialObj).run(conn);
+    await r.table('material').insert(materialObj).run(conn);
   }
 
   console.log(`Loaded ${materials.length} materials into the db owned by ${ownerUserId}`);

@@ -4,9 +4,10 @@ import r from 'rethinkdb';
 import dotenv from 'dotenv';
 
 function connect() {
-  return r.connect({ // TODO place db config in .env (& update .env.template)
-    host: 'localhost',
-    port: 28015
+  return r.connect({
+    host: process.env.DATABASE_HOST,
+    port: process.env.DATABASE_PORT,
+    db: process.env.DATABASE
   });
 }
 
@@ -16,7 +17,7 @@ async function scaffold() {
     let conn = await connect();
     await structure(conn);
     let ownerUsername = process.env.ADMIN_USER_ID;
-    await fixtures(conn, ownerUsername); // TODO at this point we should select the metavrse db (the name should come from .env)
+    await fixtures(conn, ownerUsername);
 
     console.log('Successfuly created and populated db');
   } catch(err) {
