@@ -9,6 +9,7 @@ export default {
       try {
         let body = JSON.parse(req.body);
         await controller.addChunkOwner(req.header('Authorization'), req.params.chunkId, body.newOwnerId);
+        io.of('voxel').emit('newChunkOwner', req.params.chunkId, body.newOwnerId);
         res.json({});
       } catch(err) {
         console.log('Error adding chunk owner', err);
