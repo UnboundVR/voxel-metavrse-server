@@ -4,7 +4,7 @@ import storage from './storage';
 
 async function addBlockOrItem(dbConn, token, codeObj, props, type) {
   let user = await auth.getUser(token);
-  console.log(`Adding new ${type} for user ${user.id}`);
+  console.log(`Adding new ${type} for user ${user.login}`);
 
   let add;
 
@@ -12,10 +12,7 @@ async function addBlockOrItem(dbConn, token, codeObj, props, type) {
     code: codeObj,
     name: props.name,
     icon: 'code',
-    owner: {
-      id: user.id,
-      name: user.login
-    }
+    owner: user.login
   };
 
   if(type == 'item') {
@@ -34,7 +31,7 @@ async function addBlockOrItem(dbConn, token, codeObj, props, type) {
 
 async function updateBlockOrItemCode(dbConn, token, id, codeObj, type) {
   let user = await auth.getUser(token);
-  console.log(`Updating ${type} ${id} for user ${user.id}`);
+  console.log(`Updating ${type} ${id} for user ${user.login}`);
 
   let get, add, update;
 
@@ -49,8 +46,8 @@ async function updateBlockOrItemCode(dbConn, token, id, codeObj, type) {
   }
 
   let original = await get(dbConn, id);
-  if(original.owner.id != user.id) {
-    throw new Error(`${type} ${id} belongs to ${original.owner} - ${user.id} doesn't have access.`);
+  if(original.owner != user.login) {
+    throw new Error(`${type} ${id} belongs to ${original.owner} - ${user.login} doesn't have access.`);
   }
 
   let updated = clone(original);
@@ -68,17 +65,17 @@ export default {
   async getToolbar(dbConn, token) {
     let user = await auth.getUser(token);
 
-    return await storage.getToolbar(dbConn, user.id);
+    return await storage.getToolbar(dbConn, user.login);
   },
   async setToolbarItem(dbConn, token, position, type, id) {
     let user = await auth.getUser(token);
 
-    await storage.updateToolbarItem(dbConn, user.id, position, {type, id});
+    await storage.updateToolbarItem(dbConn, user.login, position, {type, id});
   },
   async removeToolbarItem(dbConn, token, position) {
     let user = await auth.getUser(token);
 
-    await storage.updateToolbarItem(dbConn, user.id, position, null);
+    await storage.updateToolbarItem(dbConn, user.login, position, null);
   },
   async getAll(dbConn) {
     let itemTypes = await storage.getAllItemTypes(dbConn);

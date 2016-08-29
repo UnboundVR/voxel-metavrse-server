@@ -7,10 +7,7 @@ export default async function(conn, ownerUserId) {
     let materialObj = {
       id: count++,
       textures: material,
-      owner: {
-        id: ownerUserId,
-        name: 'generated_from_scaffold'
-      }
+      owner: ownerUserId
     };
     await r.db('metavrse').table('material').insert(materialObj).run(conn);
   }

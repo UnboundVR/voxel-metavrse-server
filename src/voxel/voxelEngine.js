@@ -30,7 +30,12 @@ module.exports = {
     // Convert from the dictionary-based array to a true array (this assumes the keys in the dict are ordered, which seems to be the case)
     let chunk = extend({}, engine.voxels.chunks[getId(chunkPos)]);
     chunk.voxels = Object.values(chunk.voxels);
-    chunk.id = chunk.position.join('|');
+    if(!chunk.id) {
+      chunk.id = chunk.position.join('|');
+    }
+    if(!chunk.owners) {
+      chunk.owners = [process.env.ADMIN_USER_ID];
+    }
     return chunk;
   },
   markAsExistingInDatabase(chunkPos) {

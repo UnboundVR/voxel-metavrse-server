@@ -22,7 +22,7 @@ GITHUB_SECRET = <the client_secret of your Github OAuth app>
 DATABASE_HOST = <self explanatory>
 DATABASE_PORT = <self explanatory>
 DATABASE = <the name of your database - can be just 'metavrse'>
-ADMIN_USER_ID = <the Github user ID that will own the base items, terrain, etc.>
+ADMIN_USER_ID = <the Github username that will own the base items, terrain, etc.>
 ```
 
 *Note: If you're an Unbound VR member, you can use our Github App.*

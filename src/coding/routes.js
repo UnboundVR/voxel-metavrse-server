@@ -17,7 +17,7 @@ export default {
 
     router.post('/', async (req, res) => {
       try {
-        let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+        let body = JSON.parse(req.body);
         let result = await controller.createGist(req.header('Authorization'), body.code);
         res.json(result);
       } catch(err) {
@@ -28,7 +28,7 @@ export default {
 
     router.post('/:id', async (req, res) => {
       try {
-        let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+        let body = JSON.parse(req.body);
         let result = await controller.forkOrCreateGist(req.header('Authorization'), req.params.id, body.code);
         res.json(result);
       } catch(err) {
@@ -39,7 +39,7 @@ export default {
 
     router.put('/:id', async (req, res) => {
       try {
-        let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+        let body = JSON.parse(req.body);
         let result = await controller.updateGist(req.header('Authorization'), req.params.id, body.code);
         res.json(result);
       } catch(err) {

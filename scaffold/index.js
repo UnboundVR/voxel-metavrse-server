@@ -15,8 +15,8 @@ async function scaffold() {
     dotenv.load();
     let conn = await connect();
     await structure(conn);
-    let ownerUserId = parseInt(process.env.ADMIN_USER_ID) || 0;
-    await fixtures(conn, ownerUserId); // TODO at this point we should select the metavrse db (the name should come from .env)
+    let ownerUsername = process.env.ADMIN_USER_ID;
+    await fixtures(conn, ownerUsername); // TODO at this point we should select the metavrse db (the name should come from .env)
 
     console.log('Successfuly created and populated db');
   } catch(err) {

@@ -1,4 +1,5 @@
 import github from './github';
+import consts from '../constants';
 
 const SINGLE_FILENAME = 'single_file';
 
@@ -12,13 +13,11 @@ function processGist(response) {
     lastUpdateDate: response.updated_at,
     code: response.files[SINGLE_FILENAME].content,
     author: response.owner ? {
-      id: response.owner.id,
-      avatar: response.owner.avatar_url,
-      login: response.owner.login
+      id: response.owner.login,
+      avatar: response.owner.avatar_url
     } : {
-      id: null,
-      avatar: 'https://avatars.githubusercontent.com/u/148100?v=3',
-      login: 'anonymous'
+      id: '*anonymous*',
+      avatar: consts.github.ANONYMOUS_AVATAR
     },
     url: response.html_url
   };

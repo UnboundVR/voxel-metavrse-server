@@ -3,11 +3,24 @@ import compression from './compression';
 import extend from 'extend';
 import storage from './storage';
 import consts from '../constants';
+import auth from '../auth';
 
 function compress(chunk) {
   let compressedChunk = extend({}, chunk);
   compressedChunk.voxels = compression.compress(chunk.position, chunk.voxels);
   return compressedChunk;
+}
+
+async function checkAccess(chunk, token) {
+  let user = await auth.getUser(token);
+
+  if(!user) {
+    throw new Error('No user logged');
+  }
+
+  if(!chunk.owners.includes(user.login)) {
+    throw new Error(`User ${user.login} not have access to chunk at ${chunk.position.join('|')}`);
+  }
 }
 
 let pendingChanges = [];
@@ -52,15 +65,15 @@ export default {
     let chunk = engine.getChunk(chunkPos);
     return compress(chunk);
   },
-  set(pos, val, broadcast) {
-    engine.setBlock(pos, val);
-
+  async set(token, pos, val, broadcast) {
     let chunkPos = engine.chunkAtPosition(pos);
-    compression.invalidateCache(chunkPos);
-
+    engine.ensureChunkExists(chunkPos);
     let chunk = engine.getChunk(chunkPos);
-    pendingChanges.push({pos, val, chunkDims: chunk.dims, chunkPos});
+    await checkAccess(chunk, token);
 
+    engine.setBlock(pos, val);
+    compression.invalidateCache(chunkPos);
+    pendingChanges.push({pos, val, chunkDims: chunk.dims, chunkPos, chunkId: chunk.id});
     broadcast(pos, val);
   },
   async saveChunks() {
@@ -83,7 +96,7 @@ export default {
         } else {
           // We're not sending the delta if we just sent the whole chunk
           if(!addedChunks.includes(change.chunkPos)) {
-            await storage.saveChunkChange(this._dbConn, change.chunkPos, change.chunkDims, change.pos, change.val);
+            await storage.saveChunkChange(this._dbConn, change);
           }
         }
       } catch(err) {
@@ -93,5 +106,20 @@ export default {
     }
 
     this._scheduleDatabaseSave();
+  },
+  async addChunkOwner(token, chunkId, newOwner) {
+    let chunkPos = chunkId.split('|');
+    engine.ensureChunkExists(chunkPos);
+    let chunk = engine.getChunk(chunkPos);
+    await checkAccess(chunk, token);
+
+    if(!engine.existsInDatabase(chunkPos)) {
+      chunk.owners.push(newOwner);
+      await storage.saveChunk(this._dbConn, chunk);
+      engine.markAsExistingInDatabase(chunkPos);
+      console.log(`Chunk at ${chunk.id} didn't exist in database, so we're adding it`);
+    } else {
+      await storage.addChunkOwner(this._dbConn, chunkId, newOwner);
+    }
   }
 };

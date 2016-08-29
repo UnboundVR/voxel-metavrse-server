@@ -26,7 +26,7 @@ import coding from './coding';
 
 db.init().then(function(dbConn) {
   return Promise.all([
-    voxel.init(io, dbConn),
+    voxel.init(io, server, dbConn),
     playerSync(io),
     chat(io),
     auth.init(server),

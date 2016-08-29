@@ -3,7 +3,7 @@ import controller from './controller';
 
 export default {
   init(server, dbConn) {
-    var router = new restifyRouter.Router();
+    let router = new restifyRouter.Router();
 
     router.get('/toolbar', async (req, res) => {
       try {
@@ -27,7 +27,7 @@ export default {
 
     router.put('/toolbar/:position', async (req, res) => {
       try {
-        let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+        let body = JSON.parse(req.body);
         await controller.setToolbarItem(dbConn, req.header('Authorization'), parseInt(req.params.position), body.type, body.id);
         res.json({});
       } catch(err) {
@@ -68,7 +68,7 @@ export default {
 
     router.patch('/blockType/:id', async (req, res) => {
       try {
-        let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+        let body = JSON.parse(req.body);
         let blockType = await controller.updateBlockCode(dbConn, req.header('Authorization'), parseInt(req.params.id), body.code);
         res.json(blockType);
       } catch(err) {
@@ -79,7 +79,7 @@ export default {
 
     router.patch('/itemType/:id', async (req, res) => {
       try {
-        let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+        let body = JSON.parse(req.body);
         let blockType = await controller.updateItemCode(dbConn, req.header('Authorization'), parseInt(req.params.id), body.code);
         res.json(blockType);
       } catch(err) {
@@ -90,7 +90,7 @@ export default {
 
     router.post('/blockType', async (req, res) => {
       try {
-        let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+        let body = JSON.parse(req.body);
 
         let props = {
           name: body.name,
@@ -107,7 +107,7 @@ export default {
 
     router.post('/itemType', async (req, res) => {
       try {
-        let body = JSON.parse(req.body); // TODO automatically send the stuff parsed...
+        let body = JSON.parse(req.body);
 
         let props = {
           name: body.name,
