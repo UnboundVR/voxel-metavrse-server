@@ -8,7 +8,7 @@ export default {
     MAX_MSG_LENGTH: 1000 // 1s
   },
   voxel: {
-    AUTO_SAVE_INTERVAL: 2000 // 5s
+    AUTO_SAVE_INTERVAL: 2000 // 2s
   },
   playerSync: {
     AVATAR_INITIAL_POSITION: [0, 2, 0],
