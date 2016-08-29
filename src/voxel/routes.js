@@ -1,7 +1,23 @@
 import controller from './controller';
+import restifyRouter from 'restify-router';
 
 export default {
-  init(io, dbConn) {
+  init(io, server, dbConn) {
+    let router = new restifyRouter.Router();
+
+    router.post('/chunk/:chunkId/owners', async (req, res) => {
+      try {
+        let body = JSON.parse(req.body);
+        await controller.addChunkOwner(req.header('Authorization'), req.params.chunkId, body.newOwnerId);
+        res.json({});
+      } catch(err) {
+        console.log('Error adding chunk owner', err);
+        res.send(500, err);
+      }
+    });
+
+    router.applyRoutes(server, '/voxel');
+
     io.of('voxel').on('connection', async (socket) => {
       try {
         let data = await controller.initClient(dbConn);

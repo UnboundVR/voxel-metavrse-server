@@ -15,7 +15,5 @@ export default async function(conn, userId) {
     block: blocksCreated + 2 // this is because we're not creating any blockType with ID 1
   });
 
-  if(userId != 0) {
-    await toolbar(conn, userId);
-  }
+  await toolbar(conn, userId);
 }

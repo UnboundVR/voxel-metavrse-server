@@ -11,9 +11,16 @@ function compress(chunk) {
   return compressedChunk;
 }
 
-async function hasAccess(chunk, token) {
+async function checkAccess(chunk, token) {
   let user = await auth.getUser(token);
-  return user && chunk.owners.includes(user.id);
+
+  if(!user) {
+    throw new Error('No user logged');
+  }
+
+  if(!chunk.owners.includes(user.login)) {
+    throw new Error(`User ${user.login} not have access to chunk at ${chunk.pos.join('|')}`);
+  }
 }
 
 let pendingChanges = [];
@@ -60,16 +67,14 @@ export default {
   },
   async set(token, pos, val, broadcast) {
     let chunkPos = engine.chunkAtPosition(pos);
+    engine.ensureChunkExists(chunkPos);
     let chunk = engine.getChunk(chunkPos);
+    await checkAccess(chunk, token);
 
-    if(await hasAccess(chunk, token)) {
-      engine.setBlock(pos, val);
-      compression.invalidateCache(chunkPos);
-      pendingChanges.push({pos, val, chunkDims: chunk.dims, chunkPos});
-      broadcast(pos, val);
-    } else {
-      throw new Error(`User does not have access to chunk at ${chunkPos}`);
-    }
+    engine.setBlock(pos, val);
+    compression.invalidateCache(chunkPos);
+    pendingChanges.push({pos, val, chunkDims: chunk.dims, chunkPos, chunkId: chunk.id});
+    broadcast(pos, val);
   },
   async saveChunks() {
     let changes = pendingChanges.splice(0, pendingChanges.length);
@@ -91,7 +96,7 @@ export default {
         } else {
           // We're not sending the delta if we just sent the whole chunk
           if(!addedChunks.includes(change.chunkPos)) {
-            await storage.saveChunkChange(this._dbConn, change.chunkPos, change.chunkDims, change.pos, change.val);
+            await storage.saveChunkChange(this._dbConn, change);
           }
         }
       } catch(err) {
@@ -101,5 +106,20 @@ export default {
     }
 
     this._scheduleDatabaseSave();
+  },
+  async addChunkOwner(token, chunkId, newOwner) {
+    let chunkPos = chunkId.split('|');
+    engine.ensureChunkExists(chunkPos);
+    let chunk = engine.getChunk(chunkPos);
+    await checkAccess(chunk, token);
+
+    if(!engine.existsInDatabase(chunkPos)) {
+      chunk.owners.push(newOwner);
+      await storage.saveChunk(this._dbConn, chunk);
+      engine.markAsExistingInDatabase(chunkPos);
+      console.log(`Chunk at ${chunk.id} didn't exist in database, so we're adding it`);
+    } else {
+      await storage.addChunkOwner(this._dbConn, chunkId, newOwner);
+    }
   }
 };

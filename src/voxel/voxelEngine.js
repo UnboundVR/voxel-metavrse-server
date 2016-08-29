@@ -34,7 +34,7 @@ module.exports = {
       chunk.id = chunk.position.join('|');
     }
     if(!chunk.owners) {
-      chunk.owners = [parseInt(process.env.ADMIN_USER_ID)];
+      chunk.owners = [process.env.ADMIN_USER_ID];
     }
     return chunk;
   },

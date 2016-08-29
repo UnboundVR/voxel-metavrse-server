@@ -12,13 +12,11 @@ function processGist(response) {
     lastUpdateDate: response.updated_at,
     code: response.files[SINGLE_FILENAME].content,
     author: response.owner ? {
-      id: response.owner.id,
-      avatar: response.owner.avatar_url,
-      login: response.owner.login
+      id: response.owner.login,
+      avatar: response.owner.avatar_url
     } : {
-      id: null,
-      avatar: 'https://avatars.githubusercontent.com/u/148100?v=3',
-      login: 'anonymous'
+      id: '*anonymous*',
+      avatar: 'https://avatars.githubusercontent.com/u/148100?v=3'
     },
     url: response.html_url
   };

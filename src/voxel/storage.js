@@ -10,13 +10,18 @@ export default {
   async saveChunk(dbConn, chunk) {
     await r.table('chunk').insert(chunk).run(dbConn);
   },
-  saveChunkChange(dbConn, chunkPos, chunkDims, pos, val) {
+  addChunkOwner(dbConn, chunkId, newOwner) {
+    return r.table('chunk').get(chunkId).update({
+      owners: r.row('owners').append(newOwner)
+    }).run(dbConn);
+  },
+  saveChunkChange(dbConn, change) {
     function getFlatLocalCoord() { // FIXME this only works for cubic chunks (i.e. all dims are the same)
-      let d = chunkDims[0];
+      let d = change.chunkDims[0];
       let localCoords = [
-        pos[0] - chunkPos[0] * d,
-        pos[1] - chunkPos[1] * d,
-        pos[2] - chunkPos[2] * d
+        change.pos[0] - change.chunkPos[0] * d,
+        change.pos[1] - change.chunkPos[1] * d,
+        change.pos[2] - change.chunkPos[2] * d
       ];
 
       let flatLocalPosition = localCoords[0] + localCoords[1] * d + localCoords[2] * d * d;
@@ -26,8 +31,8 @@ export default {
       return flatLocalPosition;
     }
 
-    return r.table('chunk').filter({position: chunkPos}).update({
-      voxels: r.row('voxels').changeAt(getFlatLocalCoord(), val)
+    return r.table('chunk').get(change.chunkId).update({
+      voxels: r.row('voxels').changeAt(getFlatLocalCoord(), change.val)
     }).run(dbConn);
   }
 };
