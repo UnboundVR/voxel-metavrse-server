@@ -108,7 +108,7 @@ export default {
     this._scheduleDatabaseSave();
   },
   async addChunkOwner(token, chunkId, newOwner) {
-    let chunkPos = chunkId.split('|');
+    let chunkPos = chunkId.split('|').map(coord => parseInt(coord));
     engine.ensureChunkExists(chunkPos);
     let chunk = engine.getChunk(chunkPos);
     await checkAccess(chunk, token);

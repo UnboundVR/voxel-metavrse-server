@@ -16,7 +16,7 @@ export default {
     }).run(dbConn);
   },
   saveChunkChange(dbConn, change) {
-    function getFlatLocalCoord() { // FIXME this only works for cubic chunks (i.e. all dims are the same)
+    function getFlatLocalCoord() { // this only works for cubic chunks (i.e. all dims are the same)
       let d = change.chunkDims[0];
       let localCoords = [
         change.pos[0] - change.chunkPos[0] * d,
